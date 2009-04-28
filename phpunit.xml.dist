@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="./test/bootstrap.php"
+         colors="true">
+    <testsuites>
+        <testsuite name="zend-ldap Test Suite">
+            <directory>./test/</directory>
+        </testsuite>
+    </testsuites>
+
+    <groups>
+        <exclude>
+            <group>disable</group>
+        </exclude>
+    </groups>
+
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src</directory>
+        </whitelist>
+    </filter>
+
+    <php>
+        <ini name="date.timezone" value="UTC"/>
+
+        <!-- OB_ENABLED should be enabled for some tests to check if all
+             functionality works as expected. Such tests include those for
+             Zend\Soap and Zend\Session, which require that headers not be sent
+             in order to work. -->
+        <const name="TESTS_ZEND_OB_ENABLED" value="false" />
+
+        <!-- Zend\Ldap online tests
+
+             These largely map to the options described in the Zend\Ldap and
+             Zend\Auth\Adapter\Ldap documentation.
+
+             Example Configuration for Active Directory:
+                                  HOST: dc1.w.net
+                         USE_START_TLS: true
+                               USE_SSL: false
+                              USERNAME: CN=User 1,CN=Users,DC=w,DC=net
+                        PRINCIPAL_NAME: user1@w.net
+                         LDAP_PASSWORD: pass1
+                               BASE_DN: CN=Users,DC=w,DC=net
+                           DOMAIN_NAME: w.net
+             ACCOUNT_DOMAIN_NAME_SHORT: W
+                          ALT_USERNAME: user2
+                                ALT_DN: CN=User 2,CN=Users,DC=w,DC=net
+                          ALT_PASSWORD: pass2
+
+             Example Configuration for OpenLDAP
+                                  HOST: s0.foo.net
+                              USERNAME: CN=user1,DC=foo,DC=net
+                        PRINCIPAL_NAME: user1@foo.net
+                         LDAP_PASSWORD: pass1
+                      BIND_REQUIRES_DN: true
+                               BASE_DN: OU=Sales,DC=w,DC=net
+                           DOMAIN_NAME: foo.net
+             ACCOUNT_DOMAIN_NAME_SHORT: FOO
+                          ALT_USERNAME: abaker
+                                ALT_DN: CN=Alice Baker,OU=Sales,DC=foo,DC=net
+                          ALT_PASSWORD: apass
+        -->
+        <const name="TESTS_ZEND_LDAP_ONLINE_ENABLED" value="false" />
+        <const name="TESTS_ZEND_LDAP_HOST" value="localhost" />
+        <const name="TESTS_ZEND_LDAP_PORT" value="389" />
+        <const name="TESTS_ZEND_LDAP_USE_START_TLS" value="true" />
+        <const name="TESTS_ZEND_LDAP_USE_SSL" value="false" />
+        <const name="TESTS_ZEND_LDAP_USERNAME" value="CN=someUser,DC=example,DC=com" />
+        <const name="TESTS_ZEND_LDAP_PRINCIPAL_NAME" value="someUser@example.com" />
+        <const name="TESTS_ZEND_LDAP_PASSWORD" value="" />
+        <const name="TESTS_ZEND_LDAP_BIND_REQUIRES_DN" value="true" />
+        <const name="TESTS_ZEND_LDAP_BASE_DN" value="OU=Sales,DC=example,DC=com" />
+        <const name="TESTS_ZEND_LDAP_ACCOUNT_FILTER_FORMAT" value="(&amp;(objectClass=posixAccount)(uid=%s))" />
+        <const name="TESTS_ZEND_LDAP_ACCOUNT_DOMAIN_NAME" value="example.com" />
+        <const name="TESTS_ZEND_LDAP_ACCOUNT_DOMAIN_NAME_SHORT" value="EXAMPLE" />
+        <const name="TESTS_ZEND_LDAP_ALT_USERNAME" value="anotherUser" />
+        <const name="TESTS_ZEND_LDAP_ALT_DN" value="CN=Another User,OU=Sales,DC=example,DC=com" />
+        <const name="TESTS_ZEND_LDAP_ALT_PASSWORD" value="" />
+        <const name="TESTS_ZEND_LDAP_WRITEABLE_SUBTREE" value="OU=Test,OU=Sales,DC=example,DC=com" />
+    </php>
+</phpunit>
