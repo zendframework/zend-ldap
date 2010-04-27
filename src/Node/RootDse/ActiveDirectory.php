@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage RootDSE
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,18 +21,23 @@
  */
 
 /**
- * Zend_Ldap_Node_RootDse provides a simple data-container for the RootDSE node of
+ * @namespace
+ */
+namespace Zend\LDAP\Node\RootDSE;
+
+/**
+ * Zend_LDAP_Node_RootDse provides a simple data-container for the RootDSE node of
  * an Active Directory server.
  *
- * @uses       Zend_Ldap_Dn
- * @uses       Zend_Ldap_Node_RootDse
+ * @uses       \Zend\LDAP\DN
+ * @uses       \Zend\LDAP\Node\RootDSE\RootDSE
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage RootDSE
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Ldap_Node_RootDse_ActiveDirectory extends Zend_Ldap_Node_RootDse
+class ActiveDirectory extends RootDSE
 {
     /**
      * Gets the configurationNamingContext.
@@ -149,7 +154,7 @@ class Zend_Ldap_Node_RootDse_ActiveDirectory extends Zend_Ldap_Node_RootDse
      *
      * @return string|null
      */
-    public function getLdapServiceName()
+    public function getLDAPServiceName()
     {
         return $this->getAttribute('ldapServiceName', 0);
     }
@@ -230,11 +235,11 @@ class Zend_Ldap_Node_RootDse_ActiveDirectory extends Zend_Ldap_Node_RootDse
     /**
      * Returns the schema DN
      *
-     * @return Zend_Ldap_Dn
+     * @return \Zend\LDAP\DN
      */
     public function getSchemaDn()
     {
         $schemaDn = $this->getSchemaNamingContext();
-        return Zend_Ldap_Dn::fromString($schemaDn);
+        return \Zend\LDAP\DN::fromString($schemaDn);
     }
 }

@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage Schema
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,20 +21,25 @@
  */
 
 /**
- * Zend_Ldap_Node_Schema_AttributeType_OpenLdap provides access to the attribute type
+ * @namespace
+ */
+namespace Zend\LDAP\Node\Schema\AttributeType;
+
+/**
+ * Zend_LDAP_Node_Schema_AttributeType_OpenLDAP provides access to the attribute type
  * schema information on an OpenLDAP server.
  *
- * @uses       Zend_Ldap_Node_Schema_AttributeType_Interface
- * @uses       Zend_Ldap_Node_Schema_Item
+ * @uses       \Zend\LDAP\Node\Schema\AttributeType\AttributeTypeInterface
+ * @uses       \Zend\LDAP\Node\Schema\Item
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage Schema
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Ldap_Node_Schema_AttributeType_OpenLdap 
-    extends Zend_Ldap_Node_Schema_Item
-    implements Zend_Ldap_Node_Schema_AttributeType_Interface
+class OpenLDAP 
+    extends \Zend\LDAP\Node\Schema\Item
+    implements AttributeTypeInterface
 {
     /**
      * Gets the attribute name
@@ -112,7 +117,7 @@ class Zend_Ldap_Node_Schema_AttributeType_OpenLdap
     /**
      * Returns the parent attribute type in the inhertitance tree if one exists
      *
-     * @return Zend_Ldap_Node_Schema_AttributeType_OpenLdap|null
+     * @return \Zend\LDAP\Node\Schema\AttributeType\OpenLDAP|null
      */
     public function getParent()
     {

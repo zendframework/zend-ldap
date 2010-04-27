@@ -13,21 +13,26 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
- * Zend_Ldap_Attribute is a collection of LDAP attribute related functions.
+ * @namespace
+ */
+namespace Zend\LDAP;
+
+/**
+ * Zend_LDAP_Attribute is a collection of LDAP attribute related functions.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Ldap_Attribute
+class Attribute
 {
     const PASSWORD_HASH_MD5   = 'md5';
     const PASSWORD_HASH_SMD5  = 'smd5';
@@ -48,17 +53,17 @@ class Zend_Ldap_Attribute
     {
         $attribName = strtolower($attribName);
         $valArray = array();
-        if (is_array($value) || ($value instanceof Traversable))
+        if (is_array($value) || ($value instanceof \Traversable))
         {
             foreach ($value as $v)
             {
-                $v = self::_valueToLdap($v);
+                $v = self::_valueToLDAP($v);
                 if (!is_null($v)) $valArray[] = $v;
             }
         }
         else if (!is_null($value))
         {
-            $value = self::_valueToLdap($value);
+            $value = self::_valueToLDAP($value);
             if (!is_null($value)) $valArray[] = $value;
         }
 
@@ -89,14 +94,14 @@ class Zend_Ldap_Attribute
             $retArray = array();
             foreach ($data[$attribName] as $v)
             {
-                $retArray[] = self::_valueFromLdap($v);
+                $retArray[] = self::_valueFromLDAP($v);
             }
             return $retArray;
         } else if (is_int($index)) {
             if (!isset($data[$attribName])) {
                 return null;
             } else if ($index >= 0 && $index<count($data[$attribName])) {
-                return self::_valueFromLdap($data[$attribName][$index]);
+                return self::_valueFromLDAP($data[$attribName][$index]);
             } else {
                 return null;
             }
@@ -122,7 +127,7 @@ class Zend_Ldap_Attribute
         }
 
         foreach ($value as $v) {
-            $v = self::_valueToLdap($v);
+            $v = self::_valueToLDAP($v);
             if (!in_array($v, $data[$attribName], true)) {
                 return false;
             }
@@ -164,7 +169,7 @@ class Zend_Ldap_Attribute
         $valArray = array();
         foreach ($value as $v)
         {
-            $v = self::_valueToLdap($v);
+            $v = self::_valueToLDAP($v);
             if ($v !== null) $valArray[] = $v;
         }
 
@@ -183,7 +188,7 @@ class Zend_Ldap_Attribute
      * @param  mixed $value
      * @return string|null
      */
-    private static function _valueToLdap($value)
+    private static function _valueToLDAP($value)
     {
         if (is_string($value)) return $value;
         else if (is_int($value) || is_float($value)) return (string)$value;
@@ -198,7 +203,7 @@ class Zend_Ldap_Attribute
      * @param  string $value
      * @return string|boolean
      */
-    private static function _valueFromLdap($value)
+    private static function _valueFromLDAP($value)
     {
         $value = (string)$value;
         if ($value === 'TRUE') return true;
@@ -212,9 +217,9 @@ class Zend_Ldap_Attribute
      * @param  mixed $value
      * @return string|null - null if the PHP data type cannot be converted.
      */
-    public static function convertToLdapValue($value)
+    public static function convertToLDAPValue($value)
     {
-        return self::_valueToLdap($value);
+        return self::_valueToLDAP($value);
     }
 
     /**
@@ -223,9 +228,9 @@ class Zend_Ldap_Attribute
      * @param  string $value
      * @return mixed
      */
-    public static function convertFromLdapValue($value)
+    public static function convertFromLDAPValue($value)
     {
-        return self::_valueFromLdap($value);
+        return self::_valueFromLDAP($value);
     }
 
     /**
@@ -235,9 +240,9 @@ class Zend_Ldap_Attribute
      * @param  boolean $utc
      * @return string|null - null if the value cannot be converted.
      */
-    public static function convertToLdapDateTimeValue($value, $utc = false)
+    public static function convertToLDAPDateTimeValue($value, $utc = false)
     {
-        return self::_valueToLdapDateTime($value, $utc);
+        return self::_valueToLDAPDateTime($value, $utc);
     }
 
     /**
@@ -246,9 +251,9 @@ class Zend_Ldap_Attribute
      * @param  string $value
      * @return integer|null - null if the value cannot be converted.
      */
-    public static function convertFromLdapDateTimeValue($value)
+    public static function convertFromLDAPDateTimeValue($value)
     {
-        return self::_valueFromLdapDateTime($value);
+        return self::_valueFromLDAPDateTime($value);
     }
 
     /**
@@ -340,15 +345,15 @@ class Zend_Ldap_Attribute
         $append = false)
     {
         $convertedValues = array();
-        if (is_array($value) || ($value instanceof Traversable))
+        if (is_array($value) || ($value instanceof \Traversable))
         {
             foreach ($value as $v) {
-                $v = self::_valueToLdapDateTime($v, $utc);
+                $v = self::_valueToLDAPDateTime($v, $utc);
                 if (!is_null($v)) $convertedValues[] = $v;
             }
         }
         else if (!is_null($value)) {
-            $value = self::_valueToLdapDateTime($value, $utc);
+            $value = self::_valueToLDAPDateTime($value, $utc);
             if (!is_null($value)) $convertedValues[] = $value;
         }
         self::setAttribute($data, $attribName, $convertedValues, $append);
@@ -359,7 +364,7 @@ class Zend_Ldap_Attribute
      * @param  boolean $utc
      * @return string|null
      */
-    private static function _valueToLdapDateTime($value, $utc)
+    private static function _valueToLDAPDateTime($value, $utc)
     {
         if (is_int($value)) {
             if ($utc === true) return gmdate('YmdHis', $value) . 'Z';
@@ -381,13 +386,16 @@ class Zend_Ldap_Attribute
         $values = self::getAttribute($data, $attribName, $index);
         if (is_array($values)) {
             for ($i = 0; $i<count($values); $i++) {
-                $newVal = self::_valueFromLdapDateTime($values[$i]);
-                if ($newVal !== null) $values[$i] = $newVal;
+                $newVal = self::_valueFromLDAPDateTime($values[$i]);
+                if ($newVal !== null) {
+                    $values[$i] = $newVal;
+                }
             }
-        }
-        else {
-			$newVal = self::_valueFromLdapDateTime($values);
-			if ($newVal !== null) $values = $newVal;
+        } else {
+			$newVal = self::_valueFromLDAPDateTime($values);
+			if ($newVal !== null) {
+			    $values = $newVal;
+			}
 		}
         return $values;
     }
@@ -396,7 +404,7 @@ class Zend_Ldap_Attribute
      * @param  string $value
      * @return integer|null
      */
-    private static function _valueFromLdapDateTime($value)
+    private static function _valueFromLDAPDateTime($value)
     {
         $matches = array();
         if (preg_match('/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})([+-]\d{4}|Z)$/', $value, $matches)) {
@@ -418,6 +426,7 @@ class Zend_Ldap_Attribute
             }
             return $date;
         }
-        else return null;
+
+        return null;
     }
 }

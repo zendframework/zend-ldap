@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,22 +21,22 @@
  */
 
 /**
- * Zend_Ldap_TestCase
+ * @namespace
  */
-/**
- * @see Zend_Ldap_Ldif_Encoder
- */
+namespace ZendTest\LDAP\LDIF;
+use Zend\LDAP\LDIF;
+
 
 /**
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Ldap
- * @group      Zend_Ldap_Ldif
+ * @group      Zend_LDAP
+ * @group      Zend_LDAP_Ldif
  */
-class Zend_Ldap_Ldif_SimpleDecoderTest extends Zend_Ldap_TestCase
+class SimpleDecoderTest extends \ZendTest\LDAP\TestCase
 {
     public function testDecodeSimpleSingleItem()
     {
@@ -49,7 +49,7 @@ attr3: foo";
             'dn'          => 'cn=test3,ou=example,dc=cno',
             'objectclass' => array('oc1'),
             'attr3'       => array('foo'));
-        $actual = Zend_Ldap_Ldif_Encoder::decode($data);
+        $actual = LDIF\Encoder::decode($data);
         $this->assertEquals($expected, $actual);
     }
 
@@ -78,7 +78,7 @@ verylong: fhu08rhvt7b478vt5hv78h45nfgt45h78t34hhhhhhhhhv5bg8
                                     'h6ttttttttt3489t57nhvgh4788trhg8999vnhtgthgui65hgb' .
                                     '5789thvngwr789cghm738'),
         );
-        $actual = Zend_Ldap_Ldif_Encoder::decode($data);
+        $actual = LDIF\Encoder::decode($data);
         $this->assertEquals($expected, $actual);
     }
 
@@ -108,7 +108,7 @@ cn:: dGVzdCDDtsOkw7w=";
             'attr6'       => array(':badinitchar', '<badinitchar'),
             'cn'          => array('test öäü'),
         );
-        $actual = Zend_Ldap_Ldif_Encoder::decode($data);
+        $actual = LDIF\Encoder::decode($data);
         $this->assertEquals($expected, $actual);
     }
 
@@ -130,7 +130,7 @@ attr3: bar";
             'attr2'       => array('1234', 'baz'),
             'attr3'       => array('foo', 'bar'),
         );
-        $actual = Zend_Ldap_Ldif_Encoder::decode($data);
+        $actual = LDIF\Encoder::decode($data);
         $this->assertEquals($expected, $actual);
     }
 
@@ -175,7 +175,7 @@ telephonenumber: +1 408 555 1212";
                 'telephonenumber' => array('+1 408 555 1212'),
             ),
         );
-        $actual = Zend_Ldap_Ldif_Encoder::decode($data);
+        $actual = LDIF\Encoder::decode($data);
         $this->assertEquals($expected, $actual);
     }
 
@@ -207,7 +207,7 @@ title:Product Manager, Rod and Reel Division";
                                         ' in search of perfect sailing conditions.'),
             'title'             => array('Product Manager, Rod and Reel Division'),
         );
-        $actual = Zend_Ldap_Ldif_Encoder::decode($data);
+        $actual = LDIF\Encoder::decode($data);
         $this->assertEquals($expected, $actual);
     }
 
@@ -240,7 +240,7 @@ description:: V2hhdCBhIGNhcmVmdWwgcmVhZGVyIHlvdSBhcmUhICBUaGlzIHZhbHVl
                                         'control character in it (a CR).' . "\r" .
                                         '  By the way, you should really get out more.'),
         );
-        $actual = Zend_Ldap_Ldif_Encoder::decode($data);
+        $actual = LDIF\Encoder::decode($data);
         $this->assertEquals($expected, $actual);
     }
 
@@ -301,7 +301,7 @@ sn;lang-en: Ogasawara
 cn;lang-en: Rodney Ogasawara
 title;lang-en: Sales, Director";
 
-        $actual = Zend_Ldap_Ldif_Encoder::decode($data);
+        $actual = LDIF\Encoder::decode($data);
 
         $this->assertEquals('ou=営業部,o=Airius', $actual[0]['dn']);
         $this->assertEquals(array('top', 'organizationalUnit'), $actual[0]['objectclass']);
@@ -373,7 +373,7 @@ verylong: fhu08rhvt7b478vt5hv78h45nfgt45h78t34hhhhhhhhhv5bg8
                                     'h6ttttttttt3489t57nhvgh4788trhg8999vnhtgthgui65hgb' .
                                     '5789thvngwr789cghm738'),
         );
-        $actual = Zend_Ldap_Ldif_Encoder::decode($data);
+        $actual = LDIF\Encoder::decode($data);
         $this->assertEquals($expected, $actual);
     }
 
@@ -381,7 +381,7 @@ verylong: fhu08rhvt7b478vt5hv78h45nfgt45h78t34hhhhhhhhhv5bg8
     {
         $node = $this->_createTestNode();
         $ldif = $node->toLdif();
-        $data = Zend_Ldap_Ldif_Encoder::decode($ldif);
+        $data = LDIF\Encoder::decode($ldif);
         $expected = array_merge(array('dn' => $node->getDnString()), $node->getData(false));
         $this->assertEquals($expected, $data);
     }

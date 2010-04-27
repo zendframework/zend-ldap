@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,21 +21,20 @@
  */
 
 /**
- * Test helper
+ * @namespace
  */
-/**
- * Zend_Ldap_Attribute
- */
+namespace ZendTest\LDAP;
+use Zend\LDAP;
 
 /**
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Ldap
+ * @group      Zend_LDAP
  */
-class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
+class AttributeTest extends \PHPUnit_Framework_TestCase
 {
     protected function _assertLocalDateTimeString($timestamp, $value)
     {
@@ -52,23 +51,23 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
     public function testGetAttributeValue()
     {
         $data=array('uid' => array('value'));
-        $value=Zend_Ldap_Attribute::getAttribute($data, 'uid', 0);
+        $value=LDAP\Attribute::getAttribute($data, 'uid', 0);
         $this->assertEquals('value', $value);
     }
 
     public function testGetNonExistentAttributeValue()
     {
         $data=array('uid' => array('value'));
-        $value=Zend_Ldap_Attribute::getAttribute($data, 'uid', 1);
+        $value=LDAP\Attribute::getAttribute($data, 'uid', 1);
         $this->assertNull($value);
     }
 
     public function testGetNonExistentAttribute()
     {
         $data=array('uid' => array('value'));
-        $value=Zend_Ldap_Attribute::getAttribute($data, 'uid2', 0);
+        $value=LDAP\Attribute::getAttribute($data, 'uid2', 0);
         $this->assertNull($value);
-        $array=Zend_Ldap_Attribute::getAttribute($data, 'uid2');
+        $array=LDAP\Attribute::getAttribute($data, 'uid2');
         $this->assertType('array', $array);
         $this->assertEquals(0, count($array));
     }
@@ -76,16 +75,16 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
     public function testGetAttributeWithWrongIndexType()
     {
         $data=array('uid' => array('value'));
-        $value=Zend_Ldap_Attribute::getAttribute($data, 'uid', 'index');
+        $value=LDAP\Attribute::getAttribute($data, 'uid', 'index');
         $this->assertNull($value);
-        $value=Zend_Ldap_Attribute::getAttribute($data, 'uid', 3.1415);
+        $value=LDAP\Attribute::getAttribute($data, 'uid', 3.1415);
         $this->assertNull($value);
     }
 
     public function testGetAttributeArray()
     {
         $data=array('uid' => array('value'));
-        $value=Zend_Ldap_Attribute::getAttribute($data, 'uid');
+        $value=LDAP\Attribute::getAttribute($data, 'uid');
         $this->assertType('array', $value);
         $this->assertEquals(1, count($value));
         $this->assertContains('value', $value);
@@ -94,7 +93,7 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
     public function testSimpleSetAttribute()
     {
         $data=array();
-        Zend_Ldap_Attribute::setAttribute($data, 'uid', 'new', false);
+        LDAP\Attribute::setAttribute($data, 'uid', 'new', false);
         $this->assertArrayHasKey('uid', $data);
         $this->assertType('array', $data['uid']);
         $this->assertEquals(1, count($data['uid']));
@@ -104,7 +103,7 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
     public function testSimpleOverwriteAttribute()
     {
         $data=array('uid' => array('old'));
-        Zend_Ldap_Attribute::setAttribute($data, 'uid', 'new', false);
+        LDAP\Attribute::setAttribute($data, 'uid', 'new', false);
         $this->assertArrayHasKey('uid', $data);
         $this->assertType('array', $data['uid']);
         $this->assertEquals(1, count($data['uid']));
@@ -114,7 +113,7 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
     public function testSimpleAppendAttribute()
     {
         $data=array('uid' => array('old'));
-        Zend_Ldap_Attribute::setAttribute($data, 'uid', 'new', true);
+        LDAP\Attribute::setAttribute($data, 'uid', 'new', true);
         $this->assertArrayHasKey('uid', $data);
         $this->assertType('array', $data['uid']);
         $this->assertEquals(2, count($data['uid']));
@@ -130,18 +129,18 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
             'p1_true' => array('TRUE'),
             'p1_false' => array('FALSE')
         );
-        Zend_Ldap_Attribute::setAttribute($data, 'p2_true', true);
-        Zend_Ldap_Attribute::setAttribute($data, 'p2_false', false);
+        LDAP\Attribute::setAttribute($data, 'p2_true', true);
+        LDAP\Attribute::setAttribute($data, 'p2_false', false);
         $this->assertEquals('TRUE', $data['p2_true'][0]);
         $this->assertEquals('FALSE', $data['p2_false'][0]);
-        $this->assertEquals(true, Zend_Ldap_Attribute::getAttribute($data, 'p1_true', 0));
-        $this->assertEquals(false, Zend_Ldap_Attribute::getAttribute($data, 'p1_false', 0));
+        $this->assertEquals(true, LDAP\Attribute::getAttribute($data, 'p1_true', 0));
+        $this->assertEquals(false, LDAP\Attribute::getAttribute($data, 'p1_false', 0));
     }
 
     public function testArraySetAttribute()
     {
         $data=array();
-        Zend_Ldap_Attribute::setAttribute($data, 'uid', array('new1', 'new2'), false);
+        LDAP\Attribute::setAttribute($data, 'uid', array('new1', 'new2'), false);
         $this->assertArrayHasKey('uid', $data);
         $this->assertType('array', $data['uid']);
         $this->assertEquals(2, count($data['uid']));
@@ -154,7 +153,7 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
     public function testArrayOverwriteAttribute()
     {
         $data=array('uid' => array('old'));
-        Zend_Ldap_Attribute::setAttribute($data, 'uid', array('new1', 'new2'), false);
+        LDAP\Attribute::setAttribute($data, 'uid', array('new1', 'new2'), false);
         $this->assertArrayHasKey('uid', $data);
         $this->assertType('array', $data['uid']);
         $this->assertEquals(2, count($data['uid']));
@@ -167,7 +166,7 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
     public function testArrayAppendAttribute()
     {
         $data=array('uid' => array('old'));
-        Zend_Ldap_Attribute::setAttribute($data, 'uid', array('new1', 'new2'), true);
+        LDAP\Attribute::setAttribute($data, 'uid', array('new1', 'new2'), true);
         $this->assertArrayHasKey('uid', $data);
         $this->assertType('array', $data['uid']);
         $this->assertEquals(3, count($data['uid']));
@@ -182,44 +181,44 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
     public function testPasswordSettingSHA()
     {
         $data=array();
-        Zend_Ldap_Attribute::setPassword($data, 'pa$$w0rd', Zend_Ldap_Attribute::PASSWORD_HASH_SHA);
-        $password=Zend_Ldap_Attribute::getAttribute($data, 'userPassword', 0);
+        LDAP\Attribute::setPassword($data, 'pa$$w0rd', LDAP\Attribute::PASSWORD_HASH_SHA);
+        $password=LDAP\Attribute::getAttribute($data, 'userPassword', 0);
         $this->assertEquals('{SHA}vi3X+3ptD4ulrdErXo+3W72mRyE=', $password);
     }
 
     public function testPasswordSettingMD5()
     {
         $data=array();
-        Zend_Ldap_Attribute::setPassword($data, 'pa$$w0rd', Zend_Ldap_Attribute::PASSWORD_HASH_MD5);
-        $password=Zend_Ldap_Attribute::getAttribute($data, 'userPassword', 0);
+        LDAP\Attribute::setPassword($data, 'pa$$w0rd', LDAP\Attribute::PASSWORD_HASH_MD5);
+        $password=LDAP\Attribute::getAttribute($data, 'userPassword', 0);
         $this->assertEquals('{MD5}bJuLJ96h3bhF+WqiVnxnVA==', $password);
     }
 
     public function testPasswordSettingUnicodePwd()
     {
         $data=array();
-        Zend_Ldap_Attribute::setPassword($data, 'new', Zend_Ldap_Attribute::PASSWORD_UNICODEPWD);
-        $password=Zend_Ldap_Attribute::getAttribute($data, 'unicodePwd', 0);
+        LDAP\Attribute::setPassword($data, 'new', LDAP\Attribute::PASSWORD_UNICODEPWD);
+        $password=LDAP\Attribute::getAttribute($data, 'unicodePwd', 0);
         $this->assertEquals("\x22\x00\x6E\x00\x65\x00\x77\x00\x22\x00", $password);
     }
 
     public function testPasswordSettingCustomAttribute()
     {
         $data=array();
-        Zend_Ldap_Attribute::setPassword($data, 'pa$$w0rd',
-            Zend_Ldap_Attribute::PASSWORD_HASH_SHA, 'myAttribute');
-        $password=Zend_Ldap_Attribute::getAttribute($data, 'myAttribute', 0);
+        LDAP\Attribute::setPassword($data, 'pa$$w0rd',
+            LDAP\Attribute::PASSWORD_HASH_SHA, 'myAttribute');
+        $password=LDAP\Attribute::getAttribute($data, 'myAttribute', 0);
         $this->assertNotNull($password);
     }
 
     public function testSetAttributeWithObject()
     {
         $data=array();
-        $object=new stdClass();
+        $object=new \stdClass();
         $object->a=1;
         $object->b=1.23;
         $object->c='string';
-        Zend_Ldap_Attribute::setAttribute($data, 'object', $object);
+        LDAP\Attribute::setAttribute($data, 'object', $object);
         $this->assertEquals(serialize($object), $data['object'][0]);
     }
 
@@ -227,7 +226,7 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
     {
         $data=array();
         $stream=fopen(dirname(__FILE__) . '/_files/AttributeTest.input.txt', 'r');
-        Zend_Ldap_Attribute::setAttribute($data, 'file', $stream);
+        LDAP\Attribute::setAttribute($data, 'file', $stream);
         fclose($stream);
         $this->assertEquals('String from file', $data['file'][0]);
     }
@@ -236,7 +235,7 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
     {
         $ts=mktime(12, 30, 30, 6, 25, 2008);
         $data=array();
-        Zend_Ldap_Attribute::setDateTimeAttribute($data, 'ts', $ts, false);
+        LDAP\Attribute::setDateTimeAttribute($data, 'ts', $ts, false);
         $this->_assertLocalDateTimeString($ts, $data['ts'][0]);
     }
 
@@ -244,7 +243,7 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
     {
         $ts=mktime(12, 30, 30, 6, 25, 2008);
         $data=array();
-        Zend_Ldap_Attribute::setDateTimeAttribute($data, 'ts', $ts, true);
+        LDAP\Attribute::setDateTimeAttribute($data, 'ts', $ts, true);
         $this->_assertUtcDateTimeString($ts, $data['ts'][0]);
     }
 
@@ -254,7 +253,7 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
         $ts[]=mktime(12, 30, 30, 6, 25, 2008);
         $ts[]=mktime(1, 25, 30, 1, 2, 2008);
         $data=array();
-        Zend_Ldap_Attribute::setDateTimeAttribute($data, 'ts', $ts, false);
+        LDAP\Attribute::setDateTimeAttribute($data, 'ts', $ts, false);
         $this->_assertLocalDateTimeString($ts[0], $data['ts'][0]);
         $this->_assertLocalDateTimeString($ts[1], $data['ts'][1]);
     }
@@ -263,7 +262,7 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
     {
         $ts='dummy';
         $data=array();
-        Zend_Ldap_Attribute::setDateTimeAttribute($data, 'ts', $ts, false);
+        LDAP\Attribute::setDateTimeAttribute($data, 'ts', $ts, false);
         $this->assertEquals(0, count($data['ts']));
     }
 
@@ -271,9 +270,9 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
     {
         $ts=mktime(12, 30, 30, 6, 25, 2008);
         $data=array();
-        Zend_Ldap_Attribute::setDateTimeAttribute($data, 'ts', $ts, false);
+        LDAP\Attribute::setDateTimeAttribute($data, 'ts', $ts, false);
         $this->_assertLocalDateTimeString($ts, $data['ts'][0]);
-        $retTs=Zend_Ldap_Attribute::getDateTimeAttribute($data, 'ts', 0);
+        $retTs=LDAP\Attribute::getDateTimeAttribute($data, 'ts', 0);
         $this->assertEquals($ts, $retTs);
     }
 
@@ -281,9 +280,9 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
     {
         $ts=mktime(12, 30, 30, 6, 25, 2008);
         $data=array();
-        Zend_Ldap_Attribute::setDateTimeAttribute($data, 'ts', $ts, true);
+        LDAP\Attribute::setDateTimeAttribute($data, 'ts', $ts, true);
         $this->_assertUtcDateTimeString($ts, $data['ts'][0]);
-        $retTs=Zend_Ldap_Attribute::getDateTimeAttribute($data, 'ts', 0);
+        $retTs=LDAP\Attribute::getDateTimeAttribute($data, 'ts', 0);
         $this->assertEquals($ts, $retTs);
     }
 
@@ -293,10 +292,10 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
         $ts[]=mktime(12, 30, 30, 6, 25, 2008);
         $ts[]=mktime(1, 25, 30, 1, 2, 2008);
         $data=array();
-        Zend_Ldap_Attribute::setDateTimeAttribute($data, 'ts', $ts, false);
+        LDAP\Attribute::setDateTimeAttribute($data, 'ts', $ts, false);
         $this->_assertLocalDateTimeString($ts[0], $data['ts'][0]);
         $this->_assertLocalDateTimeString($ts[1], $data['ts'][1]);
-        $retTs=Zend_Ldap_Attribute::getDateTimeAttribute($data, 'ts');
+        $retTs=LDAP\Attribute::getDateTimeAttribute($data, 'ts');
         $this->assertEquals($ts[0], $retTs[0]);
         $this->assertEquals($ts[1], $retTs[1]);
     }
@@ -304,14 +303,14 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
     public function testGetDateTimeValueIllegal()
     {
         $data=array('ts' => array('dummy'));
-        $retTs=Zend_Ldap_Attribute::getDateTimeAttribute($data, 'ts', 0);
+        $retTs=LDAP\Attribute::getDateTimeAttribute($data, 'ts', 0);
         $this->assertNull($retTs);
     }
 
     public function testGetDateTimeValueNegativeOffet()
     {
         $data=array('ts' => array('20080612143045-0700'));
-        $retTs=Zend_Ldap_Attribute::getDateTimeAttribute($data, 'ts', 0);
+        $retTs=LDAP\Attribute::getDateTimeAttribute($data, 'ts', 0);
         $tsCompare=gmmktime(21, 30, 45, 6, 12, 2008);
         $this->assertEquals($tsCompare, $retTs);
     }
@@ -319,7 +318,7 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
     public function testGetDateTimeValueNegativeOffet2()
     {
         $data=array('ts' => array('20080612143045-0715'));
-        $retTs=Zend_Ldap_Attribute::getDateTimeAttribute($data, 'ts', 0);
+        $retTs=LDAP\Attribute::getDateTimeAttribute($data, 'ts', 0);
         $tsCompare=gmmktime(21, 45, 45, 6, 12, 2008);
         $this->assertEquals($tsCompare, $retTs);
     }
@@ -327,7 +326,7 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
     public function testRemoveAttributeValueSimple()
     {
         $data=array('test' => array('value1', 'value2', 'value3', 'value3'));
-        Zend_Ldap_Attribute::removeFromAttribute($data, 'test', 'value2');
+        LDAP\Attribute::removeFromAttribute($data, 'test', 'value2');
         $this->assertArrayHasKey('test', $data);
         $this->assertType('array', $data['test']);
         $this->assertEquals(3, count($data['test']));
@@ -339,7 +338,7 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
     public function testRemoveAttributeValueArray()
     {
         $data=array('test' => array('value1', 'value2', 'value3', 'value3'));
-        Zend_Ldap_Attribute::removeFromAttribute($data, 'test', array('value1', 'value2'));
+        LDAP\Attribute::removeFromAttribute($data, 'test', array('value1', 'value2'));
         $this->assertArrayHasKey('test', $data);
         $this->assertType('array', $data['test']);
         $this->assertEquals(2, count($data['test']));
@@ -351,7 +350,7 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
     public function testRemoveAttributeMultipleValueSimple()
     {
         $data=array('test' => array('value1', 'value2', 'value3', 'value3'));
-        Zend_Ldap_Attribute::removeFromAttribute($data, 'test', 'value3');
+        LDAP\Attribute::removeFromAttribute($data, 'test', 'value3');
         $this->assertArrayHasKey('test', $data);
         $this->assertType('array', $data['test']);
         $this->assertEquals(2, count($data['test']));
@@ -363,7 +362,7 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
     public function testRemoveAttributeMultipleValueArray()
     {
         $data=array('test' => array('value1', 'value2', 'value3', 'value3'));
-        Zend_Ldap_Attribute::removeFromAttribute($data, 'test', array('value1', 'value3'));
+        LDAP\Attribute::removeFromAttribute($data, 'test', array('value1', 'value3'));
         $this->assertArrayHasKey('test', $data);
         $this->assertType('array', $data['test']);
         $this->assertEquals(1, count($data['test']));
@@ -375,7 +374,7 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
     public function testRemoveAttributeValueBoolean()
     {
         $data=array('test' => array('TRUE', 'FALSE', 'TRUE', 'FALSE'));
-        Zend_Ldap_Attribute::removeFromAttribute($data, 'test', false);
+        LDAP\Attribute::removeFromAttribute($data, 'test', false);
         $this->assertArrayHasKey('test', $data);
         $this->assertType('array', $data['test']);
         $this->assertEquals(2, count($data['test']));
@@ -386,7 +385,7 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
     public function testRemoveAttributeValueInteger()
     {
         $data=array('test' => array('1', '2', '3', '4'));
-        Zend_Ldap_Attribute::removeFromAttribute($data, 'test', array(2, 4));
+        LDAP\Attribute::removeFromAttribute($data, 'test', array(2, 4));
         $this->assertArrayHasKey('test', $data);
         $this->assertType('array', $data['test']);
         $this->assertEquals(2, count($data['test']));
@@ -396,30 +395,30 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
         $this->assertNotContains('4', $data['test']);
     }
 
-    public function testConvertFromLdapValue()
+    public function testConvertFromLDAPValue()
     {
-        $this->assertEquals(true, Zend_Ldap_Attribute::convertFromLdapValue('TRUE'));
-        $this->assertEquals(false, Zend_Ldap_Attribute::convertFromLdapValue('FALSE'));
+        $this->assertEquals(true, LDAP\Attribute::convertFromLDAPValue('TRUE'));
+        $this->assertEquals(false, LDAP\Attribute::convertFromLDAPValue('FALSE'));
     }
 
-    public function testConvertToLdapValue()
+    public function testConvertToLDAPValue()
     {
-        $this->assertEquals('string', Zend_Ldap_Attribute::convertToLdapValue('string'));
-        $this->assertEquals('1', Zend_Ldap_Attribute::convertToLdapValue(1));
-        $this->assertEquals('TRUE', Zend_Ldap_Attribute::convertToLdapValue(true));
+        $this->assertEquals('string', LDAP\Attribute::convertToLDAPValue('string'));
+        $this->assertEquals('1', LDAP\Attribute::convertToLDAPValue(1));
+        $this->assertEquals('TRUE', LDAP\Attribute::convertToLDAPValue(true));
     }
 
-    public function testConvertFromLdapDateTimeValue()
+    public function testConvertFromLDAPDateTimeValue()
     {
         $ldap='20080625123030+0200';
         $this->assertEquals(gmmktime(10, 30, 30, 6, 25, 2008),
-            Zend_Ldap_Attribute::convertFromLdapDateTimeValue($ldap));
+            LDAP\Attribute::convertFromLDAPDateTimeValue($ldap));
     }
 
-    public function testConvertToLdapDateTimeValue()
+    public function testConvertToLDAPDateTimeValue()
     {
         $ts=mktime(12, 30, 30, 6, 25, 2008);
-        $this->_assertLocalDateTimeString($ts, Zend_Ldap_Attribute::convertToLdapDateTimeValue($ts));
+        $this->_assertLocalDateTimeString($ts, LDAP\Attribute::convertToLDAPDateTimeValue($ts));
     }
 
     public function testRemoveDuplicates()
@@ -436,10 +435,10 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
             'boolean1' => array('TRUE'),
             'boolean2' => array('TRUE', 'FALSE'),
         );
-        Zend_Ldap_Attribute::removeDuplicatesFromAttribute($data, 'strings1');
-        Zend_Ldap_Attribute::removeDuplicatesFromAttribute($data, 'strings2');
-        Zend_Ldap_Attribute::removeDuplicatesFromAttribute($data, 'boolean1');
-        Zend_Ldap_Attribute::removeDuplicatesFromAttribute($data, 'boolean2');
+        LDAP\Attribute::removeDuplicatesFromAttribute($data, 'strings1');
+        LDAP\Attribute::removeDuplicatesFromAttribute($data, 'strings2');
+        LDAP\Attribute::removeDuplicatesFromAttribute($data, 'boolean1');
+        LDAP\Attribute::removeDuplicatesFromAttribute($data, 'boolean2');
         $this->assertEquals($expected, $data);
     }
 
@@ -452,30 +451,30 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
             'boolean2' => array('TRUE', 'FALSE', 'TRUE', 'FALSE'),
         );
 
-        $this->assertTrue(Zend_Ldap_Attribute::attributeHasValue($data, 'strings1', 'value1'));
-        $this->assertFalse(Zend_Ldap_Attribute::attributeHasValue($data, 'strings1', 'value4'));
-        $this->assertTrue(Zend_Ldap_Attribute::attributeHasValue($data, 'boolean1', true));
-        $this->assertFalse(Zend_Ldap_Attribute::attributeHasValue($data, 'boolean1', false));
+        $this->assertTrue(LDAP\Attribute::attributeHasValue($data, 'strings1', 'value1'));
+        $this->assertFalse(LDAP\Attribute::attributeHasValue($data, 'strings1', 'value4'));
+        $this->assertTrue(LDAP\Attribute::attributeHasValue($data, 'boolean1', true));
+        $this->assertFalse(LDAP\Attribute::attributeHasValue($data, 'boolean1', false));
 
-        $this->assertTrue(Zend_Ldap_Attribute::attributeHasValue($data, 'strings1',
+        $this->assertTrue(LDAP\Attribute::attributeHasValue($data, 'strings1',
             array('value1', 'value2')));
-        $this->assertTrue(Zend_Ldap_Attribute::attributeHasValue($data, 'strings1',
+        $this->assertTrue(LDAP\Attribute::attributeHasValue($data, 'strings1',
             array('value1', 'value2', 'value3')));
-        $this->assertFalse(Zend_Ldap_Attribute::attributeHasValue($data, 'strings1',
+        $this->assertFalse(LDAP\Attribute::attributeHasValue($data, 'strings1',
             array('value1', 'value2', 'value3', 'value4')));
-        $this->assertTrue(Zend_Ldap_Attribute::attributeHasValue($data, 'strings2',
+        $this->assertTrue(LDAP\Attribute::attributeHasValue($data, 'strings2',
             array('value1', 'value2', 'value3', 'value4')));
 
-        $this->assertTrue(Zend_Ldap_Attribute::attributeHasValue($data, 'boolean2',
+        $this->assertTrue(LDAP\Attribute::attributeHasValue($data, 'boolean2',
             array(true, false)));
-        $this->assertFalse(Zend_Ldap_Attribute::attributeHasValue($data, 'boolean1',
+        $this->assertFalse(LDAP\Attribute::attributeHasValue($data, 'boolean1',
             array(true, false)));
     }
 
     public function testPasswordGenerationSSHA()
     {
         $password = 'pa$$w0rd';
-        $ssha = Zend_Ldap_Attribute::createPassword($password, Zend_Ldap_Attribute::PASSWORD_HASH_SSHA);
+        $ssha = LDAP\Attribute::createPassword($password, LDAP\Attribute::PASSWORD_HASH_SSHA);
         $encoded = substr($ssha, strpos($ssha, '}'));
         $binary  = base64_decode($encoded);
         $this->assertEquals(24, strlen($binary));
@@ -488,7 +487,7 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
     public function testPasswordGenerationSHA()
     {
         $password = 'pa$$w0rd';
-        $sha = Zend_Ldap_Attribute::createPassword($password, Zend_Ldap_Attribute::PASSWORD_HASH_SHA);
+        $sha = LDAP\Attribute::createPassword($password, LDAP\Attribute::PASSWORD_HASH_SHA);
         $encoded = substr($sha, strpos($sha, '}'));
         $binary  = base64_decode($encoded);
         $this->assertEquals(20, strlen($binary));
@@ -498,7 +497,7 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
     public function testPasswordGenerationSMD5()
     {
         $password = 'pa$$w0rd';
-        $smd5 = Zend_Ldap_Attribute::createPassword($password, Zend_Ldap_Attribute::PASSWORD_HASH_SMD5);
+        $smd5 = LDAP\Attribute::createPassword($password, LDAP\Attribute::PASSWORD_HASH_SMD5);
         $encoded = substr($smd5, strpos($smd5, '}'));
         $binary  = base64_decode($encoded);
         $this->assertEquals(20, strlen($binary));
@@ -511,7 +510,7 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
     public function testPasswordGenerationMD5()
     {
         $password = 'pa$$w0rd';
-        $md5 = Zend_Ldap_Attribute::createPassword($password, Zend_Ldap_Attribute::PASSWORD_HASH_MD5);
+        $md5 = LDAP\Attribute::createPassword($password, LDAP\Attribute::PASSWORD_HASH_MD5);
         $encoded = substr($md5, strpos($md5, '}'));
         $binary  = base64_decode($encoded);
         $this->assertEquals(16, strlen($binary));
@@ -521,7 +520,7 @@ class Zend_Ldap_AttributeTest extends PHPUnit_Framework_TestCase
     public function testPasswordGenerationUnicodePwd()
     {
         $password = 'new';
-        $unicodePwd = Zend_Ldap_Attribute::createPassword($password, Zend_Ldap_Attribute::PASSWORD_UNICODEPWD);
+        $unicodePwd = LDAP\Attribute::createPassword($password, LDAP\Attribute::PASSWORD_UNICODEPWD);
         $this->assertEquals(10, strlen($unicodePwd));
         $this->assertEquals("\x22\x00\x6E\x00\x65\x00\x77\x00\x22\x00", $unicodePwd);
     }

@@ -13,21 +13,26 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
- * Zend_Ldap_Converter is a collection of useful LDAP related conversion functions.
+ * @namespace
+ */
+namespace Zend\LDAP;
+
+/**
+ * Zend_LDAP_Converter is a collection of useful LDAP related conversion functions.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Ldap_Converter
+class Converter
 {
     /**
      * Converts all ASCII chars < 32 to "\HEX"

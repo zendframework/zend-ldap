@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,28 +21,27 @@
  */
 
 /**
- * Test helper
+ * @namespace
  */
-/**
- * Zend_Ldap_Dn
- */
+namespace ZendTest\LDAP\Dn;
+use Zend\LDAP;
 
 /**
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Ldap
- * @group      Zend_Ldap_Dn
+ * @group      Zend_LDAP
+ * @group      Zend_LDAP_Dn
  */
-class Zend_Ldap_Dn_ImplodingTest extends PHPUnit_Framework_TestCase
+class ImplodingTest extends \PHPUnit_Framework_TestCase
 {
     public function testDnWithMultiValuedRdnRoundTrip()
     {
         $dn1='cn=Surname\, Firstname+uid=userid,cn=name2,dc=example,dc=org';
-        $dnArray=Zend_Ldap_Dn::explodeDn($dn1);
-        $dn2=Zend_Ldap_Dn::implodeDn($dnArray);
+        $dnArray=LDAP\DN::explodeDn($dn1);
+        $dn2=LDAP\DN::implodeDn($dnArray);
         $this->assertEquals($dn1, $dn2);
     }
 
@@ -55,10 +54,10 @@ class Zend_Ldap_Dn_ImplodingTest extends PHPUnit_Framework_TestCase
             array("dc" => "example"),
             array("dc" => "org")
         );
-        $dn=Zend_Ldap_Dn::implodeDn($dnArray);
+        $dn=LDAP\DN::implodeDn($dnArray);
         $this->assertEquals($expected, $dn);
 
-        $dn=Zend_Ldap_Dn::implodeDn($dnArray, Zend_Ldap_Dn::ATTR_CASEFOLD_UPPER, ';');
+        $dn=LDAP\DN::implodeDn($dnArray, LDAP\DN::ATTR_CASEFOLD_UPPER, ';');
         $this->assertEquals('CN=name1;CN=name2;DC=example;DC=org', $dn);
     }
 
@@ -70,7 +69,7 @@ class Zend_Ldap_Dn_ImplodingTest extends PHPUnit_Framework_TestCase
             array("ou" => "営業部"),
             array("o" => "Airius"),
         );
-        $dn=Zend_Ldap_Dn::implodeDn($dnArray);
+        $dn=LDAP\DN::implodeDn($dnArray);
         $this->assertEquals($expected, $dn);
     }
 
@@ -78,21 +77,21 @@ class Zend_Ldap_Dn_ImplodingTest extends PHPUnit_Framework_TestCase
     {
         $a=array('cn' => 'value');
         $expected='cn=value';
-        $this->assertEquals($expected, Zend_Ldap_Dn::implodeRdn($a));
+        $this->assertEquals($expected, LDAP\DN::implodeRdn($a));
     }
 
     public function testImplodeRdnMultiValuedRdn()
     {
         $a=array('cn' => 'value', 'uid' => 'testUser');
         $expected='cn=value+uid=testUser';
-        $this->assertEquals($expected, Zend_Ldap_Dn::implodeRdn($a));
+        $this->assertEquals($expected, LDAP\DN::implodeRdn($a));
     }
 
     public function testImplodeRdnMultiValuedRdn2()
     {
         $a=array('cn' => 'value', 'uid' => 'testUser', 'ou' => 'myDep');
         $expected='cn=value+ou=myDep+uid=testUser';
-        $this->assertEquals($expected, Zend_Ldap_Dn::implodeRdn($a));
+        $this->assertEquals($expected, LDAP\DN::implodeRdn($a));
     }
 
     public function testImplodeRdnCaseFold()
@@ -100,11 +99,11 @@ class Zend_Ldap_Dn_ImplodingTest extends PHPUnit_Framework_TestCase
         $a=array('cn' => 'value');
         $expected='CN=value';
         $this->assertEquals($expected,
-            Zend_Ldap_Dn::implodeRdn($a, Zend_Ldap_Dn::ATTR_CASEFOLD_UPPER));
+            LDAP\DN::implodeRdn($a, LDAP\DN::ATTR_CASEFOLD_UPPER));
         $a=array('CN' => 'value');
         $expected='cn=value';
         $this->assertEquals($expected,
-            Zend_Ldap_Dn::implodeRdn($a, Zend_Ldap_Dn::ATTR_CASEFOLD_LOWER));
+            LDAP\DN::implodeRdn($a, LDAP\DN::ATTR_CASEFOLD_LOWER));
     }
 
     public function testImplodeRdnMultiValuedRdnCaseFold()
@@ -112,28 +111,28 @@ class Zend_Ldap_Dn_ImplodingTest extends PHPUnit_Framework_TestCase
         $a=array('cn' => 'value', 'uid' => 'testUser', 'ou' => 'myDep');
         $expected='CN=value+OU=myDep+UID=testUser';
         $this->assertEquals($expected,
-            Zend_Ldap_Dn::implodeRdn($a, Zend_Ldap_Dn::ATTR_CASEFOLD_UPPER));
+            LDAP\DN::implodeRdn($a, LDAP\DN::ATTR_CASEFOLD_UPPER));
         $a=array('CN' => 'value', 'uID' => 'testUser', 'ou' => 'myDep');
         $expected='cn=value+ou=myDep+uid=testUser';
         $this->assertEquals($expected,
-            Zend_Ldap_Dn::implodeRdn($a, Zend_Ldap_Dn::ATTR_CASEFOLD_LOWER));
+            LDAP\DN::implodeRdn($a, LDAP\DN::ATTR_CASEFOLD_LOWER));
     }
 
     /**
-     * @expectedException Zend_Ldap_Exception
+     * @expectedException Zend\LDAP\Exception
      */
     public function testImplodeRdnInvalidOne()
     {
         $a=array('cn');
-        Zend_Ldap_Dn::implodeRdn($a);
+        LDAP\DN::implodeRdn($a);
     }
 
     /**
-     * @expectedException Zend_Ldap_Exception
+     * @expectedException Zend\LDAP\Exception
      */
     public function testImplodeRdnInvalidThree()
     {
         $a=array('cn' => 'value', 'ou');
-        Zend_Ldap_Dn::implodeRdn($a);
+        LDAP\DN::implodeRdn($a);
     }
 }

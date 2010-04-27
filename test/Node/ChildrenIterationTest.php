@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,44 +21,50 @@
  */
 
 /**
- * Zend_Ldap_OnlineTestCase
+ * @namespace
+ */
+namespace ZendTest\LDAP\Node;
+use Zend\LDAP;
+
+/**
+ * Zend_LDAP_OnlineTestCase
  */
 /**
- * @see Zend_Ldap_Node
+ * @see Zend_LDAP_Node
  */
 
 /**
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Ldap
- * @group      Zend_Ldap_Node
+ * @group      Zend_LDAP
+ * @group      Zend_LDAP_Node
  */
-class Zend_Ldap_Node_ChildrenIterationTest extends Zend_Ldap_OnlineTestCase
+class ChildrenIterationTest extends \ZendTest\LDAP\OnlineTestCase
 {
     protected function setUp()
     {
         parent::setUp();
-        $this->_prepareLdapServer();
+        $this->_prepareLDAPServer();
     }
 
     protected function tearDown()
     {
-        $this->_cleanupLdapServer();
+        $this->_cleanupLDAPServer();
         parent::tearDown();
     }
 
     public function testSimpleIteration()
     {
-        $node=$this->_getLdap()->getBaseNode();
+        $node=$this->_getLDAP()->getBaseNode();
         $children=$node->getChildren();
 
         $i=1;
         foreach ($children as $rdn => $n) {
-            $dn=$n->getDn()->toString(Zend_Ldap_Dn::ATTR_CASEFOLD_LOWER);
-            $rdn=Zend_Ldap_Dn::implodeRdn($n->getRdnArray(), Zend_Ldap_Dn::ATTR_CASEFOLD_LOWER);
+            $dn=$n->getDn()->toString(LDAP\DN::ATTR_CASEFOLD_LOWER);
+            $rdn=LDAP\DN::implodeRdn($n->getRdnArray(), LDAP\DN::ATTR_CASEFOLD_LOWER);
             if ($i==1) {
                 $this->assertEquals('ou=Node', $rdn);
                 $this->assertEquals($this->_createDn('ou=Node,'), $dn);
@@ -74,15 +80,15 @@ class Zend_Ldap_Node_ChildrenIterationTest extends Zend_Ldap_OnlineTestCase
 
     public function testSimpleRecursiveIteration()
     {
-        $node=$this->_getLdap()->getBaseNode();
-        $ri=new RecursiveIteratorIterator($node, RecursiveIteratorIterator::SELF_FIRST);
+        $node=$this->_getLDAP()->getBaseNode();
+        $ri=new \RecursiveIteratorIterator($node, \RecursiveIteratorIterator::SELF_FIRST);
         $i=0;
         foreach ($ri as $rdn => $n) {
-            $dn=$n->getDn()->toString(Zend_Ldap_Dn::ATTR_CASEFOLD_LOWER);
-            $rdn=Zend_Ldap_Dn::implodeRdn($n->getRdnArray(), Zend_Ldap_Dn::ATTR_CASEFOLD_LOWER);
+            $dn=$n->getDn()->toString(LDAP\DN::ATTR_CASEFOLD_LOWER);
+            $rdn=LDAP\DN::implodeRdn($n->getRdnArray(), LDAP\DN::ATTR_CASEFOLD_LOWER);
             if ($i==0) {
-                $this->assertEquals(Zend_Ldap_Dn::fromString(TESTS_ZEND_LDAP_WRITEABLE_SUBTREE)
-                    ->toString(Zend_Ldap_Dn::ATTR_CASEFOLD_LOWER), $dn);
+                $this->assertEquals(LDAP\DN::fromString(TESTS_ZEND_LDAP_WRITEABLE_SUBTREE)
+                    ->toString(LDAP\DN::ATTR_CASEFOLD_LOWER), $dn);
             }
             else if ($i==1) {
                 $this->assertEquals('ou=Node', $rdn);
@@ -95,8 +101,8 @@ class Zend_Ldap_Node_ChildrenIterationTest extends Zend_Ldap_OnlineTestCase
                 }
                 else {
                     $j=$i-3;
-                    $base=Zend_Ldap_Dn::fromString(TESTS_ZEND_LDAP_WRITEABLE_SUBTREE)
-                        ->toString(Zend_Ldap_Dn::ATTR_CASEFOLD_LOWER);
+                    $base=LDAP\DN::fromString(TESTS_ZEND_LDAP_WRITEABLE_SUBTREE)
+                        ->toString(LDAP\DN::ATTR_CASEFOLD_LOWER);
                 }
                 $this->assertEquals('ou=Test' . $j, $rdn);
                 $this->assertEquals('ou=Test' . $j . ',' . $base, $dn);
@@ -108,12 +114,12 @@ class Zend_Ldap_Node_ChildrenIterationTest extends Zend_Ldap_OnlineTestCase
 
     /**
      * Test issue reported by Lance Hendrix on
-     * http://framework.zend.com/wiki/display/ZFPROP/Zend_Ldap+-+Extended+support+-+Stefan+Gehrig?
+     * http://framework.zend.com/wiki/display/ZFPROP/Zend_LDAP+-+Extended+support+-+Stefan+Gehrig?
      *      focusedCommentId=13107431#comment-13107431
      */
     public function testCallingNextAfterIterationShouldNotThrowException()
     {
-        $node = $this->_getLdap()->getBaseNode();
+        $node = $this->_getLDAP()->getBaseNode();
         $nodes = $node->searchChildren('(objectClass=*)');
         foreach ($nodes as $rdn => $n) {
             // do nothing - just iterate

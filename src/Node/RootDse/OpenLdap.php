@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage RootDSE
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,17 +21,22 @@
  */
 
 /**
- * Zend_Ldap_Node_RootDse provides a simple data-container for the RootDSE node of
+ * @namespace
+ */
+namespace Zend\LDAP\Node\RootDSE;
+
+/**
+ * Zend_LDAP_Node_RootDse provides a simple data-container for the RootDSE node of
  * an OpenLDAP server.
  *
- * @uses       Zend_Ldap_Node_RootDse
+ * @uses       \Zend\LDAP\Node\RootDSE\RootDSE
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage RootDSE
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Ldap_Node_RootDse_OpenLdap extends Zend_Ldap_Node_RootDse
+class OpenLDAP extends RootDSE
 {
     /**
      * Gets the configContext.

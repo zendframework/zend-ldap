@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage Ldif
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,15 +21,20 @@
  */
 
 /**
- * Zend_Ldap_Ldif_Encoder provides methods to encode and decode LDAP data into/from LDIF.
+ * @namespace
+ */
+namespace Zend\LDAP\LDIF;
+
+/**
+ * Zend_LDAP_Ldif_Encoder provides methods to encode and decode LDAP data into/from LDIF.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage Ldif
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Ldap_Ldif_Encoder
+class Encoder
 {
     /**
      * Additional options used during encoding
@@ -163,7 +168,7 @@ class Zend_Ldap_Ldif_Encoder
             return $this->_encodeString($value);
         } else if (is_array($value)) {
             return $this->_encodeAttributes($value);
-        } else if ($value instanceof Zend_Ldap_Node) {
+        } else if ($value instanceof \Zend\LDAP\Node\Node) {
             return $value->toLdif($this->_options);
         }
         return null;

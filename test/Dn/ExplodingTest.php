@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,22 +21,22 @@
  */
 
 /**
- * Test helper
+ * @namespace
  */
-/**
- * Zend_Ldap_Dn
- */
+namespace ZendTest\LDAP\Dn;
+use Zend\LDAP;
+
 
 /**
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Ldap
- * @group      Zend_Ldap_Dn
+ * @group      Zend_LDAP
+ * @group      Zend_LDAP_Dn
  */
-class Zend_Ldap_Dn_ExplodingTest extends PHPUnit_Framework_TestCase
+class ExplodingTest extends \PHPUnit_Framework_TestCase
 {
     public static function explodeDnOperationProvider()
     {
@@ -79,7 +79,7 @@ class Zend_Ldap_Dn_ExplodingTest extends PHPUnit_Framework_TestCase
      */
     public function testExplodeDnOperation($input, $expected)
     {
-        $ret = Zend_Ldap_Dn::checkDn($input);
+        $ret = LDAP\DN::checkDn($input);
         $this->assertTrue($ret === $expected);
     }
 
@@ -88,13 +88,13 @@ class Zend_Ldap_Dn_ExplodingTest extends PHPUnit_Framework_TestCase
         $dn='CN=Alice Baker,cn=Users,DC=example,dc=com';
         $k=array();
         $v=null;
-        $this->assertTrue(Zend_Ldap_Dn::checkDn($dn, $k, $v, Zend_Ldap_Dn::ATTR_CASEFOLD_NONE));
+        $this->assertTrue(LDAP\DN::checkDn($dn, $k, $v, LDAP\DN::ATTR_CASEFOLD_NONE));
         $this->assertEquals(array('CN', 'cn', 'DC', 'dc'), $k);
 
-        $this->assertTrue(Zend_Ldap_Dn::checkDn($dn, $k, $v, Zend_Ldap_Dn::ATTR_CASEFOLD_LOWER));
+        $this->assertTrue(LDAP\DN::checkDn($dn, $k, $v, LDAP\DN::ATTR_CASEFOLD_LOWER));
         $this->assertEquals(array('cn', 'cn', 'dc', 'dc'), $k);
 
-        $this->assertTrue(Zend_Ldap_Dn::checkDn($dn, $k, $v, Zend_Ldap_Dn::ATTR_CASEFOLD_UPPER));
+        $this->assertTrue(LDAP\DN::checkDn($dn, $k, $v, LDAP\DN::ATTR_CASEFOLD_UPPER));
         $this->assertEquals(array('CN', 'CN', 'DC', 'DC'), $k);
     }
 
@@ -103,7 +103,7 @@ class Zend_Ldap_Dn_ExplodingTest extends PHPUnit_Framework_TestCase
         $dn='cn=name1,cn=name2,dc=example,dc=org';
         $k=array();
         $v=array();
-        $dnArray=Zend_Ldap_Dn::explodeDn($dn, $k, $v);
+        $dnArray=LDAP\DN::explodeDn($dn, $k, $v);
         $expected=array(
             array("cn" => "name1"),
             array("cn" => "name2"),
@@ -122,7 +122,7 @@ class Zend_Ldap_Dn_ExplodingTest extends PHPUnit_Framework_TestCase
         $dn='uid=rogasawara,ou=営業部,o=Airius';
         $k=array();
         $v=array();
-        $dnArray=Zend_Ldap_Dn::explodeDn($dn, $k, $v);
+        $dnArray=LDAP\DN::explodeDn($dn, $k, $v);
         $expected=array(
             array("uid" => "rogasawara"),
             array("ou" => "営業部"),
@@ -140,7 +140,7 @@ class Zend_Ldap_Dn_ExplodingTest extends PHPUnit_Framework_TestCase
         $dn='cn=Barbara Jensen, ou=Product Development, dc=airius, dc=com';
         $k=array();
         $v=array();
-        $dnArray=Zend_Ldap_Dn::explodeDn($dn, $k, $v);
+        $dnArray=LDAP\DN::explodeDn($dn, $k, $v);
         $expected=array(
             array("cn" => "Barbara Jensen"),
             array("ou" => "Product Development"),
@@ -159,17 +159,17 @@ class Zend_Ldap_Dn_ExplodingTest extends PHPUnit_Framework_TestCase
         $dn='cn=name1+uid=user,cn=name2,dc=example,dc=org';
         $k=array();
         $v=array();
-        $this->assertTrue(Zend_Ldap_Dn::checkDn($dn, $k, $v));
+        $this->assertTrue(LDAP\DN::checkDn($dn, $k, $v));
         $ke=array(array('cn', 'uid'), 'cn', 'dc', 'dc');
         $ve=array(array('name1', 'user'), 'name2', 'example', 'org');
         $this->assertEquals($ke, $k);
         $this->assertEquals($ve, $v);
 
         $dn='cn=name11+cn=name12,cn=name2,dc=example,dc=org';
-        $this->assertFalse(Zend_Ldap_Dn::checkDn($dn));
+        $this->assertFalse(LDAP\DN::checkDn($dn));
 
         $dn='CN=name11+Cn=name12,cn=name2,dc=example,dc=org';
-        $this->assertFalse(Zend_Ldap_Dn::checkDn($dn));
+        $this->assertFalse(LDAP\DN::checkDn($dn));
     }
 
     public function testExplodeDnWithMultiValuedRdn()
@@ -177,7 +177,7 @@ class Zend_Ldap_Dn_ExplodingTest extends PHPUnit_Framework_TestCase
         $dn='cn=Surname\, Firstname+uid=userid,cn=name2,dc=example,dc=org';
         $k=array();
         $v=array();
-        $dnArray=Zend_Ldap_Dn::explodeDn($dn, $k, $v);
+        $dnArray=LDAP\DN::explodeDn($dn, $k, $v);
         $ke=array(array('cn', 'uid'), 'cn', 'dc', 'dc');
         $ve=array(array('Surname, Firstname', 'userid'), 'name2', 'example', 'org');
         $this->assertEquals($ke, $k);
@@ -196,7 +196,7 @@ class Zend_Ldap_Dn_ExplodingTest extends PHPUnit_Framework_TestCase
         $dn='cn=Surname\, Firstname+uid=userid+sn=Surname,cn=name2,dc=example,dc=org';
         $k=array();
         $v=array();
-        $dnArray=Zend_Ldap_Dn::explodeDn($dn, $k, $v);
+        $dnArray=LDAP\DN::explodeDn($dn, $k, $v);
         $ke=array(array('cn', 'uid', 'sn'), 'cn', 'dc', 'dc');
         $ve=array(array('Surname, Firstname', 'userid', 'Surname'), 'name2', 'example', 'org');
         $this->assertEquals($ke, $k);
@@ -211,12 +211,12 @@ class Zend_Ldap_Dn_ExplodingTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Zend_Ldap_Exception
+     * @expectedException Zend\LDAP\Exception
      */
     public function testCreateDnArrayIllegalDn()
     {
         $dn='name1,cn=name2,dc=example,dc=org';
-        $dnArray=Zend_Ldap_Dn::explodeDn($dn);
+        $dnArray=LDAP\DN::explodeDn($dn);
     }
 
     public static function rfc2253DnProvider()
@@ -259,7 +259,7 @@ class Zend_Ldap_Dn_ExplodingTest extends PHPUnit_Framework_TestCase
      */
     public function testExplodeDnsProvidedByRFC2253($input, $expected)
     {
-        $dnArray=Zend_Ldap_Dn::explodeDn($input);
+        $dnArray=LDAP\DN::explodeDn($input);
         $this->assertEquals($expected, $dnArray);
     }
 }

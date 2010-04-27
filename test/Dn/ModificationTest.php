@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,27 +21,33 @@
  */
 
 /**
+ * @namespace
+ */
+namespace ZendTest\LDAP\Dn;
+use Zend\LDAP;
+
+/**
  * Test helper
  */
 /**
- * Zend_Ldap_Dn
+ * Zend_LDAP_Dn
  */
 
 /**
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Ldap
- * @group      Zend_Ldap_Dn
+ * @group      Zend_LDAP
+ * @group      Zend_LDAP_Dn
  */
-class Zend_Ldap_Dn_ModificationTest extends PHPUnit_Framework_TestCase
+class ModificationTest extends \PHPUnit_Framework_TestCase
 {
     public function testDnManipulationGet()
     {
         $dnString='cn=Baker\\, Alice,cn=Users+ou=Lab,dc=example,dc=com';
-        $dn=Zend_Ldap_Dn::fromString($dnString);
+        $dn=LDAP\DN::fromString($dnString);
 
         $this->assertEquals(array('cn' => 'Baker, Alice'), $dn->get(0));
         $this->assertEquals(array('cn' => 'Users', 'ou' => 'Lab'), $dn->get(1));
@@ -49,20 +55,20 @@ class Zend_Ldap_Dn_ModificationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array('dc' => 'com'), $dn->get(3));
         try {
             $this->assertEquals(array('dc' => 'com'), $dn->get('string'));
-            $this->fail('Expected Zend_Ldap_Exception not thrown');
-        } catch (Zend_Ldap_Exception $e) {
+            $this->fail('Expected Zend_LDAP_Exception not thrown');
+        } catch (LDAP\Exception $e) {
             $this->assertEquals('Parameter $index must be an integer', $e->getMessage());
         }
         try {
             $this->assertEquals(array('cn' => 'Baker, Alice'), $dn->get(-1));
-            $this->fail('Expected Zend_Ldap_Exception not thrown');
-        } catch (Zend_Ldap_Exception $e) {
+            $this->fail('Expected Zend_LDAP_Exception not thrown');
+        } catch (LDAP\Exception $e) {
             $this->assertEquals('Parameter $index out of bounds', $e->getMessage());
         }
         try {
             $this->assertEquals(array('dc' => 'com'), $dn->get(4));
-            $this->fail('Expected Zend_Ldap_Exception not thrown');
-        } catch (Zend_Ldap_Exception $e) {
+            $this->fail('Expected Zend_LDAP_Exception not thrown');
+        } catch (LDAP\Exception $e) {
             $this->assertEquals('Parameter $index out of bounds', $e->getMessage());
         }
 
@@ -120,7 +126,7 @@ class Zend_Ldap_Dn_ModificationTest extends PHPUnit_Framework_TestCase
     public function testDnManipulationSet()
     {
         $dnString='cn=Baker\\, Alice,cn=Users+ou=Lab,dc=example,dc=com';
-        $dn=Zend_Ldap_Dn::fromString($dnString);
+        $dn=LDAP\DN::fromString($dnString);
 
         $this->assertEquals('uid=abaker,cn=Users+ou=Lab,dc=example,dc=com',
             $dn->set(0, array('uid' => 'abaker'))->toString());
@@ -133,14 +139,14 @@ class Zend_Ldap_Dn_ModificationTest extends PHPUnit_Framework_TestCase
 
         try {
             $dn->set(4, array('dc' => 'de'));
-            $this->fail('Expected Zend_Ldap_Exception not thrown');
-        } catch (Zend_Ldap_Exception $e) {
+            $this->fail('Expected Zend_LDAP_Exception not thrown');
+        } catch (LDAP\Exception $e) {
             $this->assertEquals('Parameter $index out of bounds', $e->getMessage());
         }
         try {
             $dn->set(3, array('dc' => 'de', 'ou'));
-            $this->fail('Expected Zend_Ldap_Exception not thrown');
-        } catch (Zend_Ldap_Exception $e) {
+            $this->fail('Expected Zend_LDAP_Exception not thrown');
+        } catch (LDAP\Exception $e) {
             $this->assertEquals('RDN Array is malformed: it must use string keys', $e->getMessage());
         }
     }
@@ -149,36 +155,36 @@ class Zend_Ldap_Dn_ModificationTest extends PHPUnit_Framework_TestCase
     {
         $dnString='cn=Baker\\, Alice,cn=Users+ou=Lab,dc=example,dc=com';
 
-        $dn=Zend_Ldap_Dn::fromString($dnString);
+        $dn=LDAP\DN::fromString($dnString);
         $this->assertEquals('cn=Users+ou=Lab,dc=example,dc=com', $dn->remove(0)->toString());
 
-        $dn=Zend_Ldap_Dn::fromString($dnString);
+        $dn=LDAP\DN::fromString($dnString);
         $this->assertEquals('cn=Baker\\, Alice,dc=example,dc=com', $dn->remove(1)->toString());
 
-        $dn=Zend_Ldap_Dn::fromString($dnString);
+        $dn=LDAP\DN::fromString($dnString);
         $this->assertEquals('cn=Baker\\, Alice,cn=Users+ou=Lab,dc=com', $dn->remove(2)->toString());
 
-        $dn=Zend_Ldap_Dn::fromString($dnString);
+        $dn=LDAP\DN::fromString($dnString);
         $this->assertEquals('cn=Baker\\, Alice,cn=Users+ou=Lab,dc=example',
             $dn->remove(3)->toString());
 
         try {
-            $dn=Zend_Ldap_Dn::fromString($dnString);
+            $dn=LDAP\DN::fromString($dnString);
             $dn->remove(4);
-            $this->fail('Expected Zend_Ldap_Exception not thrown');
-        } catch (Zend_Ldap_Exception $e) {
+            $this->fail('Expected Zend_LDAP_Exception not thrown');
+        } catch (LDAP\Exception $e) {
             $this->assertEquals('Parameter $index out of bounds', $e->getMessage());
         }
 
-        $dn=Zend_Ldap_Dn::fromString($dnString);
+        $dn=LDAP\DN::fromString($dnString);
         $this->assertEquals('cn=Baker\\, Alice,dc=com',
             $dn->remove(1, 2)->toString());
 
-        $dn=Zend_Ldap_Dn::fromString($dnString);
+        $dn=LDAP\DN::fromString($dnString);
         $this->assertEquals('cn=Baker\\, Alice',
             $dn->remove(1, 3)->toString());
 
-        $dn=Zend_Ldap_Dn::fromString($dnString);
+        $dn=LDAP\DN::fromString($dnString);
         $this->assertEquals('cn=Baker\\, Alice',
             $dn->remove(1, 4)->toString());
     }
@@ -186,7 +192,7 @@ class Zend_Ldap_Dn_ModificationTest extends PHPUnit_Framework_TestCase
     public function testDnManipulationAppendAndPrepend()
     {
         $dnString='OU=Sales,DC=example';
-        $dn=Zend_Ldap_Dn::fromString($dnString);
+        $dn=LDAP\DN::fromString($dnString);
 
         $this->assertEquals('OU=Sales,DC=example,DC=com',
             $dn->append(array('DC' => 'com'))->toString());
@@ -196,14 +202,14 @@ class Zend_Ldap_Dn_ModificationTest extends PHPUnit_Framework_TestCase
 
         try {
             $dn->append(array('dc' => 'de', 'ou'));
-            $this->fail('Expected Zend_Ldap_Exception not thrown');
-        } catch (Zend_Ldap_Exception $e) {
+            $this->fail('Expected Zend_LDAP_Exception not thrown');
+        } catch (LDAP\Exception $e) {
             $this->assertEquals('RDN Array is malformed: it must use string keys', $e->getMessage());
         }
         try {
             $dn->prepend(array('dc' => 'de', 'ou'));
-            $this->fail('Expected Zend_Ldap_Exception not thrown');
-        } catch (Zend_Ldap_Exception $e) {
+            $this->fail('Expected Zend_LDAP_Exception not thrown');
+        } catch (LDAP\Exception $e) {
             $this->assertEquals('RDN Array is malformed: it must use string keys', $e->getMessage());
         }
     }
@@ -212,34 +218,34 @@ class Zend_Ldap_Dn_ModificationTest extends PHPUnit_Framework_TestCase
     {
         $dnString='cn=Baker\\, Alice,cn=Users,dc=example,dc=com';
 
-        $dn=Zend_Ldap_Dn::fromString($dnString);
+        $dn=LDAP\DN::fromString($dnString);
         $this->assertEquals('cn=Baker\\, Alice,dc=test,cn=Users,dc=example,dc=com',
             $dn->insert(0, array('dc' => 'test'))->toString());
 
-        $dn=Zend_Ldap_Dn::fromString($dnString);
+        $dn=LDAP\DN::fromString($dnString);
         $this->assertEquals('cn=Baker\\, Alice,cn=Users,dc=test,dc=example,dc=com',
             $dn->insert(1, array('dc' => 'test'))->toString());
 
-        $dn=Zend_Ldap_Dn::fromString($dnString);
+        $dn=LDAP\DN::fromString($dnString);
         $this->assertEquals('cn=Baker\\, Alice,cn=Users,dc=example,dc=test,dc=com',
             $dn->insert(2, array('dc' => 'test'))->toString());
 
-        $dn=Zend_Ldap_Dn::fromString($dnString);
+        $dn=LDAP\DN::fromString($dnString);
         $this->assertEquals('cn=Baker\\, Alice,cn=Users,dc=example,dc=com,dc=test',
             $dn->insert(3, array('dc' => 'test'))->toString());
 
         try {
-            $dn=Zend_Ldap_Dn::fromString($dnString);
+            $dn=LDAP\DN::fromString($dnString);
             $dn->insert(4, array('dc' => 'de'));
-            $this->fail('Expected Zend_Ldap_Exception not thrown');
-        } catch (Zend_Ldap_Exception $e) {
+            $this->fail('Expected Zend_LDAP_Exception not thrown');
+        } catch (LDAP\Exception $e) {
             $this->assertEquals('Parameter $index out of bounds', $e->getMessage());
         }
         try {
-            $dn=Zend_Ldap_Dn::fromString($dnString);
+            $dn=LDAP\DN::fromString($dnString);
             $dn->insert(3, array('dc' => 'de', 'ou'));
-            $this->fail('Expected Zend_Ldap_Exception not thrown');
-        } catch (Zend_Ldap_Exception $e) {
+            $this->fail('Expected Zend_LDAP_Exception not thrown');
+        } catch (LDAP\Exception $e) {
             $this->assertEquals('RDN Array is malformed: it must use string keys', $e->getMessage());
         }
     }
@@ -247,7 +253,7 @@ class Zend_Ldap_Dn_ModificationTest extends PHPUnit_Framework_TestCase
     public function testArrayAccessImplementation()
     {
         $dnString='cn=Baker\\, Alice,cn=Users,dc=example,dc=com';
-        $dn=Zend_Ldap_Dn::fromString($dnString);
+        $dn=LDAP\DN::fromString($dnString);
 
         $this->assertEquals(array('cn' => 'Baker, Alice'), $dn[0]);
         $this->assertEquals(array('cn' => 'Users'), $dn[1]);
@@ -261,35 +267,35 @@ class Zend_Ldap_Dn_ModificationTest extends PHPUnit_Framework_TestCase
         $this->assertFalse(isset($dn[-1]));
         $this->assertFalse(isset($dn[4]));
 
-        $dn=Zend_Ldap_Dn::fromString($dnString);
+        $dn=LDAP\DN::fromString($dnString);
         unset($dn[0]);
         $this->assertEquals('cn=Users,dc=example,dc=com', $dn->toString());
 
-        $dn=Zend_Ldap_Dn::fromString($dnString);
+        $dn=LDAP\DN::fromString($dnString);
         unset($dn[1]);
         $this->assertEquals('cn=Baker\\, Alice,dc=example,dc=com', $dn->toString());
 
-        $dn=Zend_Ldap_Dn::fromString($dnString);
+        $dn=LDAP\DN::fromString($dnString);
         unset($dn[2]);
         $this->assertEquals('cn=Baker\\, Alice,cn=Users,dc=com', $dn->toString());
 
-        $dn=Zend_Ldap_Dn::fromString($dnString);
+        $dn=LDAP\DN::fromString($dnString);
         unset($dn[3]);
         $this->assertEquals('cn=Baker\\, Alice,cn=Users,dc=example', $dn->toString());
 
-        $dn=Zend_Ldap_Dn::fromString($dnString);
+        $dn=LDAP\DN::fromString($dnString);
         $dn[0]=array('uid' => 'abaker');
         $this->assertEquals('uid=abaker,cn=Users,dc=example,dc=com', $dn->toString());
 
-        $dn=Zend_Ldap_Dn::fromString($dnString);
+        $dn=LDAP\DN::fromString($dnString);
         $dn[1]=array('ou' => 'Lab');
         $this->assertEquals('cn=Baker\\, Alice,ou=Lab,dc=example,dc=com', $dn->toString());
 
-        $dn=Zend_Ldap_Dn::fromString($dnString);
+        $dn=LDAP\DN::fromString($dnString);
         $dn[2]=array('dc' => 'example', 'ou' => 'Test');
         $this->assertEquals('cn=Baker\\, Alice,cn=Users,dc=example+ou=Test,dc=com', $dn->toString());
 
-        $dn=Zend_Ldap_Dn::fromString($dnString);
+        $dn=LDAP\DN::fromString($dnString);
         $dn[3]=array('dc' => 'de+fr');
         $this->assertEquals('cn=Baker\\, Alice,cn=Users,dc=example,dc=de\+fr', $dn->toString());
     }

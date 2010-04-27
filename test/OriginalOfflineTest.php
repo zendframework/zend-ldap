@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,65 +21,62 @@
  */
 
 /**
+ * @namespace
+ */
+namespace ZendTest\LDAP;
+use Zend\LDAP;
+
+/**
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Ldap
+ * @group      Zend_LDAP
  */
-class Zend_Ldap_OriginalOfflineTest extends PHPUnit_Framework_TestCase
+class OriginalOfflineTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Zend_Ldap instance
+     * Zend_LDAP instance
      *
-     * @var Zend_Ldap
+     * @var Zend_LDAP
      */
     protected $_ldap = null;
 
     /**
      * Setup operations run prior to each test method:
      *
-     * * Creates an instance of Zend_Ldap
+     * * Creates an instance of Zend_LDAP
      *
      * @return void
      */
     public function setUp()
     {
         if (!constant('TESTS_ZEND_LDAP_ONLINE_ENABLED')) {
-            $this->markTestSkipped("Zend_Ldap online tests are not enabled");
+            $this->markTestSkipped("Zend_LDAP online tests are not enabled");
         }
 
-        $this->_ldap = new Zend_Ldap();
+        $this->_ldap = new LDAP\LDAP();
     }
 
-    /**
-     * @return void
-     */
     public function testFilterEscapeBasicOperation()
     {
         $input = 'a*b(b)d\e/f';
         $expected = 'a\2ab\28b\29d\5ce\2ff';
-        $this->assertEquals($expected, Zend_Ldap::filterEscape($input));
+        $this->assertEquals($expected, LDAP\LDAP::filterEscape($input));
     }
 
-    /**
-     * @return void
-     */
     public function testInvalidOptionResultsInException()
     {
         $optionName = 'invalid';
         try {
             $this->_ldap->setOptions(array($optionName => 'irrelevant'));
-            $this->fail('Expected Zend_Ldap_Exception not thrown');
-        } catch (Zend_Ldap_Exception $e) {
-            $this->assertEquals("Unknown Zend_Ldap option: $optionName", $e->getMessage());
+            $this->fail('Expected Zend_LDAP_Exception not thrown');
+        } catch (LDAP\Exception $e) {
+            $this->assertEquals("Unknown Zend_LDAP option: $optionName", $e->getMessage());
         }
     }
 
-    /**
-     * @return void
-     */
     public function testExplodeDnOperation()
     {
         $inputs = array(
@@ -105,7 +102,7 @@ class Zend_Ldap_OriginalOfflineTest extends PHPUnit_Framework_TestCase
         );
 
         foreach ($inputs as $dn => $expected) {
-            $ret = Zend_Ldap::explodeDn($dn);
+            $ret = LDAP\LDAP::explodeDn($dn);
             $this->assertTrue($ret === $expected);
         }
     }

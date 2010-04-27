@@ -13,12 +13,18 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
+
+/**
+ * @namespace
+ */
+namespace ZendTest\LDAP;
+use Zend\LDAP;
 
 /* Note: The ldap_connect function does not actually try to connect. This
  * is why many tests attempt to bind with invalid credentials. If the
@@ -28,20 +34,20 @@
 
 /**
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Ldap
+ * @group      Zend_LDAP
  */
-class Zend_Ldap_ConnectTest extends PHPUnit_Framework_TestCase
+class ConnectTest extends \PHPUnit_Framework_TestCase
 {
     protected $_options = null;
 
     public function setUp()
     {
         if (!constant('TESTS_ZEND_LDAP_ONLINE_ENABLED')) {
-            $this->markTestSkipped("Zend_Ldap online tests are not enabled");
+            $this->markTestSkipped("Zend_LDAP online tests are not enabled");
         }
 
         $this->_options = array('host' => TESTS_ZEND_LDAP_HOST);
@@ -53,35 +59,35 @@ class Zend_Ldap_ConnectTest extends PHPUnit_Framework_TestCase
 
     public function testEmptyOptionsConnect()
     {
-        $ldap = new Zend_Ldap(array());
+        $ldap = new LDAP\LDAP(array());
         try {
             $ldap->connect();
             $this->fail('Expected exception for empty options');
-        } catch (Zend_Ldap_Exception $zle) {
+        } catch (LDAP\Exception $zle) {
             $this->assertContains('host parameter is required', $zle->getMessage());
         }
     }
     public function testUnknownHostConnect()
     {
-        $ldap = new Zend_Ldap(array('host' => 'bogus.example.com'));
+        $ldap = new LDAP\LDAP(array('host' => 'bogus.example.com'));
         try {
             // connect doesn't actually try to connect until bind is called
             $ldap->connect()->bind('CN=ignored,DC=example,DC=com', 'ignored');
             $this->fail('Expected exception for unknown host');
-        } catch (Zend_Ldap_Exception $zle) {
+        } catch (LDAP\Exception $zle) {
             $this->assertContains('Can\'t contact LDAP server', $zle->getMessage());
         }
     }
     public function testPlainConnect()
     {
-        $ldap = new Zend_Ldap($this->_options);
+        $ldap = new LDAP\LDAP($this->_options);
         try {
             // Connect doesn't actually try to connect until bind is called
             // but if we get 'Invalid credentials' then we know the connect
             // succeeded.
             $ldap->connect()->bind('CN=ignored,DC=example,DC=com', 'ignored');
             $this->fail('Expected exception for invalid username');
-        } catch (Zend_Ldap_Exception $zle) {
+        } catch (LDAP\Exception $zle) {
             $this->assertContains('Invalid credentials', $zle->getMessage());
         }
     }
@@ -95,12 +101,12 @@ class Zend_Ldap_ConnectTest extends PHPUnit_Framework_TestCase
         if (defined('TESTS_ZEND_LDAP_USE_SSL'))
             $useSsl = TESTS_ZEND_LDAP_USE_SSL;
 
-        $ldap = new Zend_Ldap();
+        $ldap = new LDAP\LDAP();
         try {
             $ldap->connect($host, $port, $useSsl)
                  ->bind('CN=ignored,DC=example,DC=com', 'ignored');
             $this->fail('Expected exception for invalid username');
-        } catch (Zend_Ldap_Exception $zle) {
+        } catch (LDAP\Exception $zle) {
             $this->assertContains('Invalid credentials', $zle->getMessage());
         }
     }
@@ -112,12 +118,12 @@ class Zend_Ldap_ConnectTest extends PHPUnit_Framework_TestCase
         if (defined('TESTS_ZEND_LDAP_USE_SSL') && TESTS_ZEND_LDAP_USE_SSL)
             $port = 636;
 
-        $ldap = new Zend_Ldap($this->_options);
+        $ldap = new LDAP\LDAP($this->_options);
         try {
             $ldap->connect(null, $port)
                  ->bind('CN=ignored,DC=example,DC=com', 'ignored');
             $this->fail('Expected exception for invalid username');
-        } catch (Zend_Ldap_Exception $zle) {
+        } catch (LDAP\Exception $zle) {
             $this->assertContains('Invalid credentials', $zle->getMessage());
         }
     }
@@ -126,46 +132,46 @@ class Zend_Ldap_ConnectTest extends PHPUnit_Framework_TestCase
         $options = $this->_options;
         $options['port'] = 10;
 
-        $ldap = new Zend_Ldap($options);
+        $ldap = new LDAP\LDAP($options);
         try {
             $ldap->connect()->bind('CN=ignored,DC=example,DC=com', 'ignored');
             $this->fail('Expected exception for unknown username');
-        } catch (Zend_Ldap_Exception $zle) {
+        } catch (LDAP\Exception $zle) {
             $this->assertContains('Can\'t contact LDAP server', $zle->getMessage());
         }
     }
     public function testSetOptionsConnect()
     {
-        $ldap = new Zend_Ldap();
+        $ldap = new LDAP\LDAP();
         $ldap->setOptions($this->_options);
         try {
             $ldap->connect()->bind('CN=ignored,DC=example,DC=com', 'ignored');
             $this->fail('Expected exception for invalid username');
-        } catch (Zend_Ldap_Exception $zle) {
+        } catch (LDAP\Exception $zle) {
             $this->assertContains('Invalid credentials', $zle->getMessage());
         }
     }
     public function testMultiConnect()
     {
-        $ldap = new Zend_Ldap($this->_options);
+        $ldap = new LDAP\LDAP($this->_options);
         for ($i = 0; $i < 3; $i++) {
             try {
                 $ldap->connect()->bind('CN=ignored,DC=example,DC=com', 'ignored');
                 $this->fail('Expected exception for unknown username');
-            } catch (Zend_Ldap_Exception $zle) {
+            } catch (LDAP\Exception $zle) {
                 $this->assertContains('Invalid credentials', $zle->getMessage());
             }
         }
     }
     public function testDisconnect()
     {
-        $ldap = new Zend_Ldap($this->_options);
+        $ldap = new LDAP\LDAP($this->_options);
         for ($i = 0; $i < 3; $i++) {
             $ldap->disconnect();
             try {
                 $ldap->connect()->bind('CN=ignored,DC=example,DC=com', 'ignored');
                 $this->fail('Expected exception for unknown username');
-            } catch (Zend_Ldap_Exception $zle) {
+            } catch (LDAP\Exception $zle) {
                 $this->assertContains('Invalid credentials', $zle->getMessage());
             }
         }
@@ -173,19 +179,19 @@ class Zend_Ldap_ConnectTest extends PHPUnit_Framework_TestCase
 
     public function testGetErrorCode()
     {
-        $ldap = new Zend_Ldap($this->_options);
+        $ldap = new LDAP\LDAP($this->_options);
         try {
             // Connect doesn't actually try to connect until bind is called
             // but if we get 'Invalid credentials' then we know the connect
             // succeeded.
             $ldap->connect()->bind('CN=ignored,DC=example,DC=com', 'ignored');
             $this->fail('Expected exception for invalid username');
-        } catch (Zend_Ldap_Exception $zle) {
+        } catch (LDAP\Exception $zle) {
             $this->assertContains('Invalid credentials', $zle->getMessage());
 
             $this->assertEquals(0x31, $zle->getCode());
-            $this->assertEquals(0x0, Zend_Ldap_Exception::getLdapCode($ldap));
-            $this->assertEquals(0x0, Zend_Ldap_Exception::getLdapCode(null));
+            $this->assertEquals(0x0, LDAP\Exception::getLDAPCode($ldap));
+            $this->assertEquals(0x0, LDAP\Exception::getLDAPCode(null));
         }
     }
 
@@ -208,12 +214,12 @@ class Zend_Ldap_ConnectTest extends PHPUnit_Framework_TestCase
             $host = $host . ':' . $port;
         }
 
-        $ldap = new Zend_Ldap();
+        $ldap = new LDAP\LDAP();
         try {
             $ldap->connect($host)
                  ->bind('CN=ignored,DC=example,DC=com', 'ignored');
             $this->fail('Expected exception for invalid username');
-        } catch (Zend_Ldap_Exception $zle) {
+        } catch (LDAP\Exception $zle) {
             $this->assertContains('Invalid credentials', $zle->getMessage());
         }
     }

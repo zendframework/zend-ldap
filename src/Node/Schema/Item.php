@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage Schema
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,19 +21,24 @@
  */
 
 /**
- * Zend_Ldap_Node_Schema_Item provides a base implementation for managing schema
+ * @namespace
+ */
+namespace Zend\LDAP\Node\Schema;
+
+/**
+ * Zend_LDAP_Node_Schema_Item provides a base implementation for managing schema
  * items like objectClass and attribute.
  *
  * @uses       ArrayAccess
  * @uses       BadMethodCallException
  * @uses       Countable
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage Schema
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_Ldap_Node_Schema_Item implements ArrayAccess, Countable
+abstract class Item implements \ArrayAccess, \Countable
 {
     /**
      * The underlying data
@@ -56,7 +61,7 @@ abstract class Zend_Ldap_Node_Schema_Item implements ArrayAccess, Countable
      * Sets the data
      *
      * @param  array $data
-     * @return Zend_Ldap_Node_Schema_Item Provides a fluid interface
+     * @return \Zend\LDAP\Node\Schema\Item Provides a fluid interface
      */
     public function setData(array $data)
     {
@@ -113,7 +118,7 @@ abstract class Zend_Ldap_Node_Schema_Item implements ArrayAccess, Countable
      */
     public function offsetSet($name, $value)
     {
-        throw new BadMethodCallException();
+        throw new \BadMethodCallException();
     }
 
     /**
@@ -139,7 +144,7 @@ abstract class Zend_Ldap_Node_Schema_Item implements ArrayAccess, Countable
      */
     public function offsetUnset($name)
     {
-        throw new BadMethodCallException();
+        throw new \BadMethodCallException();
     }
 
     /**

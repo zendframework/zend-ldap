@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,14 +21,20 @@
  */
 
 /**
+ * @namespace
+ */
+namespace ZendTest\LDAP;
+use Zend\LDAP;
+
+/**
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Ldap
+ * @group      Zend_LDAP
  */
-class Zend_Ldap_OriginalBindTest extends PHPUnit_Framework_TestCase
+class OriginalBindTest extends \PHPUnit_Framework_TestCase
 {
     protected $_options = null;
     protected $_principalName = TESTS_ZEND_LDAP_PRINCIPAL_NAME;
@@ -38,7 +44,7 @@ class Zend_Ldap_OriginalBindTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         if (!constant('TESTS_ZEND_LDAP_ONLINE_ENABLED')) {
-            $this->markTestSkipped("Zend_Ldap online tests are not enabled");
+            $this->markTestSkipped("Zend_LDAP online tests are not enabled");
         }
 
         $this->_options = array(
@@ -64,11 +70,11 @@ class Zend_Ldap_OriginalBindTest extends PHPUnit_Framework_TestCase
 
     public function testEmptyOptionsBind()
     {
-        $ldap = new Zend_Ldap(array());
+        $ldap = new LDAP\LDAP(array());
         try {
             $ldap->bind();
             $this->fail('Expected exception for empty options');
-        } catch (Zend_Ldap_Exception $zle) {
+        } catch (LDAP\Exception $zle) {
             $this->assertContains('A host parameter is required', $zle->getMessage());
         }
     }
@@ -77,10 +83,10 @@ class Zend_Ldap_OriginalBindTest extends PHPUnit_Framework_TestCase
         $options = $this->_options;
         unset($options['password']);
 
-        $ldap = new Zend_Ldap($options);
+        $ldap = new LDAP\LDAP($options);
         try {
             $ldap->bind();
-        } catch (Zend_Ldap_Exception $zle) {
+        } catch (LDAP\Exception $zle) {
             // or I guess the server doesn't allow unauthenticated binds
             $this->assertContains('unauthenticated bind', $zle->getMessage());
         }
@@ -91,11 +97,11 @@ class Zend_Ldap_OriginalBindTest extends PHPUnit_Framework_TestCase
         unset($options['baseDn']);
         $options['bindRequiresDn'] = true;
 
-        $ldap = new Zend_Ldap($options);
+        $ldap = new LDAP\LDAP($options);
         try {
             $ldap->bind('invalid', 'ignored');
             $this->fail('Expected exception for baseDn missing');
-        } catch (Zend_Ldap_Exception $zle) {
+        } catch (LDAP\Exception $zle) {
             $this->assertContains('Base DN not set', $zle->getMessage());
         }
     }
@@ -105,22 +111,22 @@ class Zend_Ldap_OriginalBindTest extends PHPUnit_Framework_TestCase
         unset($options['baseDn']);
         $options['bindRequiresDn'] = false;
 
-        $ldap = new Zend_Ldap($options);
+        $ldap = new LDAP\LDAP($options);
         try {
             $ldap->bind('invalid', 'ignored');
             $this->fail('Expected exception for missing accountDomainName');
-        } catch (Zend_Ldap_Exception $zle) {
+        } catch (LDAP\Exception $zle) {
             $this->assertContains('Option required: accountDomainName', $zle->getMessage());
         }
     }
     public function testPlainBind()
     {
-        $ldap = new Zend_Ldap($this->_options);
+        $ldap = new LDAP\LDAP($this->_options);
         $ldap->bind();
     }
     public function testConnectBind()
     {
-        $ldap = new Zend_Ldap($this->_options);
+        $ldap = new LDAP\LDAP($this->_options);
         $ldap->connect()->bind();
     }
     public function testExplicitParamsBind()
@@ -132,7 +138,7 @@ class Zend_Ldap_OriginalBindTest extends PHPUnit_Framework_TestCase
         unset($options['username']);
         unset($options['password']);
 
-        $ldap = new Zend_Ldap($options);
+        $ldap = new LDAP\LDAP($options);
         $ldap->bind($username, $password);
     }
     public function testRequiresDnBind()
@@ -146,10 +152,10 @@ class Zend_Ldap_OriginalBindTest extends PHPUnit_Framework_TestCase
 
         $options['bindRequiresDn'] = true;
 
-        $ldap = new Zend_Ldap($options);
+        $ldap = new LDAP\LDAP($options);
         try {
             $ldap->bind($this->_altUsername, 'invalid');
-        } catch (Zend_Ldap_Exception $zle) {
+        } catch (LDAP\Exception $zle) {
             $message = str_replace("\n", " ", $zle->getMessage());
             $this->assertContains('Invalid credentials', $message);
         }
@@ -167,10 +173,10 @@ class Zend_Ldap_OriginalBindTest extends PHPUnit_Framework_TestCase
 
         unset($options['username']);
 
-        $ldap = new Zend_Ldap($options);
+        $ldap = new LDAP\LDAP($options);
         try {
             $ldap->bind($this->_principalName);
-        } catch (Zend_Ldap_Exception $zle) {
+        } catch (LDAP\Exception $zle) {
             /* Note that if your server actually allows anonymous binds this test will fail.
              */
             $this->assertContains('Failed to retrieve DN', $zle->getMessage());

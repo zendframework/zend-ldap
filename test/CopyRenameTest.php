@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,22 +21,21 @@
  */
 
 /**
- * Zend_Ldap_OnlineTestCase
+ * @namespace
  */
+namespace ZendTest\LDAP;
+use Zend\LDAP;
 
-/**
- * @see Zend_Ldap_Dn
- */
 
 /**
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Ldap
+ * @group      Zend_LDAP
  */
-class Zend_Ldap_CopyRenameTest extends Zend_Ldap_OnlineTestCase
+class CopyRenameTest extends OnlineTestCase
 {
     /**
      * @var string
@@ -67,7 +66,7 @@ class Zend_Ldap_CopyRenameTest extends Zend_Ldap_OnlineTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->_prepareLdapServer();
+        $this->_prepareLDAPServer();
 
         $this->_orgDn=$this->_createDn('ou=OrgTest,');
         $this->_newDn=$this->_createDn('ou=NewTest,');
@@ -93,7 +92,7 @@ class Zend_Ldap_CopyRenameTest extends Zend_Ldap_OnlineTestCase
             $this->_targetSubTreeDn => array("objectClass" => "organizationalUnit", "ou" => "Target")
         );
 
-        $ldap=$this->_getLdap()->getResource();
+        $ldap=$this->_getLDAP()->getResource();
         foreach ($this->_nodes as $dn => $entry) {
             ldap_add($ldap, $dn, $entry);
         }
@@ -104,260 +103,260 @@ class Zend_Ldap_CopyRenameTest extends Zend_Ldap_OnlineTestCase
         if (!constant('TESTS_ZEND_LDAP_ONLINE_ENABLED')) {
             return;
         }
-        if ($this->_getLdap()->exists($this->_newDn))
-            $this->_getLdap()->delete($this->_newDn, false);
-        if ($this->_getLdap()->exists($this->_orgDn))
-            $this->_getLdap()->delete($this->_orgDn, false);
-        if ($this->_getLdap()->exists($this->_orgSubTreeDn))
-            $this->_getLdap()->delete($this->_orgSubTreeDn, true);
-        if ($this->_getLdap()->exists($this->_newSubTreeDn))
-            $this->_getLdap()->delete($this->_newSubTreeDn, true);
-        if ($this->_getLdap()->exists($this->_targetSubTreeDn))
-            $this->_getLdap()->delete($this->_targetSubTreeDn, true);
+        if ($this->_getLDAP()->exists($this->_newDn))
+            $this->_getLDAP()->delete($this->_newDn, false);
+        if ($this->_getLDAP()->exists($this->_orgDn))
+            $this->_getLDAP()->delete($this->_orgDn, false);
+        if ($this->_getLDAP()->exists($this->_orgSubTreeDn))
+            $this->_getLDAP()->delete($this->_orgSubTreeDn, true);
+        if ($this->_getLDAP()->exists($this->_newSubTreeDn))
+            $this->_getLDAP()->delete($this->_newSubTreeDn, true);
+        if ($this->_getLDAP()->exists($this->_targetSubTreeDn))
+            $this->_getLDAP()->delete($this->_targetSubTreeDn, true);
 
 
-        $this->_cleanupLdapServer();
+        $this->_cleanupLDAPServer();
         parent::tearDown();
     }
 
     public function testSimpleLeafRename()
     {
-        $org=$this->_getLdap()->getEntry($this->_orgDn, array(), true);
-        $this->_getLdap()->rename($this->_orgDn, $this->_newDn, false);
-        $this->assertFalse($this->_getLdap()->exists($this->_orgDn));
-        $this->assertTrue($this->_getLdap()->exists($this->_newDn));
-        $new=$this->_getLdap()->getEntry($this->_newDn);
+        $org=$this->_getLDAP()->getEntry($this->_orgDn, array(), true);
+        $this->_getLDAP()->rename($this->_orgDn, $this->_newDn, false);
+        $this->assertFalse($this->_getLDAP()->exists($this->_orgDn));
+        $this->assertTrue($this->_getLDAP()->exists($this->_newDn));
+        $new=$this->_getLDAP()->getEntry($this->_newDn);
         $this->assertEquals($org['objectclass'], $new['objectclass']);
         $this->assertEquals(array('NewTest'), $new['ou']);
     }
 
     public function testSimpleLeafMoveAlias()
     {
-        $this->_getLdap()->move($this->_orgDn, $this->_newDn, false);
-        $this->assertFalse($this->_getLdap()->exists($this->_orgDn));
-        $this->assertTrue($this->_getLdap()->exists($this->_newDn));
+        $this->_getLDAP()->move($this->_orgDn, $this->_newDn, false);
+        $this->assertFalse($this->_getLDAP()->exists($this->_orgDn));
+        $this->assertTrue($this->_getLDAP()->exists($this->_newDn));
     }
 
     public function testSimpleLeafMoveToSubtree()
     {
-        $this->_getLdap()->moveToSubtree($this->_orgDn, $this->_orgSubTreeDn, false);
-        $this->assertFalse($this->_getLdap()->exists($this->_orgDn));
-        $this->assertTrue($this->_getLdap()->exists('ou=OrgTest,' . $this->_orgSubTreeDn));
+        $this->_getLDAP()->moveToSubtree($this->_orgDn, $this->_orgSubTreeDn, false);
+        $this->assertFalse($this->_getLDAP()->exists($this->_orgDn));
+        $this->assertTrue($this->_getLDAP()->exists('ou=OrgTest,' . $this->_orgSubTreeDn));
     }
 
     /**
-     * @expectedException Zend_Ldap_Exception
+     * @expectedException Zend\LDAP\Exception
      */
     public function testRenameSourceNotExists()
     {
-        $this->_getLdap()->rename($this->_createDn('ou=DoesNotExist,'), $this->_newDn, false);
+        $this->_getLDAP()->rename($this->_createDn('ou=DoesNotExist,'), $this->_newDn, false);
     }
 
     /**
-     * @expectedException Zend_Ldap_Exception
+     * @expectedException Zend\LDAP\Exception
      */
     public function testRenameTargetExists()
     {
-        $this->_getLdap()->rename($this->_orgDn, $this->_createDn('ou=Test1,'), false);
+        $this->_getLDAP()->rename($this->_orgDn, $this->_createDn('ou=Test1,'), false);
     }
 
     /**
-     * @expectedException Zend_Ldap_Exception
+     * @expectedException Zend\LDAP\Exception
      */
     public function testRenameTargetParentNotExists()
     {
-        $this->_getLdap()->rename($this->_orgDn, $this->_createDn('ou=Test1,ou=ParentDoesNotExist,'), false);
+        $this->_getLDAP()->rename($this->_orgDn, $this->_createDn('ou=Test1,ou=ParentDoesNotExist,'), false);
     }
 
     /**
-     * @expectedException Zend_Ldap_Exception
+     * @expectedException Zend\LDAP\Exception
      */
     public function testRenameEmulationSourceNotExists()
     {
-        $this->_getLdap()->rename($this->_createDn('ou=DoesNotExist,'), $this->_newDn, false, true);
+        $this->_getLDAP()->rename($this->_createDn('ou=DoesNotExist,'), $this->_newDn, false, true);
     }
 
     /**
-     * @expectedException Zend_Ldap_Exception
+     * @expectedException Zend\LDAP\Exception
      */
     public function testRenameEmulationTargetExists()
     {
-        $this->_getLdap()->rename($this->_orgDn, $this->_createDn('ou=Test1,'), false, true);
+        $this->_getLDAP()->rename($this->_orgDn, $this->_createDn('ou=Test1,'), false, true);
     }
 
     /**
-     * @expectedException Zend_Ldap_Exception
+     * @expectedException Zend\LDAP\Exception
      */
     public function testRenameEmulationTargetParentNotExists()
     {
-        $this->_getLdap()->rename($this->_orgDn, $this->_createDn('ou=Test1,ou=ParentDoesNotExist,'),
+        $this->_getLDAP()->rename($this->_orgDn, $this->_createDn('ou=Test1,ou=ParentDoesNotExist,'),
             false, true);
     }
 
     public function testSimpleLeafRenameEmulation()
     {
-        $this->_getLdap()->rename($this->_orgDn, $this->_newDn, false, true);
-        $this->assertFalse($this->_getLdap()->exists($this->_orgDn));
-        $this->assertTrue($this->_getLdap()->exists($this->_newDn));
+        $this->_getLDAP()->rename($this->_orgDn, $this->_newDn, false, true);
+        $this->assertFalse($this->_getLDAP()->exists($this->_orgDn));
+        $this->assertTrue($this->_getLDAP()->exists($this->_newDn));
     }
 
     public function testSimpleLeafCopyToSubtree()
     {
-        $this->_getLdap()->copyToSubtree($this->_orgDn, $this->_orgSubTreeDn, false);
-        $this->assertTrue($this->_getLdap()->exists($this->_orgDn));
-        $this->assertTrue($this->_getLdap()->exists('ou=OrgTest,' . $this->_orgSubTreeDn));
+        $this->_getLDAP()->copyToSubtree($this->_orgDn, $this->_orgSubTreeDn, false);
+        $this->assertTrue($this->_getLDAP()->exists($this->_orgDn));
+        $this->assertTrue($this->_getLDAP()->exists('ou=OrgTest,' . $this->_orgSubTreeDn));
     }
 
     public function testSimpleLeafCopy()
     {
-        $this->_getLdap()->copy($this->_orgDn, $this->_newDn, false);
-        $this->assertTrue($this->_getLdap()->exists($this->_orgDn));
-        $this->assertTrue($this->_getLdap()->exists($this->_newDn));
+        $this->_getLDAP()->copy($this->_orgDn, $this->_newDn, false);
+        $this->assertTrue($this->_getLDAP()->exists($this->_orgDn));
+        $this->assertTrue($this->_getLDAP()->exists($this->_newDn));
     }
 
     public function testRecursiveRename()
     {
-        $this->_getLdap()->rename($this->_orgSubTreeDn, $this->_newSubTreeDn, true);
-        $this->assertFalse($this->_getLdap()->exists($this->_orgSubTreeDn));
-        $this->assertTrue($this->_getLdap()->exists($this->_newSubTreeDn));
-        $this->assertEquals(3, $this->_getLdap()->countChildren($this->_newSubTreeDn));
-        $this->assertEquals(3, $this->_getLdap()->countChildren('ou=Subtree1,' . $this->_newSubTreeDn));
+        $this->_getLDAP()->rename($this->_orgSubTreeDn, $this->_newSubTreeDn, true);
+        $this->assertFalse($this->_getLDAP()->exists($this->_orgSubTreeDn));
+        $this->assertTrue($this->_getLDAP()->exists($this->_newSubTreeDn));
+        $this->assertEquals(3, $this->_getLDAP()->countChildren($this->_newSubTreeDn));
+        $this->assertEquals(3, $this->_getLDAP()->countChildren('ou=Subtree1,' . $this->_newSubTreeDn));
     }
 
     public function testRecursiveMoveToSubtree()
     {
-        $this->_getLdap()->moveToSubtree($this->_orgSubTreeDn, $this->_targetSubTreeDn, true);
-        $this->assertFalse($this->_getLdap()->exists($this->_orgSubTreeDn));
-        $this->assertTrue($this->_getLdap()->exists('ou=OrgSubtree,' . $this->_targetSubTreeDn));
-        $this->assertEquals(3, $this->_getLdap()->countChildren('ou=OrgSubtree,' . $this->_targetSubTreeDn));
-        $this->assertEquals(3, $this->_getLdap()->countChildren('ou=Subtree1,ou=OrgSubtree,' . $this->_targetSubTreeDn));
+        $this->_getLDAP()->moveToSubtree($this->_orgSubTreeDn, $this->_targetSubTreeDn, true);
+        $this->assertFalse($this->_getLDAP()->exists($this->_orgSubTreeDn));
+        $this->assertTrue($this->_getLDAP()->exists('ou=OrgSubtree,' . $this->_targetSubTreeDn));
+        $this->assertEquals(3, $this->_getLDAP()->countChildren('ou=OrgSubtree,' . $this->_targetSubTreeDn));
+        $this->assertEquals(3, $this->_getLDAP()->countChildren('ou=Subtree1,ou=OrgSubtree,' . $this->_targetSubTreeDn));
     }
 
     public function testRecursiveCopyToSubtree()
     {
-        $this->_getLdap()->copyToSubtree($this->_orgSubTreeDn, $this->_targetSubTreeDn, true);
-        $this->assertTrue($this->_getLdap()->exists($this->_orgSubTreeDn));
-        $this->assertTrue($this->_getLdap()->exists('ou=OrgSubtree,' . $this->_targetSubTreeDn));
-        $this->assertEquals(3, $this->_getLdap()->countChildren($this->_orgSubTreeDn));
-        $this->assertEquals(3, $this->_getLdap()->countChildren('ou=Subtree1,' . $this->_orgSubTreeDn));
-        $this->assertEquals(3, $this->_getLdap()->countChildren('ou=OrgSubtree,' . $this->_targetSubTreeDn));
-        $this->assertEquals(3, $this->_getLdap()->countChildren('ou=Subtree1,ou=OrgSubtree,' . $this->_targetSubTreeDn));
+        $this->_getLDAP()->copyToSubtree($this->_orgSubTreeDn, $this->_targetSubTreeDn, true);
+        $this->assertTrue($this->_getLDAP()->exists($this->_orgSubTreeDn));
+        $this->assertTrue($this->_getLDAP()->exists('ou=OrgSubtree,' . $this->_targetSubTreeDn));
+        $this->assertEquals(3, $this->_getLDAP()->countChildren($this->_orgSubTreeDn));
+        $this->assertEquals(3, $this->_getLDAP()->countChildren('ou=Subtree1,' . $this->_orgSubTreeDn));
+        $this->assertEquals(3, $this->_getLDAP()->countChildren('ou=OrgSubtree,' . $this->_targetSubTreeDn));
+        $this->assertEquals(3, $this->_getLDAP()->countChildren('ou=Subtree1,ou=OrgSubtree,' . $this->_targetSubTreeDn));
     }
 
     public function testRecursiveCopy()
     {
-        $this->_getLdap()->copy($this->_orgSubTreeDn, $this->_newSubTreeDn, true);
-        $this->assertTrue($this->_getLdap()->exists($this->_orgSubTreeDn));
-        $this->assertTrue($this->_getLdap()->exists($this->_newSubTreeDn));
-        $this->assertEquals(3, $this->_getLdap()->countChildren($this->_orgSubTreeDn));
-        $this->assertEquals(3, $this->_getLdap()->countChildren('ou=Subtree1,' . $this->_orgSubTreeDn));
-        $this->assertEquals(3, $this->_getLdap()->countChildren($this->_newSubTreeDn));
-        $this->assertEquals(3, $this->_getLdap()->countChildren('ou=Subtree1,' . $this->_newSubTreeDn));
+        $this->_getLDAP()->copy($this->_orgSubTreeDn, $this->_newSubTreeDn, true);
+        $this->assertTrue($this->_getLDAP()->exists($this->_orgSubTreeDn));
+        $this->assertTrue($this->_getLDAP()->exists($this->_newSubTreeDn));
+        $this->assertEquals(3, $this->_getLDAP()->countChildren($this->_orgSubTreeDn));
+        $this->assertEquals(3, $this->_getLDAP()->countChildren('ou=Subtree1,' . $this->_orgSubTreeDn));
+        $this->assertEquals(3, $this->_getLDAP()->countChildren($this->_newSubTreeDn));
+        $this->assertEquals(3, $this->_getLDAP()->countChildren('ou=Subtree1,' . $this->_newSubTreeDn));
     }
 
     public function testSimpleLeafRenameWithDnObjects()
     {
-        $orgDn=Zend_Ldap_Dn::fromString($this->_orgDn);
-        $newDn=Zend_Ldap_Dn::fromString($this->_newDn);
+        $orgDn=LDAP\DN::fromString($this->_orgDn);
+        $newDn=LDAP\DN::fromString($this->_newDn);
 
-        $this->_getLdap()->rename($orgDn, $newDn, false);
-        $this->assertFalse($this->_getLdap()->exists($orgDn));
-        $this->assertTrue($this->_getLdap()->exists($newDn));
+        $this->_getLDAP()->rename($orgDn, $newDn, false);
+        $this->assertFalse($this->_getLDAP()->exists($orgDn));
+        $this->assertTrue($this->_getLDAP()->exists($newDn));
 
-        $this->_getLdap()->move($newDn, $orgDn, false);
-        $this->assertTrue($this->_getLdap()->exists($orgDn));
-        $this->assertFalse($this->_getLdap()->exists($newDn));
+        $this->_getLDAP()->move($newDn, $orgDn, false);
+        $this->assertTrue($this->_getLDAP()->exists($orgDn));
+        $this->assertFalse($this->_getLDAP()->exists($newDn));
     }
 
     public function testSimpleLeafMoveToSubtreeWithDnObjects()
     {
-        $orgDn=Zend_Ldap_Dn::fromString($this->_orgDn);
-        $orgSubTreeDn=Zend_Ldap_Dn::fromString($this->_orgSubTreeDn);
+        $orgDn=LDAP\DN::fromString($this->_orgDn);
+        $orgSubTreeDn=LDAP\DN::fromString($this->_orgSubTreeDn);
 
-        $this->_getLdap()->moveToSubtree($orgDn, $orgSubTreeDn, false);
-        $this->assertFalse($this->_getLdap()->exists($orgDn));
-        $this->assertTrue($this->_getLdap()->exists('ou=OrgTest,' . $orgSubTreeDn->toString()));
+        $this->_getLDAP()->moveToSubtree($orgDn, $orgSubTreeDn, false);
+        $this->assertFalse($this->_getLDAP()->exists($orgDn));
+        $this->assertTrue($this->_getLDAP()->exists('ou=OrgTest,' . $orgSubTreeDn->toString()));
     }
 
     public function testSimpleLeafRenameEmulationWithDnObjects()
     {
-        $orgDn=Zend_Ldap_Dn::fromString($this->_orgDn);
-        $newDn=Zend_Ldap_Dn::fromString($this->_newDn);
+        $orgDn=LDAP\DN::fromString($this->_orgDn);
+        $newDn=LDAP\DN::fromString($this->_newDn);
 
-        $this->_getLdap()->rename($orgDn, $newDn, false, true);
-        $this->assertFalse($this->_getLdap()->exists($orgDn));
-        $this->assertTrue($this->_getLdap()->exists($newDn));
+        $this->_getLDAP()->rename($orgDn, $newDn, false, true);
+        $this->assertFalse($this->_getLDAP()->exists($orgDn));
+        $this->assertTrue($this->_getLDAP()->exists($newDn));
     }
 
     public function testSimpleLeafCopyToSubtreeWithDnObjects()
     {
-        $orgDn=Zend_Ldap_Dn::fromString($this->_orgDn);
-        $orgSubTreeDn=Zend_Ldap_Dn::fromString($this->_orgSubTreeDn);
+        $orgDn=LDAP\DN::fromString($this->_orgDn);
+        $orgSubTreeDn=LDAP\DN::fromString($this->_orgSubTreeDn);
 
-        $this->_getLdap()->copyToSubtree($orgDn, $orgSubTreeDn, false);
-        $this->assertTrue($this->_getLdap()->exists($orgDn));
-        $this->assertTrue($this->_getLdap()->exists('ou=OrgTest,' . $orgSubTreeDn->toString()));
+        $this->_getLDAP()->copyToSubtree($orgDn, $orgSubTreeDn, false);
+        $this->assertTrue($this->_getLDAP()->exists($orgDn));
+        $this->assertTrue($this->_getLDAP()->exists('ou=OrgTest,' . $orgSubTreeDn->toString()));
     }
 
     public function testSimpleLeafCopyWithDnObjects()
     {
-        $orgDn=Zend_Ldap_Dn::fromString($this->_orgDn);
-        $newDn=Zend_Ldap_Dn::fromString($this->_newDn);
+        $orgDn=LDAP\DN::fromString($this->_orgDn);
+        $newDn=LDAP\DN::fromString($this->_newDn);
 
-        $this->_getLdap()->copy($orgDn, $newDn, false);
-        $this->assertTrue($this->_getLdap()->exists($orgDn));
-        $this->assertTrue($this->_getLdap()->exists($newDn));
+        $this->_getLDAP()->copy($orgDn, $newDn, false);
+        $this->assertTrue($this->_getLDAP()->exists($orgDn));
+        $this->assertTrue($this->_getLDAP()->exists($newDn));
     }
 
     public function testRecursiveRenameWithDnObjects()
     {
-        $orgSubTreeDn=Zend_Ldap_Dn::fromString($this->_orgSubTreeDn);
-        $newSubTreeDn=Zend_Ldap_Dn::fromString($this->_newSubTreeDn);
+        $orgSubTreeDn=LDAP\DN::fromString($this->_orgSubTreeDn);
+        $newSubTreeDn=LDAP\DN::fromString($this->_newSubTreeDn);
 
-        $this->_getLdap()->rename($orgSubTreeDn, $newSubTreeDn, true);
-        $this->assertFalse($this->_getLdap()->exists($orgSubTreeDn));
-        $this->assertTrue($this->_getLdap()->exists($newSubTreeDn));
-        $this->assertEquals(3, $this->_getLdap()->countChildren($newSubTreeDn));
-        $this->assertEquals(3, $this->_getLdap()->countChildren('ou=Subtree1,' . $newSubTreeDn->toString()));
+        $this->_getLDAP()->rename($orgSubTreeDn, $newSubTreeDn, true);
+        $this->assertFalse($this->_getLDAP()->exists($orgSubTreeDn));
+        $this->assertTrue($this->_getLDAP()->exists($newSubTreeDn));
+        $this->assertEquals(3, $this->_getLDAP()->countChildren($newSubTreeDn));
+        $this->assertEquals(3, $this->_getLDAP()->countChildren('ou=Subtree1,' . $newSubTreeDn->toString()));
     }
 
     public function testRecursiveMoveToSubtreeWithDnObjects()
     {
-        $orgSubTreeDn=Zend_Ldap_Dn::fromString($this->_orgSubTreeDn);
-        $targetSubTreeDn=Zend_Ldap_Dn::fromString($this->_targetSubTreeDn);
+        $orgSubTreeDn=LDAP\DN::fromString($this->_orgSubTreeDn);
+        $targetSubTreeDn=LDAP\DN::fromString($this->_targetSubTreeDn);
 
-        $this->_getLdap()->moveToSubtree($orgSubTreeDn, $targetSubTreeDn, true);
-        $this->assertFalse($this->_getLdap()->exists($orgSubTreeDn));
-        $this->assertTrue($this->_getLdap()->exists('ou=OrgSubtree,' . $targetSubTreeDn->toString()));
-        $this->assertEquals(3, $this->_getLdap()->countChildren('ou=OrgSubtree,' . $targetSubTreeDn->toString()));
-        $this->assertEquals(3, $this->_getLdap()->countChildren('ou=Subtree1,ou=OrgSubtree,' . $targetSubTreeDn->toString()));
+        $this->_getLDAP()->moveToSubtree($orgSubTreeDn, $targetSubTreeDn, true);
+        $this->assertFalse($this->_getLDAP()->exists($orgSubTreeDn));
+        $this->assertTrue($this->_getLDAP()->exists('ou=OrgSubtree,' . $targetSubTreeDn->toString()));
+        $this->assertEquals(3, $this->_getLDAP()->countChildren('ou=OrgSubtree,' . $targetSubTreeDn->toString()));
+        $this->assertEquals(3, $this->_getLDAP()->countChildren('ou=Subtree1,ou=OrgSubtree,' . $targetSubTreeDn->toString()));
     }
 
     public function testRecursiveCopyToSubtreeWithDnObjects()
     {
-        $orgSubTreeDn=Zend_Ldap_Dn::fromString($this->_orgSubTreeDn);
-        $targetSubTreeDn=Zend_Ldap_Dn::fromString($this->_targetSubTreeDn);
+        $orgSubTreeDn=LDAP\DN::fromString($this->_orgSubTreeDn);
+        $targetSubTreeDn=LDAP\DN::fromString($this->_targetSubTreeDn);
 
-        $this->_getLdap()->copyToSubtree($orgSubTreeDn, $targetSubTreeDn, true);
-        $this->assertTrue($this->_getLdap()->exists($orgSubTreeDn));
-        $this->assertTrue($this->_getLdap()->exists('ou=OrgSubtree,' . $targetSubTreeDn->toString()));
-        $this->assertEquals(3, $this->_getLdap()->countChildren($orgSubTreeDn));
-        $this->assertEquals(3, $this->_getLdap()->countChildren('ou=Subtree1,' . $orgSubTreeDn->toString()));
-        $this->assertEquals(3, $this->_getLdap()->countChildren('ou=OrgSubtree,' . $targetSubTreeDn->toString()));
-        $this->assertEquals(3, $this->_getLdap()->countChildren('ou=Subtree1,ou=OrgSubtree,' . $targetSubTreeDn->toString()));
+        $this->_getLDAP()->copyToSubtree($orgSubTreeDn, $targetSubTreeDn, true);
+        $this->assertTrue($this->_getLDAP()->exists($orgSubTreeDn));
+        $this->assertTrue($this->_getLDAP()->exists('ou=OrgSubtree,' . $targetSubTreeDn->toString()));
+        $this->assertEquals(3, $this->_getLDAP()->countChildren($orgSubTreeDn));
+        $this->assertEquals(3, $this->_getLDAP()->countChildren('ou=Subtree1,' . $orgSubTreeDn->toString()));
+        $this->assertEquals(3, $this->_getLDAP()->countChildren('ou=OrgSubtree,' . $targetSubTreeDn->toString()));
+        $this->assertEquals(3, $this->_getLDAP()->countChildren('ou=Subtree1,ou=OrgSubtree,' . $targetSubTreeDn->toString()));
     }
 
     public function testRecursiveCopyWithDnObjects()
     {
-        $orgSubTreeDn=Zend_Ldap_Dn::fromString($this->_orgSubTreeDn);
-        $newSubTreeDn=Zend_Ldap_Dn::fromString($this->_newSubTreeDn);
+        $orgSubTreeDn=LDAP\DN::fromString($this->_orgSubTreeDn);
+        $newSubTreeDn=LDAP\DN::fromString($this->_newSubTreeDn);
 
-        $this->_getLdap()->copy($orgSubTreeDn, $newSubTreeDn, true);
-        $this->assertTrue($this->_getLdap()->exists($orgSubTreeDn));
-        $this->assertTrue($this->_getLdap()->exists($newSubTreeDn));
-        $this->assertEquals(3, $this->_getLdap()->countChildren($orgSubTreeDn));
-        $this->assertEquals(3, $this->_getLdap()->countChildren('ou=Subtree1,' . $orgSubTreeDn->toString()));
-        $this->assertEquals(3, $this->_getLdap()->countChildren($newSubTreeDn));
-        $this->assertEquals(3, $this->_getLdap()->countChildren('ou=Subtree1,' . $newSubTreeDn->toString()));
+        $this->_getLDAP()->copy($orgSubTreeDn, $newSubTreeDn, true);
+        $this->assertTrue($this->_getLDAP()->exists($orgSubTreeDn));
+        $this->assertTrue($this->_getLDAP()->exists($newSubTreeDn));
+        $this->assertEquals(3, $this->_getLDAP()->countChildren($orgSubTreeDn));
+        $this->assertEquals(3, $this->_getLDAP()->countChildren('ou=Subtree1,' . $orgSubTreeDn->toString()));
+        $this->assertEquals(3, $this->_getLDAP()->countChildren($newSubTreeDn));
+        $this->assertEquals(3, $this->_getLDAP()->countChildren('ou=Subtree1,' . $newSubTreeDn->toString()));
     }
 }

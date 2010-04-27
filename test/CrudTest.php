@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,22 +21,20 @@
  */
 
 /**
- * Zend_Ldap_OnlineTestCase
+ * @namespace
  */
-
-/**
- * @see Zend_Ldap_Dn
- */
+namespace ZendTest\LDAP;
+use Zend\LDAP;
 
 /**
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Ldap
+ * @group      Zend_LDAP
  */
-class Zend_Ldap_CrudTest extends Zend_Ldap_OnlineTestCase
+class CrudTest extends OnlineTestCase
 {
     public function testAddAndDelete()
     {
@@ -46,13 +44,13 @@ class Zend_Ldap_CrudTest extends Zend_Ldap_OnlineTestCase
             'objectClass' => 'organizationalUnit'
         );
         try {
-            $this->_getLdap()->add($dn, $data);
-            $this->assertEquals(1, $this->_getLdap()->count('ou=TestCreated'));
-            $this->_getLdap()->delete($dn);
-            $this->assertEquals(0, $this->_getLdap()->count('ou=TestCreated'));
-        } catch (Zend_Ldap_Exception $e) {
-            if ($this->_getLdap()->exists($dn)) {
-                $this->_getLdap()->delete($dn);
+            $this->_getLDAP()->add($dn, $data);
+            $this->assertEquals(1, $this->_getLDAP()->count('ou=TestCreated'));
+            $this->_getLDAP()->delete($dn);
+            $this->assertEquals(0, $this->_getLDAP()->count('ou=TestCreated'));
+        } catch (LDAP\Exception $e) {
+            if ($this->_getLDAP()->exists($dn)) {
+                $this->_getLDAP()->delete($dn);
             }
             $this->fail($e->getMessage());
         }
@@ -67,24 +65,24 @@ class Zend_Ldap_CrudTest extends Zend_Ldap_OnlineTestCase
             'objectClass' => 'organizationalUnit'
         );
         try {
-            $this->_getLdap()->add($dn, $data);
-            $entry=$this->_getLdap()->getEntry($dn);
+            $this->_getLDAP()->add($dn, $data);
+            $entry=$this->_getLDAP()->getEntry($dn);
             $this->assertEquals('mylocation1', $entry['l'][0]);
             $entry['l']='mylocation2';
-            $this->_getLdap()->update($dn, $entry);
-            $entry=$this->_getLdap()->getEntry($dn);
-            $this->_getLdap()->delete($dn);
+            $this->_getLDAP()->update($dn, $entry);
+            $entry=$this->_getLDAP()->getEntry($dn);
+            $this->_getLDAP()->delete($dn);
             $this->assertEquals('mylocation2', $entry['l'][0]);
-        } catch (Zend_Ldap_Exception $e) {
-            if ($this->_getLdap()->exists($dn)) {
-                $this->_getLdap()->delete($dn);
+        } catch (LDAP\Exception $e) {
+            if ($this->_getLDAP()->exists($dn)) {
+                $this->_getLDAP()->delete($dn);
             }
             $this->fail($e->getMessage());
         }
     }
 
     /**
-     * @expectedException Zend_Ldap_Exception
+     * @expectedException Zend\LDAP\Exception
      */
     public function testIllegalAdd()
     {
@@ -93,8 +91,8 @@ class Zend_Ldap_CrudTest extends Zend_Ldap_OnlineTestCase
             'ou' => 'TestCreated',
             'objectClass' => 'organizationalUnit'
         );
-        $this->_getLdap()->add($dn, $data);
-        $this->_getLdap()->delete($dn);
+        $this->_getLDAP()->add($dn, $data);
+        $this->_getLDAP()->delete($dn);
     }
 
     public function testIllegalUpdate()
@@ -105,32 +103,32 @@ class Zend_Ldap_CrudTest extends Zend_Ldap_OnlineTestCase
             'objectclass' => 'organizationalUnit'
         );
         try {
-            $this->_getLdap()->add($dn, $data);
-            $entry=$this->_getLdap()->getEntry($dn);
+            $this->_getLDAP()->add($dn, $data);
+            $entry=$this->_getLDAP()->getEntry($dn);
             $entry['objectclass'][]='inetOrgPerson';
 
             $exThrown=false;
             try {
-                $this->_getLdap()->update($dn, $entry);
+                $this->_getLDAP()->update($dn, $entry);
             }
-            catch (Zend_Ldap_Exception $e) {
+            catch (LDAP\Exception $e) {
                $exThrown=true;
             }
-            $this->_getLdap()->delete($dn);
+            $this->_getLDAP()->delete($dn);
             if (!$exThrown) $this->fail('no exception thrown while illegaly updating entry');
         }
-        catch (Zend_Ldap_Exception $e) {
+        catch (LDAP\Exception $e) {
             $this->fail($e->getMessage());
         }
     }
 
     /**
-     * @expectedException Zend_Ldap_Exception
+     * @expectedException Zend\LDAP\Exception
      */
     public function testIllegalDelete()
     {
         $dn=$this->_createDn('ou=TestCreated,');
-        $this->_getLdap()->delete($dn);
+        $this->_getLDAP()->delete($dn);
     }
 
     public function testDeleteRecursively()
@@ -139,30 +137,30 @@ class Zend_Ldap_CrudTest extends Zend_Ldap_OnlineTestCase
         $dn=$topDn;
         $data=array('ou' => 'RecursiveTest', 'objectclass' => 'organizationalUnit'
         );
-        $this->_getLdap()->add($dn, $data);
+        $this->_getLDAP()->add($dn, $data);
         for ($level=1; $level<=5; $level++) {
             $name='Level' . $level;
             $dn='ou=' . $name . ',' . $dn;
             $data=array('ou' => $name, 'objectclass' => 'organizationalUnit');
-            $this->_getLdap()->add($dn, $data);
+            $this->_getLDAP()->add($dn, $data);
             for ($item=1; $item<=5; $item++) {
                 $uid='Item' . $item;
                 $idn='ou=' . $uid . ',' . $dn;
                 $idata=array('ou' => $uid, 'objectclass' => 'organizationalUnit');
-                $this->_getLdap()->add($idn, $idata);
+                $this->_getLDAP()->add($idn, $idata);
             }
         }
 
         $exCaught=false;
         try {
-            $this->_getLdap()->delete($topDn, false);
-        } catch (Zend_Ldap_Exception $e) {
+            $this->_getLDAP()->delete($topDn, false);
+        } catch (LDAP\Exception $e) {
             $exCaught=true;
         }
         $this->assertTrue($exCaught,
             'Execption not raised when deleting item with children without specifiying recursive delete');
-        $this->_getLdap()->delete($topDn, true);
-        $this->assertFalse($this->_getLdap()->exists($topDn));
+        $this->_getLDAP()->delete($topDn, true);
+        $this->assertFalse($this->_getLDAP()->exists($topDn));
     }
 
     public function testSave()
@@ -170,24 +168,24 @@ class Zend_Ldap_CrudTest extends Zend_Ldap_OnlineTestCase
         $dn=$this->_createDn('ou=TestCreated,');
         $data=array('ou' => 'TestCreated', 'objectclass' => 'organizationalUnit');
         try {
-            $this->_getLdap()->save($dn, $data);
-            $this->assertTrue($this->_getLdap()->exists($dn));
+            $this->_getLDAP()->save($dn, $data);
+            $this->assertTrue($this->_getLDAP()->exists($dn));
             $data['l']='mylocation1';
-            $this->_getLdap()->save($dn, $data);
-            $this->assertTrue($this->_getLdap()->exists($dn));
-            $entry=$this->_getLdap()->getEntry($dn);
-            $this->_getLdap()->delete($dn);
+            $this->_getLDAP()->save($dn, $data);
+            $this->assertTrue($this->_getLDAP()->exists($dn));
+            $entry=$this->_getLDAP()->getEntry($dn);
+            $this->_getLDAP()->delete($dn);
             $this->assertEquals('mylocation1', $entry['l'][0]);
-        } catch (Zend_Ldap_Exception $e) {
-            if ($this->_getLdap()->exists($dn)) {
-                $this->_getLdap()->delete($dn);
+        } catch (LDAP\Exception $e) {
+            if ($this->_getLDAP()->exists($dn)) {
+                $this->_getLDAP()->delete($dn);
             }
             $this->fail($e->getMessage());
         }
 
     }
 
-    public function testPrepareLdapEntryArray()
+    public function testPrepareLDAPEntryArray()
     {
         $data=array(
             'a1' => 'TestCreated',
@@ -199,7 +197,7 @@ class Zend_Ldap_CrudTest extends Zend_Ldap_OnlineTestCase
             'a7' => array(null),
             'a8' => array(''),
             'a9' => array('', null, 'account', '', null, 'TestCreated', '', null));
-        Zend_Ldap::prepareLdapEntryArray($data);
+        LDAP\LDAP::prepareLDAPEntryArray($data);
         $expected=array(
             'a1' => array('TestCreated'),
             'a2' => array('account'),
@@ -228,7 +226,7 @@ class Zend_Ldap_CrudTest extends Zend_Ldap_OnlineTestCase
             'nullArray'    => array(null),
             'emptyArray'   => array(''),
         );
-        Zend_Ldap::prepareLdapEntryArray($data);
+        LDAP\LDAP::prepareLDAPEntryArray($data);
         $expected=array(
             'string'       => array('0'),
             'integer'      => array('0'),
@@ -245,81 +243,81 @@ class Zend_Ldap_CrudTest extends Zend_Ldap_OnlineTestCase
     /**
      * @expectedException InvalidArgumentException
      */
-    public function testPrepareLdapEntryArrayArrayData()
+    public function testPrepareLDAPEntryArrayArrayData()
     {
         $data=array(
             'a1' => array(array('account')));
-        Zend_Ldap::prepareLdapEntryArray($data);
+        LDAP\LDAP::prepareLDAPEntryArray($data);
     }
 
     /**
      * @expectedException InvalidArgumentException
      */
-    public function testPrepareLdapEntryArrayObjectData()
+    public function testPrepareLDAPEntryArrayObjectData()
     {
-        $class=new stdClass();
+        $class=new \stdClass();
         $class->a='b';
         $data=array(
             'a1' => array($class));
-        Zend_Ldap::prepareLdapEntryArray($data);
+        LDAP\LDAP::prepareLDAPEntryArray($data);
     }
 
     public function testAddWithDnObject()
     {
-        $dn=Zend_Ldap_Dn::fromString($this->_createDn('ou=TestCreated,'));
+        $dn=LDAP\DN::fromString($this->_createDn('ou=TestCreated,'));
         $data=array(
             'ou' => 'TestCreated',
             'objectclass' => 'organizationalUnit'
         );
         try {
-            $this->_getLdap()->add($dn, $data);
-            $this->assertEquals(1, $this->_getLdap()->count('ou=TestCreated'));
-            $this->_getLdap()->delete($dn);
+            $this->_getLDAP()->add($dn, $data);
+            $this->assertEquals(1, $this->_getLDAP()->count('ou=TestCreated'));
+            $this->_getLDAP()->delete($dn);
         }
-        catch (Zend_Ldap_Exception $e) {
+        catch (LDAP\Exception $e) {
             $this->fail($e->getMessage());
         }
     }
 
     public function testUpdateWithDnObject()
     {
-        $dn=Zend_Ldap_Dn::fromString($this->_createDn('ou=TestCreated,'));
+        $dn=LDAP\DN::fromString($this->_createDn('ou=TestCreated,'));
         $data=array(
             'ou' => 'TestCreated',
             'l' => 'mylocation1',
             'objectclass' => 'organizationalUnit'
         );
         try {
-            $this->_getLdap()->add($dn, $data);
-            $entry=$this->_getLdap()->getEntry($dn);
+            $this->_getLDAP()->add($dn, $data);
+            $entry=$this->_getLDAP()->getEntry($dn);
             $this->assertEquals('mylocation1', $entry['l'][0]);
             $entry['l']='mylocation2';
-            $this->_getLdap()->update($dn, $entry);
-            $entry=$this->_getLdap()->getEntry($dn);
-            $this->_getLdap()->delete($dn);
+            $this->_getLDAP()->update($dn, $entry);
+            $entry=$this->_getLDAP()->getEntry($dn);
+            $this->_getLDAP()->delete($dn);
             $this->assertEquals('mylocation2', $entry['l'][0]);
         }
-        catch (Zend_Ldap_Exception $e) {
+        catch (LDAP\Exception $e) {
             $this->fail($e->getMessage());
         }
     }
 
     public function testSaveWithDnObject()
     {
-        $dn=Zend_Ldap_Dn::fromString($this->_createDn('ou=TestCreated,'));
+        $dn=LDAP\DN::fromString($this->_createDn('ou=TestCreated,'));
         $data=array('ou' => 'TestCreated', 'objectclass' => 'organizationalUnit');
         try {
-            $this->_getLdap()->save($dn, $data);
-            $this->assertTrue($this->_getLdap()->exists($dn));
+            $this->_getLDAP()->save($dn, $data);
+            $this->assertTrue($this->_getLDAP()->exists($dn));
             $data['l']='mylocation1';
-            $this->_getLdap()->save($dn, $data);
-            $this->assertTrue($this->_getLdap()->exists($dn));
-            $entry=$this->_getLdap()->getEntry($dn);
-            $this->_getLdap()->delete($dn);
+            $this->_getLDAP()->save($dn, $data);
+            $this->assertTrue($this->_getLDAP()->exists($dn));
+            $entry=$this->_getLDAP()->getEntry($dn);
+            $this->_getLDAP()->delete($dn);
             $this->assertEquals('mylocation1', $entry['l'][0]);
-        } catch (Zend_Ldap_Exception $e) {
-            if ($this->_getLdap()->exists($dn)) {
-                $this->_getLdap()->delete($dn);
+        } catch (LDAP\Exception $e) {
+            if ($this->_getLDAP()->exists($dn)) {
+                $this->_getLDAP()->delete($dn);
             }
             $this->fail($e->getMessage());
         }
@@ -334,20 +332,20 @@ class Zend_Ldap_CrudTest extends Zend_Ldap_OnlineTestCase
             'objectClass' => 'organizationalUnit'
         );
         try {
-            $this->_getLdap()->add($dn, $data);
-            $entry=$this->_getLdap()->getEntry($dn);
+            $this->_getLDAP()->add($dn, $data);
+            $entry=$this->_getLDAP()->getEntry($dn);
             $entry['objectclass'][]='domainRelatedObject';
             $entry['associatedDomain'][]='domain';
-            $this->_getLdap()->update($dn, $entry);
-            $entry=$this->_getLdap()->getEntry($dn);
-            $this->_getLdap()->delete($dn);
+            $this->_getLDAP()->update($dn, $entry);
+            $entry=$this->_getLDAP()->getEntry($dn);
+            $this->_getLDAP()->delete($dn);
 
             $this->assertEquals('domain', $entry['associateddomain'][0]);
             $this->assertContains('organizationalUnit', $entry['objectclass']);
             $this->assertContains('domainRelatedObject', $entry['objectclass']);
-        } catch (Zend_Ldap_Exception $e) {
-            if ($this->_getLdap()->exists($dn)) {
-                $this->_getLdap()->delete($dn);
+        } catch (LDAP\Exception $e) {
+            if ($this->_getLDAP()->exists($dn)) {
+                $this->_getLDAP()->delete($dn);
             }
             $this->fail($e->getMessage());
         }
@@ -363,20 +361,20 @@ class Zend_Ldap_CrudTest extends Zend_Ldap_OnlineTestCase
             'objectClass' => array('organizationalUnit', 'domainRelatedObject')
         );
         try {
-            $this->_getLdap()->add($dn, $data);
-            $entry=$this->_getLdap()->getEntry($dn);
+            $this->_getLDAP()->add($dn, $data);
+            $entry=$this->_getLDAP()->getEntry($dn);
             $entry['objectclass']='organizationalUnit';
             $entry['associatedDomain']=null;
-            $this->_getLdap()->update($dn, $entry);
-            $entry=$this->_getLdap()->getEntry($dn);
-            $this->_getLdap()->delete($dn);
+            $this->_getLDAP()->update($dn, $entry);
+            $entry=$this->_getLDAP()->getEntry($dn);
+            $this->_getLDAP()->delete($dn);
 
             $this->assertArrayNotHasKey('associateddomain', $entry);
             $this->assertContains('organizationalUnit', $entry['objectclass']);
             $this->assertNotContains('domainRelatedObject', $entry['objectclass']);
-        } catch (Zend_Ldap_Exception $e) {
-            if ($this->_getLdap()->exists($dn)) {
-                $this->_getLdap()->delete($dn);
+        } catch (LDAP\Exception $e) {
+            if ($this->_getLDAP()->exists($dn)) {
+                $this->_getLDAP()->delete($dn);
             }
             $this->fail($e->getMessage());
         }

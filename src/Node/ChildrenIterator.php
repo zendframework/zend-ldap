@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage Node
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,23 +21,28 @@
  */
 
 /**
- * Zend_Ldap_Node_ChildrenIterator provides an iterator to a collection of children nodes.
+ * @namespace
+ */
+namespace Zend\LDAP\Node;
+
+/**
+ * Zend_LDAP_Node_ChildrenIterator provides an iterator to a collection of children nodes.
  *
  * @uses       ArrayAccess
  * @uses       Countable
  * @uses       Iterator
  * @uses       RecursiveIterator
- * @uses       Zend_Ldap_Node
+ * @uses       \Zend\LDAP\Node\Node
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage Node
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Ldap_Node_ChildrenIterator implements Iterator, Countable, RecursiveIterator, ArrayAccess
+class ChildrenIterator implements \Iterator, \Countable, \RecursiveIterator, \ArrayAccess
 {
     /**
-     * An array of Zend_Ldap_Node objects
+     * An array of Zend_LDAP_Node objects
      *
      * @var array
      */
@@ -69,7 +74,7 @@ class Zend_Ldap_Node_ChildrenIterator implements Iterator, Countable, RecursiveI
      * Return the current child.
      * Implements Iterator
      *
-     * @return Zend_Ldap_Node
+     * @return \Zend\LDAP\Node\Node
      */
     public function current()
     {
@@ -125,7 +130,7 @@ class Zend_Ldap_Node_ChildrenIterator implements Iterator, Countable, RecursiveI
      */
     public function hasChildren()
     {
-        if ($this->current() instanceof Zend_Ldap_Node) {
+        if ($this->current() instanceof Node) {
             return $this->current()->hasChildren();
         } else {
             return false;
@@ -135,11 +140,11 @@ class Zend_Ldap_Node_ChildrenIterator implements Iterator, Countable, RecursiveI
     /**
      * Returns the children for the current node.
      *
-     * @return Zend_Ldap_Node_ChildrenIterator
+     * @return \Zend\LDAP\Node\ChildrenIterator
      */
     public function getChildren()
     {
-        if ($this->current() instanceof Zend_Ldap_Node) {
+        if ($this->current() instanceof Node) {
             return $this->current()->getChildren();
         } else {
             return null;
@@ -151,7 +156,7 @@ class Zend_Ldap_Node_ChildrenIterator implements Iterator, Countable, RecursiveI
      * Implements ArrayAccess.
      *
      * @param  string $rdn
-     * @return Zend_Ldap_node
+     * @return Zend_LDAP_node
      */
     public function offsetGet($rdn)
     {

@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,40 +21,46 @@
  */
 
 /**
+ * @namespace
+ */
+namespace ZendTest\LDAP\Dn;
+use Zend\LDAP;
+
+/**
  * Test helper
  */
 /**
- * Zend_Ldap_Dn
+ * Zend_LDAP_Dn
  */
 
 /**
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Ldap
- * @group      Zend_Ldap_Dn
+ * @group      Zend_LDAP
+ * @group      Zend_LDAP_Dn
  */
-class Zend_Ldap_Dn_EscapingTest extends PHPUnit_Framework_TestCase
+class EscapingTest extends \PHPUnit_Framework_TestCase
 {
     public function testEscapeValues()
     {
         $dnval='  '.chr(22).' t,e+s"t,\\v<a>l;u#e=!    ';
         $expected='\20\20\16 t\,e\+s\"t\,\\\\v\<a\>l\;u\#e\=!\20\20\20\20';
-        $this->assertEquals($expected, Zend_Ldap_Dn::escapeValue($dnval));
-        $this->assertEquals($expected, Zend_Ldap_Dn::escapeValue(array($dnval)));
+        $this->assertEquals($expected, LDAP\DN::escapeValue($dnval));
+        $this->assertEquals($expected, LDAP\DN::escapeValue(array($dnval)));
         $this->assertEquals(array($expected, $expected, $expected),
-            Zend_Ldap_Dn::escapeValue(array($dnval, $dnval, $dnval)));
+            LDAP\DN::escapeValue(array($dnval, $dnval, $dnval)));
     }
 
     public function testUnescapeValues()
     {
         $dnval='\\20\\20\\16\\20t\\,e\\+s \\"t\\,\\\\v\\<a\\>l\\;u\\#e\\=!\\20\\20\\20\\20';
         $expected='  '.chr(22).' t,e+s "t,\\v<a>l;u#e=!    ';
-        $this->assertEquals($expected, Zend_Ldap_Dn::unescapeValue($dnval));
-        $this->assertEquals($expected, Zend_Ldap_Dn::unescapeValue(array($dnval)));
+        $this->assertEquals($expected, LDAP\DN::unescapeValue($dnval));
+        $this->assertEquals($expected, LDAP\DN::unescapeValue(array($dnval)));
         $this->assertEquals(array($expected, $expected, $expected),
-            Zend_Ldap_Dn::unescapeValue(array($dnval,$dnval,$dnval)));
+            LDAP\DN::unescapeValue(array($dnval,$dnval,$dnval)));
     }
 }

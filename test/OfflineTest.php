@@ -13,47 +13,40 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
-
 /**
- * Test helper
+ * @namespace
  */
-
-/**
- * @see Zend_Ldap
- */
-/**
- * @see Zend_Ldap_Exception
- */
-
+namespace ZendTest\LDAP;
+use Zend\LDAP;
 
 /**
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Ldap
+ * @group      Zend_LDAP
  */
-class Zend_Ldap_OfflineTest extends PHPUnit_Framework_TestCase
+class OfflineTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Zend_Ldap instance
+     * Zend_LDAP instance
      *
-     * @var Zend_Ldap
+     * @var Zend_LDAP
      */
     protected $_ldap = null;
 
     /**
      * Setup operations run prior to each test method:
      *
-     * * Creates an instance of Zend_Ldap
+     * * Creates an instance of Zend_LDAP
      *
      * @return void
      */
@@ -62,7 +55,7 @@ class Zend_Ldap_OfflineTest extends PHPUnit_Framework_TestCase
         if (!extension_loaded('ldap')) {
             $this->markTestSkipped('LDAP is not enabled');
         }
-        $this->_ldap = new Zend_Ldap();
+        $this->_ldap = new LDAP\LDAP();
     }
 
     /**
@@ -73,20 +66,20 @@ class Zend_Ldap_OfflineTest extends PHPUnit_Framework_TestCase
         $optionName = 'invalid';
         try {
             $this->_ldap->setOptions(array($optionName => 'irrelevant'));
-            $this->fail('Expected Zend_Ldap_Exception not thrown');
-        } catch (Zend_Ldap_Exception $e) {
-            $this->assertEquals("Unknown Zend_Ldap option: $optionName", $e->getMessage());
+            $this->fail('Expected Zend_LDAP_Exception not thrown');
+        } catch (LDAP\Exception $e) {
+            $this->assertEquals("Unknown Zend_LDAP option: $optionName", $e->getMessage());
         }
     }
 
     public function testException()
     {
-        $e = new Zend_Ldap_Exception(null, '', 0);
+        $e = new LDAP\Exception(null, '', 0);
         $this->assertEquals('no exception message', $e->getMessage());
         $this->assertEquals(0, $e->getCode());
         $this->assertEquals(0, $e->getErrorCode());
 
-        $e = new Zend_Ldap_Exception(null, '', 15);
+        $e = new LDAP\Exception(null, '', 15);
         $this->assertEquals('0xf: no exception message', $e->getMessage());
         $this->assertEquals(15, $e->getCode());
         $this->assertEquals(15, $e->getErrorCode());
@@ -100,7 +93,7 @@ class Zend_Ldap_OfflineTest extends PHPUnit_Framework_TestCase
             'password' => TESTS_ZEND_LDAP_PASSWORD,
             'baseDn' => TESTS_ZEND_LDAP_BASE_DN,
         );
-        $ldap = new Zend_Ldap($options);
+        $ldap = new LDAP\LDAP($options);
         $this->assertEquals(array(
             'host'                   => TESTS_ZEND_LDAP_HOST,
             'port'                   => 0,
@@ -125,13 +118,13 @@ class Zend_Ldap_OfflineTest extends PHPUnit_Framework_TestCase
         /**
          * @see Zend_Config
          */
-        $config = new Zend_Config(array(
+        $config = new \Zend\Config\Config(array(
             'host' => TESTS_ZEND_LDAP_HOST,
             'username' => TESTS_ZEND_LDAP_USERNAME,
             'password' => TESTS_ZEND_LDAP_PASSWORD,
             'baseDn' => TESTS_ZEND_LDAP_BASE_DN,
         ));
-        $ldap = new Zend_Ldap($config);
+        $ldap = new LDAP\LDAP($config);
         $this->assertEquals(array(
             'host'                   => TESTS_ZEND_LDAP_HOST,
             'port'                   => 0,

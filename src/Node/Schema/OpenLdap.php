@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage Schema
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,20 +21,26 @@
  */
 
 /**
- * Zend_Ldap_Node_Schema_OpenLdap provides a simple data-container for the Schema node of
+ * @namespace
+ */
+namespace Zend\LDAP\Node\Schema;
+use Zend\LDAP;
+
+/**
+ * Zend_LDAP_Node_Schema_OpenLDAP provides a simple data-container for the Schema node of
  * an OpenLDAP server.
  *
- * @uses       Zend_Ldap_Attribute
- * @uses       Zend_Ldap_Node_Schema
- * @uses       Zend_Ldap_Node_Schema_AttributeType_OpenLdap
- * @uses       Zend_Ldap_Node_Schema_ObjectClass_OpenLdap
+ * @uses       \Zend\LDAP\Attribute
+ * @uses       \Zend\LDAP\Node\Schema\Schema
+ * @uses       \Zend\LDAP\Node\Schema\AttributeType\OpenLDAP
+ * @uses       \Zend\LDAP\Node\Schema\ObjectClass\OpenLDAP
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage Schema
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Ldap_Node_Schema_OpenLdap extends Zend_Ldap_Node_Schema
+class OpenLDAP extends Schema
 {
     /**
      * The attribute Types
@@ -70,15 +76,15 @@ class Zend_Ldap_Node_Schema_OpenLdap extends Zend_Ldap_Node_Schema
     /**
      * Parses the schema
      *
-     * @param  Zend_Ldap_Dn $dn
-     * @param  Zend_Ldap    $ldap
-     * @return Zend_Ldap_Node_Schema Provides a fluid interface
+     * @param  \Zend\LDAP\DN $dn
+     * @param  \Zend\LDAP\LDAP    $ldap
+     * @return \Zend\LDAP\Node\Schema\Schema Provides a fluid interface
      */
-    protected function _parseSchema(Zend_Ldap_Dn $dn, Zend_Ldap $ldap)
+    protected function _parseSchema(LDAP\DN $dn, LDAP\LDAP $ldap)
     {
         parent::_parseSchema($dn, $ldap);
         $this->_loadAttributeTypes();
-        $this->_loadLdapSyntaxes();
+        $this->_loadLDAPSyntaxes();
         $this->_loadMatchingRules();
         $this->_loadMatchingRuleUse();
         $this->_loadObjectClasses();
@@ -110,7 +116,7 @@ class Zend_Ldap_Node_Schema_OpenLdap extends Zend_Ldap_Node_Schema
      *
      * @return array
      */
-    public function getLdapSyntaxes()
+    public function getLDAPSyntaxes()
     {
         return $this->_ldapSyntaxes;
     }
@@ -145,7 +151,7 @@ class Zend_Ldap_Node_Schema_OpenLdap extends Zend_Ldap_Node_Schema
         $this->_attributeTypes = array();
         foreach ($this->getAttribute('attributeTypes') as $value) {
             $val = $this->_parseAttributeType($value);
-            $val = new Zend_Ldap_Node_Schema_AttributeType_OpenLdap($val);
+            $val = new AttributeType\OpenLDAP($val);
             $this->_attributeTypes[$val->getName()] = $val;
 
         }
@@ -188,7 +194,7 @@ class Zend_Ldap_Node_Schema_OpenLdap extends Zend_Ldap_Node_Schema
 
         $tokens = $this->_tokenizeString($value);
         $attributeType['oid'] = array_shift($tokens); // first token is the oid
-        $this->_parseLdapSchemaSyntax($attributeType, $tokens);
+        $this->_parseLDAPSchemaSyntax($attributeType, $tokens);
 
         if (array_key_exists('syntax', $attributeType)) {
             // get max length from syntax
@@ -213,7 +219,7 @@ class Zend_Ldap_Node_Schema_OpenLdap extends Zend_Ldap_Node_Schema
         $this->_objectClasses = array();
         foreach ($this->getAttribute('objectClasses') as $value) {
             $val = $this->_parseObjectClass($value);
-            $val = new Zend_Ldap_Node_Schema_ObjectClass_OpenLdap($val);
+            $val = new ObjectClass\OpenLDAP($val);
             $this->_objectClasses[$val->getName()] = $val;
         }
         foreach ($this->_objectClasses as $val) {
@@ -251,7 +257,7 @@ class Zend_Ldap_Node_Schema_OpenLdap extends Zend_Ldap_Node_Schema
 
         $tokens = $this->_tokenizeString($value);
         $objectClass['oid'] = array_shift($tokens); // first token is the oid
-        $this->_parseLdapSchemaSyntax($objectClass, $tokens);
+        $this->_parseLDAPSchemaSyntax($objectClass, $tokens);
 
         $this->_ensureNameAttribute($objectClass);
 
@@ -261,10 +267,10 @@ class Zend_Ldap_Node_Schema_OpenLdap extends Zend_Ldap_Node_Schema
     /**
      * Resolves inheritance in objectClasses and attributes
      *
-     * @param Zend_Ldap_Node_Schema_Item $node
+     * @param \Zend\LDAP\Node\Schema\Item $node
      * @param array                      $repository
      */
-    protected function _resolveInheritance(Zend_Ldap_Node_Schema_Item $node, array $repository)
+    protected function _resolveInheritance(Item $node, array $repository)
     {
         $data = $node->getData();
         $parents = $data['sup'];
@@ -284,11 +290,11 @@ class Zend_Ldap_Node_Schema_OpenLdap extends Zend_Ldap_Node_Schema
      *
      * @return void
      */
-    protected function _loadLdapSyntaxes()
+    protected function _loadLDAPSyntaxes()
     {
         $this->_ldapSyntaxes = array();
         foreach ($this->getAttribute('ldapSyntaxes') as $value) {
-            $val = $this->_parseLdapSyntax($value);
+            $val = $this->_parseLDAPSyntax($value);
             $this->_ldapSyntaxes[$val['oid']] = $val;
         }
         ksort($this->_ldapSyntaxes, SORT_STRING);
@@ -300,7 +306,7 @@ class Zend_Ldap_Node_Schema_OpenLdap extends Zend_Ldap_Node_Schema
      * @param  string $value
      * @return array
      */
-    protected function _parseLdapSyntax($value)
+    protected function _parseLDAPSyntax($value)
     {
         $ldapSyntax = array(
             'oid'      => null,
@@ -309,7 +315,7 @@ class Zend_Ldap_Node_Schema_OpenLdap extends Zend_Ldap_Node_Schema
 
         $tokens = $this->_tokenizeString($value);
         $ldapSyntax['oid'] = array_shift($tokens); // first token is the oid
-        $this->_parseLdapSchemaSyntax($ldapSyntax, $tokens);
+        $this->_parseLDAPSchemaSyntax($ldapSyntax, $tokens);
 
         return $ldapSyntax;
     }
@@ -347,7 +353,7 @@ class Zend_Ldap_Node_Schema_OpenLdap extends Zend_Ldap_Node_Schema
 
         $tokens = $this->_tokenizeString($value);
         $matchingRule['oid'] = array_shift($tokens); // first token is the oid
-        $this->_parseLdapSchemaSyntax($matchingRule, $tokens);
+        $this->_parseLDAPSchemaSyntax($matchingRule, $tokens);
 
         $this->_ensureNameAttribute($matchingRule);
 
@@ -387,7 +393,7 @@ class Zend_Ldap_Node_Schema_OpenLdap extends Zend_Ldap_Node_Schema
 
         $tokens = $this->_tokenizeString($value);
         $matchingRuleUse['oid'] = array_shift($tokens); // first token is the oid
-        $this->_parseLdapSchemaSyntax($matchingRuleUse, $tokens);
+        $this->_parseLDAPSchemaSyntax($matchingRuleUse, $tokens);
 
         $this->_ensureNameAttribute($matchingRuleUse);
 
@@ -422,7 +428,7 @@ class Zend_Ldap_Node_Schema_OpenLdap extends Zend_Ldap_Node_Schema
      * @param  array $tokens
      * @return void
      */
-    protected function _parseLdapSchemaSyntax(array &$data, array $tokens)
+    protected function _parseLDAPSchemaSyntax(array &$data, array $tokens)
     {
         // tokens that have no value associated
         $noValue = array('single-value',
@@ -449,11 +455,11 @@ class Zend_Ldap_Node_Schema_OpenLdap extends Zend_Ldap_Node_Schema
                     while ($tmp = array_shift($tokens)) {
                         if ($tmp == ')') break;
                         if ($tmp != '$') {
-                            $data[$token][] = Zend_Ldap_Attribute::convertFromLdapValue($tmp);
+                            $data[$token][] = LDAP\Attribute::convertFromLDAPValue($tmp);
                         }
                     }
                 } else {
-                    $data[$token] = Zend_Ldap_Attribute::convertFromLdapValue($data[$token]);
+                    $data[$token] = LDAP\Attribute::convertFromLDAPValue($data[$token]);
                 }
                 // create a array if the value should be multivalued but was not
                 if (in_array($token, $multiValue) && !is_array($data[$token])) {

@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,22 +21,22 @@
  */
 
 /**
- * Zend_Ldap_TestCase
+ * @namespace
  */
-/**
- * @see Zend_Ldap_Ldif_Encoder
- */
+namespace ZendTest\LDAP\Ldif;
+use Zend\LDAP\LDIF;
+
 
 /**
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Ldap
- * @group      Zend_Ldap_Ldif
+ * @group      Zend_LDAP
+ * @group      Zend_LDAP_Ldif
  */
-class Zend_Ldap_Ldif_SimpleEncoderTest extends Zend_Ldap_TestCase
+class SimpleEncoderTest extends \ZendTest\LDAP\TestCase
 {
     public static function stringEncodingProvider()
     {
@@ -68,7 +68,7 @@ class Zend_Ldap_Ldif_SimpleEncoderTest extends Zend_Ldap_TestCase
      */
     public function testStringEncoding($string, $expected)
     {
-        $this->assertEquals($expected, Zend_Ldap_Ldif_Encoder::encode($string));
+        $this->assertEquals($expected, LDIF\Encoder::encode($string));
     }
 
     public static function attributeEncodingProvider()
@@ -93,7 +93,7 @@ class Zend_Ldap_Ldif_SimpleEncoderTest extends Zend_Ldap_TestCase
      */
     public function testAttributeEncoding($array, $expected)
     {
-        $actual = Zend_Ldap_Ldif_Encoder::encode($array);
+        $actual = LDIF\Encoder::encode($array);
         $this->assertEquals($expected, $actual);
     }
 
@@ -101,7 +101,7 @@ class Zend_Ldap_Ldif_SimpleEncoderTest extends Zend_Ldap_TestCase
     {
         $input = '56789012345678901234567890';
         $expected = 'dn: 567890' . PHP_EOL . ' 1234567890' . PHP_EOL . ' 1234567890';
-        $output = Zend_Ldap_Ldif_Encoder::encode(array('dn' => $input), array('wrap' => 10));
+        $output = LDIF\Encoder::encode(array('dn' => $input), array('wrap' => 10));
         $this->assertEquals($expected, $output);
     }
 
@@ -119,13 +119,13 @@ class Zend_Ldap_Ldif_SimpleEncoderTest extends Zend_Ldap_TestCase
             'c: ' . PHP_EOL .
             'd: ' . PHP_EOL .
             'e: ';
-        $actual = Zend_Ldap_Ldif_Encoder::encode($data);
+        $actual = LDIF\Encoder::encode($data);
         $this->assertEquals($expected, $actual);
     }
 
     public function testEncodeUnsupportedType()
     {
-        $this->assertNull(Zend_Ldap_Ldif_Encoder::encode(new stdClass()));
+        $this->assertNull(LDIF\Encoder::encode(new \stdClass()));
     }
 
     public function testSorting()
@@ -149,7 +149,7 @@ class Zend_Ldap_Ldif_SimpleEncoderTest extends Zend_Ldap_TestCase
             'host: a' . PHP_EOL .
             'host: b' . PHP_EOL .
             'host: c';
-        $actual = Zend_Ldap_Ldif_Encoder::encode($data);
+        $actual = LDIF\Encoder::encode($data);
         $this->assertEquals($expected, $actual);
 
         $expected = 'version: 1' . PHP_EOL .
@@ -163,7 +163,7 @@ class Zend_Ldap_Ldif_SimpleEncoderTest extends Zend_Ldap_TestCase
             'boolean: FALSE' . PHP_EOL .
             'objectclass: account' . PHP_EOL .
             'objectclass: top';
-        $actual = Zend_Ldap_Ldif_Encoder::encode($data, array('sort' => false));
+        $actual = LDIF\Encoder::encode($data, array('sort' => false));
         $this->assertEquals($expected, $actual);
     }
 
@@ -184,7 +184,7 @@ class Zend_Ldap_Ldif_SimpleEncoderTest extends Zend_Ldap_TestCase
         $actual = $node->toLdif();
         $this->assertEquals($expected, $actual);
 
-        $actual = Zend_Ldap_Ldif_Encoder::encode($node);
+        $actual = LDIF\Encoder::encode($node);
         $this->assertEquals($expected, $actual);
     }
 
@@ -208,7 +208,7 @@ class Zend_Ldap_Ldif_SimpleEncoderTest extends Zend_Ldap_TestCase
             'host: a' . PHP_EOL .
             'host: b' . PHP_EOL .
             'host: c';
-        $actual = Zend_Ldap_Ldif_Encoder::encode($data, array('version' => null));
+        $actual = LDIF\Encoder::encode($data, array('version' => null));
         $this->assertEquals($expected, $actual);
     }
 
@@ -261,7 +261,7 @@ class Zend_Ldap_Ldif_SimpleEncoderTest extends Zend_Ldap_TestCase
             'sn;lang-en: Ogasawara' . PHP_EOL .
             'cn;lang-en: Rodney Ogasawara' . PHP_EOL .
             'title;lang-en: Sales, Director';
-        $actual = Zend_Ldap_Ldif_Encoder::encode($data, array('sort' => false, 'version' => null));
+        $actual = LDIF\Encoder::encode($data, array('sort' => false, 'version' => null));
         $this->assertEquals($expected, $actual);
     }
 }

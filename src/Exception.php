@@ -14,21 +14,26 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @version    $Id$
  */
 
 /**
- * @uses       Zend_Exception
+ * @namespace
+ */
+namespace Zend\LDAP;
+
+/**
+ * @uses       \Zend\Exception
  * @category   Zend
- * @package    Zend_Ldap
- * @uses       Zend_Exception
+ * @package    Zend_LDAP
+ * @uses       \Zend\Exception
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Zend_Ldap_Exception extends Zend_Exception
+class Exception extends \Zend\Exception
 {
     const LDAP_SUCCESS                        = 0x00;
     const LDAP_OPERATIONS_ERROR               = 0x01;
@@ -113,11 +118,11 @@ class Zend_Ldap_Exception extends Zend_Exception
     const LDAP_X_EXTENSION_NOT_LOADED         = 0x7002;
 
     /**
-     * @param Zend_Ldap $ldap A Zend_Ldap object
+     * @param \Zend\LDAP\LDAP $ldap A \Zend\LDAP\LDAP object
      * @param string    $str  An informtive exception message
      * @param int       $code An LDAP error code
      */
-    public function __construct(Zend_Ldap $ldap = null, $str = null, $code = 0)
+    public function __construct(LDAP $ldap = null, $str = null, $code = 0)
     {
         $errorMessages = array();
         $message = '';
@@ -147,10 +152,10 @@ class Zend_Ldap_Exception extends Zend_Exception
 
     /**
      * @deprecated not necessary any more - will be removed
-     * @param Zend_Ldap $ldap A Zend_Ldap object
+     * @param \Zend\LDAP\LDAP $ldap A \Zend\LDAP\LDAP object
      * @return int The current error code for the resource
      */
-    public static function getLdapCode(Zend_Ldap $ldap = null)
+    public static function getLDAPCode(LDAP $ldap = null)
     {
         if ($ldap !== null) {
             return $ldap->getLastErrorCode();

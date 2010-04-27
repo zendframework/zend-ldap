@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,21 +21,20 @@
  */
 
 /**
- * Test helper
+ * @namespace
  */
-/**
- * @see Zend_Ldap_Node
- */
+namespace ZendTest\LDAP;
+
 
 /**
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Ldap
+ * @group      Zend_LDAP
  */
-abstract class Zend_Ldap_TestCase extends PHPUnit_Framework_TestCase
+abstract class TestCase extends \PHPUnit_Framework_TestCase
 {
     /**
      * @return array
@@ -54,10 +53,10 @@ abstract class Zend_Ldap_TestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return Zend_Ldap_Node
+     * @return Zend_LDAP_Node
      */
     protected function _createTestNode()
     {
-        return Zend_Ldap_Node::fromArray($this->_createTestArrayData(), true);
+        return \Zend\LDAP\Node\Node::fromArray($this->_createTestArrayData(), true);
     }
 }

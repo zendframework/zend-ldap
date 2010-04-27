@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,17 +21,23 @@
  */
 
 /**
+ * @namespace
+ */
+namespace ZendTest\LDAP;
+use Zend\LDAP;
+
+/**
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Ldap
+ * @group      Zend_LDAP
  */
-abstract class Zend_Ldap_OnlineTestCase extends Zend_Ldap_TestCase
+abstract class OnlineTestCase extends TestCase
 {
     /**
-     * @var Zend_Ldap
+     * @var Zend_LDAP
      */
     private $_ldap;
 
@@ -41,9 +47,9 @@ abstract class Zend_Ldap_OnlineTestCase extends Zend_Ldap_TestCase
     private $_nodes;
 
     /**
-     * @return Zend_Ldap
+     * @return Zend_LDAP
      */
-    protected function _getLdap()
+    protected function _getLDAP()
     {
         return $this->_ldap;
     }
@@ -51,7 +57,7 @@ abstract class Zend_Ldap_OnlineTestCase extends Zend_Ldap_TestCase
     protected function setUp()
     {
         if (!constant('TESTS_ZEND_LDAP_ONLINE_ENABLED')) {
-            $this->markTestSkipped("Zend_Ldap online tests are not enabled");
+            $this->markTestSkipped("Zend_LDAP online tests are not enabled");
         }
 
         $options = array(
@@ -75,7 +81,7 @@ abstract class Zend_Ldap_OnlineTestCase extends Zend_Ldap_TestCase
         if (defined('TESTS_ZEND_LDAP_ACCOUNT_DOMAIN_NAME_SHORT'))
             $options['accountDomainNameShort'] = TESTS_ZEND_LDAP_ACCOUNT_DOMAIN_NAME_SHORT;
 
-        $this->_ldap=new Zend_Ldap($options);
+        $this->_ldap=new LDAP\LDAP($options);
         $this->_ldap->bind();
     }
 
@@ -93,10 +99,10 @@ abstract class Zend_Ldap_OnlineTestCase extends Zend_Ldap_TestCase
             $dn.=',';
         }
         $dn = $dn . TESTS_ZEND_LDAP_WRITEABLE_SUBTREE;
-        return Zend_Ldap_Dn::fromString($dn)->toString(Zend_Ldap_Dn::ATTR_CASEFOLD_LOWER);
+        return LDAP\DN::fromString($dn)->toString(LDAP\DN::ATTR_CASEFOLD_LOWER);
     }
 
-    protected function _prepareLdapServer()
+    protected function _prepareLDAPServer()
     {
         $this->_nodes=array(
             $this->_createDn('ou=Node,') =>
@@ -123,7 +129,7 @@ abstract class Zend_Ldap_OnlineTestCase extends Zend_Ldap_TestCase
         }
     }
 
-    protected function _cleanupLdapServer()
+    protected function _cleanupLDAPServer()
     {
         if (!constant('TESTS_ZEND_LDAP_ONLINE_ENABLED')) {
             return;

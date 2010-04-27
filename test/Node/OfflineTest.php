@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,22 +21,22 @@
  */
 
 /**
- * Zend_Ldap_TestCase
+ * @namespace
  */
-/**
- * Zend_Ldap_Node
- */
+namespace ZendTest\LDAP\Node;
+use Zend\LDAP\Node;
+use Zend\LDAP;
 
 /**
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Ldap
- * @group      Zend_Ldap_Node
+ * @group      Zend_LDAP
+ * @group      Zend_LDAP_Node
  */
-class Zend_Ldap_Node_OfflineTest extends Zend_Ldap_TestCase
+class OfflineTest extends \ZendTest\LDAP\TestCase
 {
     protected function _assertLocalDateTimeString($timestamp, $value)
     {
@@ -53,8 +53,8 @@ class Zend_Ldap_Node_OfflineTest extends Zend_Ldap_TestCase
     public function testCreateFromArrayStringDn()
     {
         $data=$this->_createTestArrayData();
-        $node=Zend_Ldap_Node::fromArray($data);
-        $this->assertType('Zend_Ldap_Node', $node);
+        $node=Node\Node::fromArray($data);
+        $this->assertType('Zend\LDAP\Node\Node', $node);
         $this->assertFalse($node->isAttached());
         $this->assertFalse($node->willBeDeleted());
         $this->assertFalse($node->willBeMoved());
@@ -64,48 +64,48 @@ class Zend_Ldap_Node_OfflineTest extends Zend_Ldap_TestCase
     public function testCreateFromArrayObjectDn()
     {
         $data=$this->_createTestArrayData();
-        $data['dn']=Zend_Ldap_Dn::fromString($data['dn']);
-        $node=Zend_Ldap_Node::fromArray($data);
-        $this->assertType('Zend_Ldap_Node', $node);
+        $data['dn']=LDAP\DN::fromString($data['dn']);
+        $node=Node\Node::fromArray($data);
+        $this->assertType('Zend\LDAP\Node\Node', $node);
         $this->assertFalse($node->isAttached());
     }
 
     /**
-     * @expectedException Zend_Ldap_Exception
+     * @expectedException Zend\LDAP\Exception
      */
     public function testCreateFromArrayMissingDn()
     {
         $data=$this->_createTestArrayData();
         unset($data['dn']);
-        $node=Zend_Ldap_Node::fromArray($data);
+        $node=Node\Node::fromArray($data);
     }
 
     /**
-     * @expectedException Zend_Ldap_Exception
+     * @expectedException Zend\LDAP\Exception
      */
     public function testCreateFromArrayIllegalDn()
     {
         $data=$this->_createTestArrayData();
         $data['dn']=5;
-        $node=Zend_Ldap_Node::fromArray($data);
+        $node=Node\Node::fromArray($data);
     }
 
     /**
-     * @expectedException Zend_Ldap_Exception
+     * @expectedException Zend\LDAP\Exception
      */
     public function testCreateFromArrayMalformedDn()
     {
         $data=$this->_createTestArrayData();
         $data['dn']='name1,cn=name2,dc=example,dc=org';
-        $node=Zend_Ldap_Node::fromArray($data);
+        $node=Node\Node::fromArray($data);
     }
 
     public function testCreateFromArrayAndEnsureRdnValues()
     {
         $data=$this->_createTestArrayData();
-        $data['dn']=Zend_Ldap_Dn::fromString($data['dn']);
-        $node=Zend_Ldap_Node::fromArray($data);
-        $this->assertType('Zend_Ldap_Node', $node);
+        $data['dn']=LDAP\DN::fromString($data['dn']);
+        $node=Node\Node::fromArray($data);
+        $this->assertType('Zend\LDAP\Node\Node', $node);
         $this->assertFalse($node->isAttached());
         unset($data['dn']);
         $this->assertEquals($data, $node->getData());
@@ -114,23 +114,23 @@ class Zend_Ldap_Node_OfflineTest extends Zend_Ldap_TestCase
     public function testGetDnString()
     {
         $data=$this->_createTestArrayData();
-        $node=Zend_Ldap_Node::fromArray($data);
+        $node=Node\Node::fromArray($data);
         $this->assertEquals($data['dn'], $node->getDnString());
     }
 
     public function testGetDnArray()
     {
         $data=$this->_createTestArrayData();
-        $node=Zend_Ldap_Node::fromArray($data);
-        $exA=Zend_Ldap_Dn::explodeDn($data['dn']);
+        $node=Node\Node::fromArray($data);
+        $exA=LDAP\DN::explodeDn($data['dn']);
         $this->assertEquals($exA, $node->getDnArray());
     }
 
     public function testGetDnObject()
     {
         $data=$this->_createTestArrayData();
-        $node=Zend_Ldap_Node::fromArray($data);
-        $compareDn=Zend_Ldap_Dn::fromString('cn=name,dc=example,dc=org');
+        $node=Node\Node::fromArray($data);
+        $compareDn=LDAP\DN::fromString('cn=name,dc=example,dc=org');
         $this->assertEquals($compareDn, $node->getDn());
         $this->assertNotSame($node->getDn(), $node->getDn());
     }
@@ -189,7 +189,7 @@ class Zend_Ldap_Node_OfflineTest extends Zend_Ldap_TestCase
     public function testGetData()
     {
         $data=$this->_createTestArrayData();
-        $node=Zend_Ldap_Node::fromArray($data);
+        $node=Node\Node::fromArray($data);
         ksort($data, SORT_STRING);
         unset($data['dn']);
         $this->assertEquals($data, $node->getData());
@@ -301,7 +301,7 @@ class Zend_Ldap_Node_OfflineTest extends Zend_Ldap_TestCase
         $this->assertTrue($node->existsAttribute('key', true));
         $this->assertFalse($node->existsAttribute('key', false));
 
-        $node->setPasswordAttribute('pa$$w0rd', Zend_Ldap_Attribute::PASSWORD_HASH_MD5);
+        $node->setPasswordAttribute('pa$$w0rd', LDAP\Attribute::PASSWORD_HASH_MD5);
         $this->assertEquals('{MD5}bJuLJ96h3bhF+WqiVnxnVA==', $node->getAttribute('userPassword', 0));
         $this->assertTrue($node->existsAttribute('userPassword', true));
         $this->assertTrue($node->existsAttribute('userPassword', false));
@@ -324,7 +324,7 @@ class Zend_Ldap_Node_OfflineTest extends Zend_Ldap_TestCase
     }
 
     /**
-     * @expectedException Zend_Ldap_Exception
+     * @expectedException Zend\LDAP\Exception
      */
     public function testIllegalAttributeAccessRdnAttributeSet()
     {
@@ -333,7 +333,7 @@ class Zend_Ldap_Node_OfflineTest extends Zend_Ldap_TestCase
     }
 
     /**
-     * @expectedException Zend_Ldap_Exception
+     * @expectedException Zend\LDAP\Exception
      */
     public function testIllegalAttributeAccessDnSet()
     {
@@ -364,7 +364,7 @@ class Zend_Ldap_Node_OfflineTest extends Zend_Ldap_TestCase
     {
         $dn='cn=name,dc=example,dc=org';
         $objectClass=array('account', 'test', 'inetOrgPerson');
-        $node=Zend_Ldap_Node::create($dn, $objectClass);
+        $node=Node\Node::create($dn, $objectClass);
         $this->assertEquals($dn, $node->getDnString());
         $this->assertEquals('cn=name', $node->getRdnString());
         $this->assertEquals('name', $node->cn[0]);
@@ -400,7 +400,7 @@ class Zend_Ldap_Node_OfflineTest extends Zend_Ldap_TestCase
     public function testRenameNodeString()
     {
         $data=$this->_createTestArrayData();
-        $node=Zend_Ldap_Node::fromArray($data);
+        $node=Node\Node::fromArray($data);
 
         $newDnString='cn=test+ou=Lab+uid=tester,cn=name,dc=example,dc=org';
         $node->setDn($newDnString);
@@ -418,7 +418,7 @@ class Zend_Ldap_Node_OfflineTest extends Zend_Ldap_TestCase
     public function testRenameNodeArray()
     {
         $data=$this->_createTestArrayData();
-        $node=Zend_Ldap_Node::fromArray($data);
+        $node=Node\Node::fromArray($data);
 
         $newDnArray=array(
             array('uid' => 'tester'),
@@ -434,9 +434,9 @@ class Zend_Ldap_Node_OfflineTest extends Zend_Ldap_TestCase
     public function testRenameNodeDnObject()
     {
         $data=$this->_createTestArrayData();
-        $node=Zend_Ldap_Node::fromArray($data);
+        $node=Node\Node::fromArray($data);
 
-        $newDn=Zend_Ldap_Dn::fromString('cn=test+ou=Lab+uid=tester,cn=name,dc=example,dc=org');
+        $newDn=LDAP\DN::fromString('cn=test+ou=Lab+uid=tester,cn=name,dc=example,dc=org');
         $node->setDn($newDn);
         $this->assertEquals($data['dn'], $node->getCurrentDn()->toString());
         $this->assertEquals($newDn, $node->getDn());
@@ -459,18 +459,18 @@ class Zend_Ldap_Node_OfflineTest extends Zend_Ldap_TestCase
     public function testDnObjectCloning()
     {
         $node1=$this->_createTestNode();
-        $dn1=Zend_Ldap_Dn::fromString('cn=name2,dc=example,dc=org');
+        $dn1=LDAP\DN::fromString('cn=name2,dc=example,dc=org');
         $node1->setDn($dn1);
         $dn1->prepend(array('cn' => 'name'));
         $this->assertNotEquals($dn1->toString(), $node1->getDn()->toString());
 
-        $dn2=Zend_Ldap_Dn::fromString('cn=name2,dc=example,dc=org');
-        $node2=Zend_Ldap_Node::create($dn2);
+        $dn2=LDAP\DN::fromString('cn=name2,dc=example,dc=org');
+        $node2=Node\Node::create($dn2);
         $dn2->prepend(array('cn' => 'name'));
         $this->assertNotEquals($dn2->toString(), $node2->getDn()->toString());
 
-        $dn3=Zend_Ldap_Dn::fromString('cn=name2,dc=example,dc=org');
-        $node3=Zend_Ldap_Node::fromArray(array(
+        $dn3=LDAP\DN::fromString('cn=name2,dc=example,dc=org');
+        $node3=Node\Node::fromArray(array(
             'dn' => $dn3,
             'ou' => 'Test'), false);
         $dn3->prepend(array('cn' => 'name'));
@@ -496,7 +496,7 @@ class Zend_Ldap_Node_OfflineTest extends Zend_Ldap_TestCase
             )
         ), $changes);
 
-        $node=Zend_Ldap_Node::create('uid=test,dc=example,dc=org', array('account'));
+        $node=Node\Node::create('uid=test,dc=example,dc=org', array('account'));
         $node->host='host';
         unset($node->cn);
         unset($node['sn']);

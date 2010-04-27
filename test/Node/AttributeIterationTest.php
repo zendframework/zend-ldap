@@ -13,7 +13,7 @@
  * to license@zend.com so we can send you a copy immediately.
  *
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
@@ -21,22 +21,21 @@
  */
 
 /**
- * Zend_Ldap_TestCase
+ * @namespace
  */
-/**
- * @see Zend_Ldap_Node
- */
+namespace ZendTest\LDAP\Node;
+
 
 /**
  * @category   Zend
- * @package    Zend_Ldap
+ * @package    Zend_LDAP
  * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2010 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @group      Zend_Ldap
- * @group      Zend_Ldap_Node
+ * @group      Zend_LDAP
+ * @group      Zend_LDAP_Node
  */
-class Zend_Ldap_Node_AttributeIterationTest extends Zend_Ldap_TestCase
+class AttributeIterationTest extends \ZendTest\LDAP\TestCase
 {
     public function testSimpleIteration()
     {
