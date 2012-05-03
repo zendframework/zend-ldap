@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Zend Framework
  *
@@ -19,16 +18,17 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace Zend\Ldap;
+namespace Zend\Ldap\Exception;
+
+use Zend\Ldap\Ldap;
 
 /**
- * @uses       \Exception
  * @category   Zend
  * @package    Zend_Ldap
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class Exception extends \Exception
+class LdapException extends \Exception implements ExceptionInterface
 {
     const LDAP_SUCCESS                        = 0x00;
     const LDAP_OPERATIONS_ERROR               = 0x01;
@@ -109,24 +109,24 @@ class Exception extends \Exception
 
     /* internal error code constants */
 
-    const LDAP_X_DOMAIN_MISMATCH              = 0x7001;
-    const LDAP_X_EXTENSION_NOT_LOADED         = 0x7002;
+    const LDAP_X_DOMAIN_MISMATCH      = 0x7001;
+    const LDAP_X_EXTENSION_NOT_LOADED = 0x7002;
 
     /**
-     * @param \Zend\Ldap\Ldap $ldap A \Zend\Ldap\Ldap object
-     * @param string    $str  An informtive exception message
-     * @param int       $code An LDAP error code
+     * @param Ldap   $ldap Zend\Ldap\Ldap object
+     * @param string $str  Informative exception message
+     * @param int    $code LDAP error code
      */
-    public function __construct(LDAP $ldap = null, $str = null, $code = 0)
+    public function __construct(Ldap $ldap = null, $str = null, $code = 0)
     {
         $errorMessages = array();
-        $message = '';
+        $message       = '';
         if ($ldap !== null) {
             $oldCode = $code;
             $message = $ldap->getLastError($code, $errorMessages) . ': ';
             if ($code === 0) {
                 $message = '';
-                $code = $oldCode;
+                $code    = $oldCode;
             }
         }
         if (empty($message)) {
@@ -142,28 +142,5 @@ class Exception extends \Exception
         }
 
         parent::__construct($message, $code);
-    }
-
-
-    /**
-     * @deprecated not necessary any more - will be removed
-     * @param \Zend\Ldap\Ldap $ldap A \Zend\Ldap\Ldap object
-     * @return int The current error code for the resource
-     */
-    public static function getLDAPCode(LDAP $ldap = null)
-    {
-        if ($ldap !== null) {
-            return $ldap->getLastErrorCode();
-        }
-        return 0;
-    }
-
-    /**
-     * @deprecated will be removed
-     * @return int The current error code for this exception
-     */
-    public function getErrorCode()
-    {
-        return $this->getCode();
     }
 }

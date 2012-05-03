@@ -14,21 +14,46 @@
  *
  * @category   Zend
  * @package    Zend_Ldap
- * @subpackage Filter
+ * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace Zend\Ldap\Filter;
+namespace ZendTest\Ldap;
+
+use Zend\Ldap\Node;
 
 /**
- * @uses       \Exception
  * @category   Zend
  * @package    Zend_Ldap
- * @subpackage Filter
+ * @subpackage UnitTests
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
+ * @group      Zend_Ldap
  */
-class Exception extends \Exception
+abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @return array
+     */
+    protected function createTestArrayData()
+    {
+        $data = array(
+            'dn'          => 'cn=name,dc=example,dc=org',
+            'cn'          => array('name'),
+            'host'        => array('a', 'b', 'c'),
+            'empty'       => array(),
+            'boolean'     => array('TRUE', 'FALSE'),
+            'objectclass' => array('account', 'top'),
+        );
+        return $data;
+    }
+
+    /**
+     * @return Node
+     */
+    protected function createTestNode()
+    {
+        return Node::fromArray($this->createTestArrayData(), true);
+    }
 }
