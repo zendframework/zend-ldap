@@ -19,12 +19,9 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-/**
- * @namespace
- */
 namespace ZendTest\Ldap;
-use Zend\Ldap;
 
+use Zend\Ldap\Node;
 
 /**
  * @category   Zend
@@ -34,31 +31,29 @@ use Zend\Ldap;
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @group      Zend_Ldap
  */
-class ConverterTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
 {
-    public function testAsc2hex32()
+    /**
+     * @return array
+     */
+    protected function createTestArrayData()
     {
-        $expected='\00\01\02\03\04\05\06\07\08\09\0a\0b\0c\0d\0e\0f\10\11\12\13\14\15\16\17\18\19' .
-            '\1a\1b\1c\1d\1e\1f !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`' .
-            'abcdefghijklmnopqrstuvwxyz{|}~';
-        $str='';
-        for ($i=0; $i<127; $i++) {
-             $str.=chr($i);
-        }
-        $this->assertEquals($expected, Ldap\Converter::ascToHex32($str));
+        $data = array(
+            'dn'          => 'cn=name,dc=example,dc=org',
+            'cn'          => array('name'),
+            'host'        => array('a', 'b', 'c'),
+            'empty'       => array(),
+            'boolean'     => array('TRUE', 'FALSE'),
+            'objectclass' => array('account', 'top'),
+        );
+        return $data;
     }
 
-    public function testHex2asc()
+    /**
+     * @return Node
+     */
+    protected function createTestNode()
     {
-        $expected='';
-        for ($i=0; $i<127; $i++) {
-             $expected.=chr($i);
-        }
-
-        $str='\00\01\02\03\04\05\06\07\08\09\0a\0b\0c\0d\0e\0f\10\11\12\13\14\15\16\17\18\19\1a\1b' .
-            '\1c\1d\1e\1f !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefg' .
-            'hijklmnopqrstuvwxyz{|}~';
-        $this->assertEquals($expected, Ldap\Converter::hex32ToAsc($str));
+        return Node::fromArray($this->createTestArrayData(), true);
     }
 }
-

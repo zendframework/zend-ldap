@@ -14,31 +14,18 @@
  *
  * @category   Zend
  * @package    Zend_Ldap
- * @subpackage Filter
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
-namespace Zend\Ldap\Filter;
+namespace Zend\Ldap\Converter\Exception;
 
 /**
- * Zend\Ldap\Filter\OrFilter provides an 'or' filter.
- *
  * @category   Zend
  * @package    Zend_Ldap
- * @subpackage Filter
  * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-class OrFilter extends AbstractLogicalFilter
+class UnexpectedValueException extends \UnexpectedValueException implements ExceptionInterface
 {
-    /**
-     * Creates an 'or' grouping filter.
-     *
-     * @param array $subfilters
-     */
-    public function __construct(array $subfilters)
-    {
-        parent::__construct($subfilters, self::TYPE_OR);
-    }
 }
