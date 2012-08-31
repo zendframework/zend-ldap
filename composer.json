@@ -1,0 +1,40 @@
+{
+    "name": "zendframework/zend-ldap",
+    "description": "provides support for LDAP operations including but not limited to binding, searching and modifying entries in an LDAP directory",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "zf2",
+        "ldap"
+    ],
+    "homepage": "https://github.com/zendframework/zend-ldap",
+    "autoload": {
+        "psr-4": {
+            "Zend\\Ldap": "src/"
+        }
+    },
+    "require": {
+        "php": ">=5.3.3",
+        "ext-ldap": "*",
+        "zendframework/zend-stdlib": "self.version"
+    },
+    "require-dev": {
+        "zendframework/zend-eventmanager": "self.version",
+        "fabpot/php-cs-fixer": "1.7.*",
+        "satooshi/php-coveralls": "dev-master",
+        "phpunit/PHPUnit": "~4.0"
+    },
+    "suggest": {
+        "zendframework/zend-eventmanager": "Zend\\EventManager component"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.4-dev",
+            "dev-develop": "2.5-dev"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ZendTest\\Ldap\\": "test/"
+        }
+    }
+}
