@@ -9,7 +9,7 @@
     "homepage": "https://github.com/zendframework/zend-ldap",
     "autoload": {
         "psr-4": {
-            "Zend\\Ldap": "src/"
+            "Zend\\Ldap\\": "src/"
         }
     },
     "require": {
