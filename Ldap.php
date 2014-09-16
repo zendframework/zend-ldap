@@ -758,10 +758,6 @@ class Ldap
     {
         $moreCreds = true;
 
-        // Security check: remove null bytes in password
-        // @see https://net.educause.edu/ir/library/pdf/csd4875.pdf
-        $password = str_replace("\0", '', $password);
-
         if ($username === null) {
             $username  = $this->getUsername();
             $password  = $this->getPassword();
