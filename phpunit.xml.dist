@@ -28,7 +28,7 @@
              functionality works as expected. Such tests include those for
              Zend\Soap and Zend\Session, which require that headers not be sent
              in order to work. -->
-        <const name="TESTS_ZEND_OB_ENABLED" value="false" />
+        <env name="TESTS_ZEND_OB_ENABLED" value="false" />
 
         <!-- Zend\Ldap online tests
 
@@ -62,22 +62,22 @@
                                 ALT_DN: CN=Alice Baker,OU=Sales,DC=foo,DC=net
                           ALT_PASSWORD: apass
         -->
-        <const name="TESTS_ZEND_LDAP_ONLINE_ENABLED" value="false" />
-        <const name="TESTS_ZEND_LDAP_HOST" value="localhost" />
-        <const name="TESTS_ZEND_LDAP_PORT" value="389" />
-        <const name="TESTS_ZEND_LDAP_USE_START_TLS" value="true" />
-        <const name="TESTS_ZEND_LDAP_USE_SSL" value="false" />
-        <const name="TESTS_ZEND_LDAP_USERNAME" value="CN=someUser,DC=example,DC=com" />
-        <const name="TESTS_ZEND_LDAP_PRINCIPAL_NAME" value="someUser@example.com" />
-        <const name="TESTS_ZEND_LDAP_PASSWORD" value="" />
-        <const name="TESTS_ZEND_LDAP_BIND_REQUIRES_DN" value="true" />
-        <const name="TESTS_ZEND_LDAP_BASE_DN" value="OU=Sales,DC=example,DC=com" />
-        <const name="TESTS_ZEND_LDAP_ACCOUNT_FILTER_FORMAT" value="(&amp;(objectClass=posixAccount)(uid=%s))" />
-        <const name="TESTS_ZEND_LDAP_ACCOUNT_DOMAIN_NAME" value="example.com" />
-        <const name="TESTS_ZEND_LDAP_ACCOUNT_DOMAIN_NAME_SHORT" value="EXAMPLE" />
-        <const name="TESTS_ZEND_LDAP_ALT_USERNAME" value="anotherUser" />
-        <const name="TESTS_ZEND_LDAP_ALT_DN" value="CN=Another User,OU=Sales,DC=example,DC=com" />
-        <const name="TESTS_ZEND_LDAP_ALT_PASSWORD" value="" />
-        <const name="TESTS_ZEND_LDAP_WRITEABLE_SUBTREE" value="OU=Test,OU=Sales,DC=example,DC=com" />
+        <env name="TESTS_ZEND_LDAP_ONLINE_ENABLED" value="false" />
+        <env name="TESTS_ZEND_LDAP_HOST" value="localhost" />
+        <env name="TESTS_ZEND_LDAP_PORT" value="389" />
+        <env name="TESTS_ZEND_LDAP_USE_START_TLS" value="true" />
+        <env name="TESTS_ZEND_LDAP_USE_SSL" value="false" />
+        <env name="TESTS_ZEND_LDAP_USERNAME" value="CN=someUser,DC=example,DC=com" />
+        <env name="TESTS_ZEND_LDAP_PRINCIPAL_NAME" value="someUser@example.com" />
+        <env name="TESTS_ZEND_LDAP_PASSWORD" value="" />
+        <env name="TESTS_ZEND_LDAP_BIND_REQUIRES_DN" value="true" />
+        <env name="TESTS_ZEND_LDAP_BASE_DN" value="OU=Sales,DC=example,DC=com" />
+        <env name="TESTS_ZEND_LDAP_ACCOUNT_FILTER_FORMAT" value="(&amp;(objectClass=posixAccount)(uid=%s))" />
+        <env name="TESTS_ZEND_LDAP_ACCOUNT_DOMAIN_NAME" value="example.com" />
+        <env name="TESTS_ZEND_LDAP_ACCOUNT_DOMAIN_NAME_SHORT" value="EXAMPLE" />
+        <env name="TESTS_ZEND_LDAP_ALT_USERNAME" value="anotherUser" />
+        <env name="TESTS_ZEND_LDAP_ALT_DN" value="CN=Another User,OU=Sales,DC=example,DC=com" />
+        <env name="TESTS_ZEND_LDAP_ALT_PASSWORD" value="" />
+        <env name="TESTS_ZEND_LDAP_WRITEABLE_SUBTREE" value="OU=Test,OU=Sales,DC=example,DC=com" />
     </php>
 </phpunit>
