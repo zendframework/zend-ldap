@@ -34,12 +34,12 @@ class CanonTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped("Zend_Ldap online tests are not enabled");
         }
 
-        $this->options = array(
+        $this->options = [
             'host'     => getenv('TESTS_ZEND_LDAP_HOST'),
             'username' => getenv('TESTS_ZEND_LDAP_USERNAME'),
             'password' => getenv('TESTS_ZEND_LDAP_PASSWORD'),
             'baseDn'   => getenv('TESTS_ZEND_LDAP_BASE_DN'),
-        );
+        ];
         if (getenv('TESTS_ZEND_LDAP_PORT')) {
             $this->options['port'] = getenv('TESTS_ZEND_LDAP_PORT');
         }
