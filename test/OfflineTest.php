@@ -12,6 +12,7 @@ namespace ZendTest\Ldap;
 use Zend\Config;
 use Zend\Ldap;
 use Zend\Ldap\Exception;
+use phpmock\phpunit\PHPMock;
 
 /**
  * @group      Zend_Ldap
@@ -19,6 +20,8 @@ use Zend\Ldap\Exception;
  */
 class OfflineTest extends \PHPUnit_Framework_TestCase
 {
+    use PHPMock;
+
     /**
      * Zend\Ldap\Ldap instance
      *
@@ -110,5 +113,71 @@ class OfflineTest extends \PHPUnit_Framework_TestCase
                                  'networkTimeout'         => null,
                             ], $ldap->getOptions()
         );
+    }
+
+    /**
+     * @dataProvider removingAttributesProvider
+     */
+    public function testRemovingAttributes($dn, $attributes, $allowEmptyAttributes, $expectedDn, $expectedAttributesToRemove)
+    {
+        $ldap_mod_del = $this->getFunctionMock('Zend\\Ldap', "ldap_mod_del");
+        $ldap_mod_del->expects($this->once())
+                     ->with(
+                         $this->isNull(),
+                         $this->equalTo($expectedDn),
+                         $this->equalTo($expectedAttributesToRemove)
+                     )
+                     ->willReturn(true);
+
+        $ldap = new \Zend\Ldap\Ldap();
+        $this->assertSame($ldap, $ldap->deleteAttributes($dn, $attributes, $allowEmptyAttributes));
+    }
+
+    public function removingAttributesProvider()
+    {
+        return [
+            // Description => [dn, attributes, allow empty attributes, expected dn, expected attributes to remove]
+            'every attribute is used' => [
+                'foo',
+                ['foo' => 'bar'],
+                false,
+                'foo',
+                ['foo' => 'bar']
+            ],
+            'Empty baz is removed' => [
+                'foo',
+                ['foo' => 'bar', 'baz' => []],
+                false,
+                'foo',
+                ['foo' => 'bar']
+            ],
+            'Empty baz is kept due to set $emptyAll-parameter' => [
+                'foo',
+                ['foo' => 'bar', 'baz' => []],
+                true,
+                'foo',
+                ['foo' => 'bar', 'baz' => []]
+            ],
+            'DN is provided as DN-Object, not string' => [
+                \Zend\Ldap\Dn::fromString('dc=foo'),
+                ['foo' => 'bar', 'baz' => []],
+                true,
+                'dc=foo',
+                ['foo' => 'bar', 'baz' => []]
+            ],
+        ];
+    }
+
+    /**
+     * @expectedException \Zend\Ldap\Exception\LdapException
+     */
+    public function testRemovingAttributesFails()
+    {
+        $ldap_mod_del = $this->getFunctionMock('Zend\\Ldap', 'ldap_mod_del');
+        $ldap_mod_del->expects($this->once())
+                     ->willReturn(false);
+
+        $ldap = new \Zend\Ldap\Ldap();
+        $ldap->deleteAttributes('foo', ['bar']);
     }
 }
