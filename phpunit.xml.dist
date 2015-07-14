@@ -79,5 +79,6 @@
         <env name="TESTS_ZEND_LDAP_ALT_DN" value="uid=user1,dc=example,dc=com" />
         <env name="TESTS_ZEND_LDAP_ALT_PASSWORD" value="user1" />
         <env name="TESTS_ZEND_LDAP_WRITEABLE_SUBTREE" value="ou=test,dc=example,dc=com" />
+        <env name="TESTS_ZEND_LDAP_ANONYMOUS_BIND_ALLOWED" value="true"/>
     </php>
 </phpunit>
