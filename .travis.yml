@@ -30,6 +30,9 @@ notifications:
   irc: "irc.freenode.org#zftalk.dev"
   email: false
 
+before_script:
+  - phpenv config-add .ci/php.ini || return 0
+
 before_install:
   - if [[ $EXECUTE_TEST_COVERALLS != 'true' ]]; then phpenv config-rm xdebug.ini || return 0 ; fi
   - composer self-update
