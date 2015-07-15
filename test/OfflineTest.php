@@ -54,17 +54,6 @@ class OfflineTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testException()
-    {
-        $e = new Exception\LdapException(null, '', 0);
-        $this->assertEquals('no exception message', $e->getMessage());
-        $this->assertEquals(0, $e->getCode());
-
-        $e = new Exception\LdapException(null, '', 15);
-        $this->assertEquals('0xf: no exception message', $e->getMessage());
-        $this->assertEquals(15, $e->getCode());
-    }
-
     public function testOptionsGetter()
     {
         $options = [
