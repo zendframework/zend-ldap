@@ -15,6 +15,7 @@ use Zend\Ldap\Exception;
 
 /**
  * @group      Zend_Ldap
+ * @requires extension ldap
  */
 class OfflineTest extends \PHPUnit_Framework_TestCase
 {
@@ -34,9 +35,6 @@ class OfflineTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        if (!extension_loaded('ldap')) {
-            $this->markTestSkipped('LDAP is not enabled');
-        }
         $this->ldap = new Ldap\Ldap();
     }
 
@@ -52,17 +50,6 @@ class OfflineTest extends \PHPUnit_Framework_TestCase
         } catch (Exception\LdapException $e) {
             $this->assertEquals("Unknown Zend\Ldap\Ldap option: $optionName", $e->getMessage());
         }
-    }
-
-    public function testException()
-    {
-        $e = new Exception\LdapException(null, '', 0);
-        $this->assertEquals('no exception message', $e->getMessage());
-        $this->assertEquals(0, $e->getCode());
-
-        $e = new Exception\LdapException(null, '', 15);
-        $this->assertEquals('0xf: no exception message', $e->getMessage());
-        $this->assertEquals(15, $e->getCode());
     }
 
     public function testOptionsGetter()
