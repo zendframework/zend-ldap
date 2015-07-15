@@ -15,6 +15,7 @@ use Zend\Ldap\Exception;
 
 /**
  * @group      Zend_Ldap
+ * @requires extension ldap
  */
 class OfflineTest extends \PHPUnit_Framework_TestCase
 {
@@ -34,9 +35,6 @@ class OfflineTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        if (!extension_loaded('ldap')) {
-            $this->markTestSkipped('LDAP is not enabled');
-        }
         $this->ldap = new Ldap\Ldap();
     }
 
