@@ -31,7 +31,12 @@ class ConnectTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped("Zend_Ldap online tests are not enabled");
         }
 
-        $this->options = ['host' => getenv('TESTS_ZEND_LDAP_HOST')];
+        $this->options = [
+            'host'     => getenv('TESTS_ZEND_LDAP_HOST'),
+            'username' => getenv('TESTS_ZEND_LDAP_USERNAME'),
+            'password' => getenv('TESTS_ZEND_LDAP_PASSWORD'),
+            'baseDn'   => getenv('TESTS_ZEND_LDAP_BASE_DN'),
+        ];
         if (getenv('TESTS_ZEND_LDAP_PORT') && getenv('TESTS_ZEND_LDAP_PORT') != 389) {
             $this->options['port'] = getenv('TESTS_ZEND_LDAP_PORT');
         }
@@ -131,19 +136,14 @@ class ConnectTest extends \PHPUnit_Framework_TestCase
 
     public function testExplicitNetworkTimeoutConnect()
     {
-        $networkTimeout = 1;
-        $host           = getenv('TESTS_ZEND_LDAP_HOST');
-        $port           = 0;
-        if (getenv('TESTS_ZEND_LDAP_PORT') && getenv('TESTS_ZEND_LDAP_PORT') != 389) {
-            $port = getenv('TESTS_ZEND_LDAP_PORT');
-        }
-        $useSsl = false;
-        if (getenv('TESTS_ZEND_LDAP_USE_SSL')) {
-            $useSsl = getenv('TESTS_ZEND_LDAP_USE_SSL');
+        $networkTimeout = rand(1, 100);
+        if (array_key_exists('networkTimeout', $this->options)) {
+            unset($this->options['networkTimeout']);
         }
 
-        $ldap = new Ldap\Ldap();
-        $ldap->connect($host, $port, $useSsl, null, $networkTimeout);
+        $ldap = new Ldap\Ldap($this->options);
+        $ldap->connect(null, null, null, null, $networkTimeout);
+
         ldap_get_option($ldap->getResource(), LDAP_OPT_NETWORK_TIMEOUT, $actual);
         $this->assertEquals($networkTimeout, $actual);
     }
