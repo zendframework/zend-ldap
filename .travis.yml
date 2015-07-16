@@ -11,6 +11,16 @@ cache:
   directories:
     - $HOME/.composer/cache
 
+addons:
+  apt:
+    packages:
+      - slapd
+      - ldap-utils
+
+env:
+  global:
+    - TESTS_ZEND_LDAP_ONLINE_ENABLED=true
+
 matrix:
   fast_finish: true
   include:
@@ -40,6 +50,8 @@ install:
 
 before_script:
   - phpenv config-add .ci/php.ini || return 0
+  - .ci/OpenLDAP_run.sh
+  - .ci/load_fixtures.sh
 
 script:
   - if [[ $EXECUTE_TEST_COVERALLS == 'true' ]]; then ./vendor/bin/phpunit --coverage-clover clover.xml ; fi
