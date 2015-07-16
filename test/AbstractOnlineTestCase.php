@@ -19,27 +19,10 @@ abstract class AbstractOnlineTestCase extends AbstractTestCase
     /**
      * @var Ldap\Ldap
      */
-    private $ldap;
+    private static $ldap;
 
-    /**
-     * @var array
-     */
-    private $nodes;
-
-    /**
-     * @return Ldap\Ldap
-     */
-    protected function getLDAP()
+    public static function setUpBeforeClass()
     {
-        return $this->ldap;
-    }
-
-    protected function setUp()
-    {
-        if (!getenv('TESTS_ZEND_LDAP_ONLINE_ENABLED')) {
-            $this->markTestSkipped("Zend_Ldap online tests are not enabled");
-        }
-
         $options = [
             'host'     => getenv('TESTS_ZEND_LDAP_HOST'),
             'username' => getenv('TESTS_ZEND_LDAP_USERNAME'),
@@ -68,16 +51,37 @@ abstract class AbstractOnlineTestCase extends AbstractTestCase
             $options['accountDomainNameShort'] = getenv('TESTS_ZEND_LDAP_ACCOUNT_DOMAIN_NAME_SHORT');
         }
 
-        $this->ldap = new Ldap\Ldap($options);
-        $this->ldap->bind();
+        self::$ldap = new Ldap\Ldap($options);
     }
 
-    protected function tearDown()
+    public static function tearDownAfterClass()
     {
-        if ($this->ldap !== null) {
-            $this->ldap->disconnect();
-            $this->ldap = null;
+        if (self::$ldap !== null) {
+            self::$ldap->disconnect();
+            self::$ldap = null;
         }
+    }
+
+    /**
+     * @var array
+     */
+    private $nodes;
+
+    /**
+     * @return Ldap\Ldap
+     */
+    protected function getLDAP()
+    {
+        return self::$ldap;
+    }
+
+    protected function setUp()
+    {
+        if (!getenv('TESTS_ZEND_LDAP_ONLINE_ENABLED')) {
+            $this->markTestSkipped("Zend_Ldap online tests are not enabled");
+        }
+
+        $this->getLDAP()->bind();
     }
 
     protected function createDn($dn)
@@ -125,7 +129,7 @@ abstract class AbstractOnlineTestCase extends AbstractTestCase
                   "l"           => "a"],
         ];
 
-        $ldap = $this->ldap->getResource();
+        $ldap = $this->getLDAP()->getResource();
         foreach ($this->nodes as $dn => $entry) {
             ldap_add($ldap, $dn, $entry);
         }
@@ -136,7 +140,7 @@ abstract class AbstractOnlineTestCase extends AbstractTestCase
         if (!getenv('TESTS_ZEND_LDAP_ONLINE_ENABLED')) {
             return;
         }
-        $ldap = $this->ldap->getResource();
+        $ldap = $this->getLDAP()->getResource();
         foreach (array_reverse($this->nodes) as $dn => $entry) {
             ldap_delete($ldap, $dn);
         }
