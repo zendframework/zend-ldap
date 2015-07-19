@@ -8,11 +8,6 @@ apt-get -yq --no-install-suggests --no-install-recommends --force-yes install sl
 sudo aa-complain /usr/sbin/slapd
 SCRIPT
 
-$configure_ldap = <<SCRIPT
-/vagrant/.ci/OpenLDAP_run.sh
-/vagrant/.ci/load_fixtures.sh
-SCRIPT
-
 $setup_vagrant_user_environment = <<SCRIPT
 if ! grep "cd /vagrant" /home/vagrant/.profile > /dev/null; then
   echo "cd /vagrant" >> /home/vagrant/.profile
@@ -26,6 +21,7 @@ Vagrant.configure(2) do |config|
   config.vm.network 'forwarded_port', guest: 3890, host: 3890
 
   config.vm.provision 'shell', inline: $install_ldap
-  config.vm.provision 'shell', inline: $configure_ldap, :run => 'always'
+  config.vm.provision 'shell', privileged: false, inline: '/vagrant/.ci/OpenLDAP_run.sh', :run => 'always'
+  config.vm.provision 'shell', privileged: false, inline: '/vagrant/.ci/load_fixtures.sh', :run => 'always'
   config.vm.provision 'shell', inline: $setup_vagrant_user_environment
 end
