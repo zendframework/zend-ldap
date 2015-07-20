@@ -24,7 +24,7 @@ use Zend\Ldap\Exception;
 class BindTest extends \PHPUnit_Framework_TestCase
 {
     protected $options = null;
-    protected $principalName;
+    protected $altPrincipalName;
     protected $altUsername;
     protected $bindRequiresDn = false;
 
@@ -64,7 +64,7 @@ class BindTest extends \PHPUnit_Framework_TestCase
         if (getenv('TESTS_ZEND_LDAP_ALT_USERNAME')) {
             $this->altUsername = getenv('TESTS_ZEND_LDAP_ALT_USERNAME');
         }
-        $this->principalName = getenv('TESTS_ZEND_LDAP_PRINCIPAL_NAME');
+        $this->altPrincipalName = getenv('TESTS_ZEND_LDAP_ALT_PRINCIPAL_NAME');
 
         if (isset($this->options['bindRequiresDn'])) {
             $this->bindRequiresDn = $this->options['bindRequiresDn'];
@@ -180,7 +180,7 @@ class BindTest extends \PHPUnit_Framework_TestCase
 
         $ldap = new Ldap\Ldap($options);
         try {
-            $ldap->bind($this->principalName);
+            $ldap->bind($this->altPrincipalName);
             $this->fail('Expected exception not thrown');
         } catch (Exception\LdapException $zle) {
             /* Note that if your server actually allows anonymous binds this test will fail.
