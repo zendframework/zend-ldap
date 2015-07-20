@@ -75,6 +75,31 @@ To do so:
  -  Edit `phpunit.xml` to enable any specific functionality you
     want to test, as well as to provide test values to utilize.
 
+### Execute tests against a real LDAP server
+
+This project provides a [Vagrant](https://www.vagrantup.com/) virtual machine definition with an OpenLDAP server
+installed and configured.
+
+To execute the tests against this server, do the following steps (assume you have Vagrant > 1.6 installed)
+
+1. Run the virtual machine with the LDAP server: `vagrant up`
+2. Enable online tests by setting the environment variable `TESTS_ZEND_LDAP_ONLINE_ENABLED` value to
+   `true`:
+
+```console
+$ export TESTS_ZEND_LDAP_ONLINE_ENABLED=true
+```
+
+3. Execute the unit tests via `phpunit`.
+
+Steps 2 and 3 can be combined:
+
+```console
+$ TESTS_ZEND_LDAP_ONLINE_ENABLED=true ./vendor/bin/phpunit
+```
+
+When done, you can halt the LDAP server using either `vagrant suspend` or `vagrant halt`.
+
 ## Running Coding Standards Checks
 
 This component uses [php-cs-fixer](http://cs.sensiolabs.org/) for coding
