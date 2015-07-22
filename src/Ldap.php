@@ -10,6 +10,7 @@
 namespace Zend\Ldap;
 
 use Traversable;
+use Zend\Ldap\Exception\LdapException;
 use Zend\Stdlib\ErrorHandler;
 
 class Ldap
@@ -1275,6 +1276,60 @@ class Ldap
         ErrorHandler::start(E_WARNING);
         $isDeleted = ldap_delete($resource, $dn);
         ErrorHandler::stop();
+        if ($isDeleted === false) {
+            throw new Exception\LdapException($this, 'deleting: ' . $dn);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Delete single attributes from a LDAP-Node
+     *
+     * This method removes single attributes from a node identified by
+     * <var>$dn</var>. The attributes have to be given as array where the
+     * array-key is the attribute-name and the array-value is the attribute-value
+     * that is to be removed.
+     *
+     * To remove multiple entries of an attribute pass an array with the values
+     * to be removed as value of the key. So if you want to remove more than
+     * one <strong>memberUid</strong>-attribute you would pass
+     * <code>array('memberUid' => ['uid1', 'uid2',...]);</code> as
+     * <var>$attributes</var>
+     *
+     * Beware that passing an empty array will remove <strong>all</strong>
+     * entries of the attribute. Therefore you will have to set the
+     * <var>$emptyAll</var>-flag!
+     *
+     * @param Dn|string $dn                   The DN for which to remove attributes
+     * @param array     $attributes           The attributes to be removed
+     * @param bool      $allowEmptyAttributes Whether empty attribute-array
+     *                                        should remove all attribute-
+     *                                        values or not.
+     *
+     * @throws LdapException is thrown when the LDAP-server reported an error
+     * @return Ldap Provides a fluent interface
+     */
+    public function deleteAttributes($dn, array $attributes, $allowEmptyAttributes = false)
+    {
+        // Safety-flap: Check whether there are empty arrays that would cause
+        // complete removal of entries without the emptyAll flag.
+        if ($allowEmptyAttributes !== true) {
+            foreach ($attributes as $key => $value) {
+                if (empty($value)) {
+                    unset($attributes[$key]);
+                }
+            }
+        }
+
+        if ($dn instanceof Dn) {
+            $dn = $dn->toString();
+        }
+
+        ErrorHandler::start(E_WARNING);
+        $isDeleted = ldap_mod_del($this->resource, $dn, $attributes);
+        ErrorHandler::stop();
+
         if ($isDeleted === false) {
             throw new Exception\LdapException($this, 'deleting: ' . $dn);
         }
