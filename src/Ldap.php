@@ -924,16 +924,12 @@ class Ldap
         if ($search === false) {
             throw new Exception\LdapException($this, 'searching: ' . $filter);
         }
-        if ($sort !== null && is_string($sort)) {
-            ErrorHandler::start(E_WARNING);
-            $isSorted = ldap_sort($resource, $search, $sort);
-            ErrorHandler::stop();
-            if ($isSorted === false) {
-                throw new Exception\LdapException($this, 'sorting: ' . $sort);
-            }
-        }
 
         $iterator = new Collection\DefaultIterator($this, $search);
+
+        if ($sort !== null && is_string($sort)) {
+            $iterator->sort($sort);
+        }
 
         return $this->createCollection($iterator, $collectionClass);
     }
