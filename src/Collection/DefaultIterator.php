@@ -196,14 +196,10 @@ class DefaultIterator implements Iterator, Countable
         }
 
         $entry         = ['dn' => $this->key()];
-        $berIdentifier = null;
 
         $resource = $this->ldap->getResource();
         ErrorHandler::start();
-        $name = ldap_first_attribute(
-            $resource, $this->current,
-            $berIdentifier
-        );
+        $name = ldap_first_attribute($resource, $this->current);
         ErrorHandler::stop();
 
         while ($name) {
@@ -236,10 +232,7 @@ class DefaultIterator implements Iterator, Countable
             $entry[$attrName] = $data;
 
             ErrorHandler::start();
-            $name = ldap_next_attribute(
-                $resource, $this->current,
-                $berIdentifier
-            );
+            $name = ldap_next_attribute($resource, $this->current);
             ErrorHandler::stop();
         }
         ksort($entry, SORT_LOCALE_STRING);
