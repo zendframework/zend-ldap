@@ -250,4 +250,50 @@ class ConnectTest extends \PHPUnit_Framework_TestCase
             $this->assertContains('Invalid credentials', $zle->getMessage());
         }
     }
+
+    /**
+     * This test checks whether the default ports are set correctly when no port
+     * is given in the configuration.
+     *
+     * This has been reported with issue 19 of Zend\Ldap
+     *
+     * @param string $host       The host to connect to
+     * @param bool   $ssl        Whether to use ssl or not
+     * @param strnig $connectUri The expected connectionURI
+     *
+     * @see https://github.com/zendframework/zend-ldap/issues/19
+     * @dataProvider connectionWithoutPortInOptionsArrayProvider
+     */
+    public function testConnectionWithoutPortInOptionsArray($host, $ssl, $connectURI)
+    {
+        $options = [
+            'host' => $host,
+            'useSsl' => $ssl,
+        ];
+
+        try {
+            $ldap = new \Zend\Ldap\Ldap($options);
+            $ldap->connect();
+
+            $r = new \ReflectionObject($ldap);
+            $p = $r->getProperty('connectString');
+            $p->setAccessible(true);
+            $this->assertEquals(
+                $connectURI,
+                $p->getValue($ldap)
+            );
+        } catch (Exception\LdapException $e) {
+            $this->fail($e->getMessage());
+        }
+    }
+
+    public function connectionWithoutPortInOptionsArrayProvider()
+    {
+        $host = getenv('TESTS_ZEND_LDAP_HOST');
+        return [
+            // ['host', 'boolean whether to use LDAPS or not', 'connectionURI'],
+            [$host, false, 'ldap://' . $host . ':389'],
+            [$host, true, 'ldaps://' . $host . ':636'],
+        ];
+    }
 }

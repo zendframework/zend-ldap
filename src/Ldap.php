@@ -669,16 +669,15 @@ class Ldap
         } else {
             $port = (int) $port;
         }
+
         if ($useSsl === null) {
             $useSsl = $this->getUseSsl();
         } else {
             $useSsl = (bool) $useSsl;
         }
 
-        if ($port === 0 && $useSsl) {
-            $port = 636;
-        } elseif ( $port === 0 && ! $useSsl) {
-            $port = 389;
+        if ($port === 0) {
+            $port = ($useSsl)?636:389;
         }
 
         if ($useStartTls === null) {
