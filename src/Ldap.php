@@ -674,6 +674,13 @@ class Ldap
         } else {
             $useSsl = (bool) $useSsl;
         }
+
+        if ($port === 0 && $useSsl) {
+            $port = 636;
+        } elseif ( $port === 0 && ! $useSsl) {
+            $port = 389;
+        }
+
         if ($useStartTls === null) {
             $useStartTls = $this->getUseStartTls();
         } else {
