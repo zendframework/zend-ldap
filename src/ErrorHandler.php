@@ -53,7 +53,7 @@ class ErrorHandler implements ErrorHandlerInterface
      */
     protected static function getErrorHandler()
     {
-        if (! self::$errorHandler && ! self::$errorHandler instanceof ErrorHandlerInterface){
+        if (! self::$errorHandler && ! self::$errorHandler instanceof ErrorHandlerInterface) {
             self::$errorHandler = new self();
         }
 
