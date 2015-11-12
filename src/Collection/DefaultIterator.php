@@ -13,7 +13,7 @@ use Countable;
 use Iterator;
 use Zend\Ldap;
 use Zend\Ldap\Exception;
-use Zend\Stdlib\ErrorHandler;
+use Zend\Ldap\ErrorHandler;
 
 /**
  * Zend\Ldap\Collection\DefaultIterator is the default collection iterator implementation
