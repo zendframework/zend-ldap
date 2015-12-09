@@ -252,15 +252,6 @@ class ConnectTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * This test checks whether the default ports are set correctly when no port
-     * is given in the configuration.
-     *
-     * This has been reported with issue 19 of Zend\Ldap
-     *
-     * @param string $host       The host to connect to
-     * @param bool   $ssl        Whether to use ssl or not
-     * @param strnig $connectUri The expected connectionURI
-     *
      * @see https://github.com/zendframework/zend-ldap/issues/19
      * @dataProvider connectionWithoutPortInOptionsArrayProvider
      */
@@ -271,20 +262,10 @@ class ConnectTest extends \PHPUnit_Framework_TestCase
             'useSsl' => $ssl,
         ];
 
-        try {
-            $ldap = new \Zend\Ldap\Ldap($options);
-            $ldap->connect();
+        $ldap = new Ldap\Ldap($options);
+        $ldap->connect();
 
-            $r = new \ReflectionObject($ldap);
-            $p = $r->getProperty('connectString');
-            $p->setAccessible(true);
-            $this->assertEquals(
-                $connectURI,
-                $p->getValue($ldap)
-            );
-        } catch (Exception\LdapException $e) {
-            $this->fail($e->getMessage());
-        }
+        $this->assertAttributeEquals($connectURI, 'connectString', $ldap);
     }
 
     public function connectionWithoutPortInOptionsArrayProvider()
