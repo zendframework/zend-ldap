@@ -677,7 +677,7 @@ class Ldap
         }
 
         if ($port === 0) {
-            $port = ($useSsl)?636:389;
+            $port = ($useSsl) ? 636 : 389;
         }
 
         if ($useStartTls === null) {
