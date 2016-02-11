@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.5.2 - TBD
+## 2.5.2 - 2016-02-11
 
 ### Added
 
@@ -24,4 +24,5 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#18](https://github.com/zendframework/zend-ldap/pull/18) Fixes an already
+  removed second parameter to ```ldap_first_attribute``` and ```ldap_next_attribute```
