@@ -2,11 +2,13 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.6.0 - TBD
+## 2.6.0 - 2016-02-11
 
 ### Added
 
-- Nothing.
+- [#6](https://github.com/zendframework/zend-ldap/pull/6) Adds a possibility 
+  to delete attributes without having to remove the complete node and add it
+  again without the attribute
 
 ### Deprecated
 
@@ -18,7 +20,9 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#16](https://github.com/zendframework/zend-ldap/pull/16) Fixed the usage of
+  ```ldap_sort``` during sorting search-results due to deprecation of 
+  ```ldap_sort``` in PHP 7
 
 ## 2.5.2 - 2016-02-11
 
