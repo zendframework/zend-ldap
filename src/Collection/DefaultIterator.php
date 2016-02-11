@@ -61,6 +61,27 @@ class DefaultIterator implements Iterator, Countable
     protected $attributeNameTreatment = self::ATTRIBUTE_TO_LOWER;
 
     /**
+     * This array holds a list of resources and sorting-values.
+     *
+     * Each result is represented by an array containing the keys <var>resource</var>
+     * which holds a resource of a result-item and the key <var>sortValue</var>
+     * which holds the value by which the array will be sorted.
+     *
+     * The resources will be filled on creating the instance and the sorting values
+     * on sorting.
+     *
+     * @var array
+     */
+    protected $entries = [];
+
+    /**
+     * The function to sort the entries by
+     *
+     * @var callable
+     */
+    protected $sortFunction;
+
+    /**
      * Constructor.
      *
      * @param  \Zend\Ldap\Ldap $ldap
@@ -70,6 +91,7 @@ class DefaultIterator implements Iterator, Countable
      */
     public function __construct(Ldap\Ldap $ldap, $resultId)
     {
+        $this->setSortFunction('strnatcasecmp');
         $this->ldap      = $ldap;
         $this->resultId  = $resultId;
 
@@ -79,6 +101,23 @@ class DefaultIterator implements Iterator, Countable
         ErrorHandler::stop();
         if ($this->itemCount === false) {
             throw new Exception\LdapException($this->ldap, 'counting entries');
+        }
+
+        $identifier = ldap_first_entry(
+            $ldap->getResource(),
+            $resultId
+        );
+
+        while (false !== $identifier) {
+            $this->entries[] = [
+                'resource' => $identifier,
+                'sortValue' => '',
+            ];
+
+            $identifier = ldap_next_entry(
+                $ldap->getResource(),
+                $identifier
+            );
         }
     }
 
@@ -269,53 +308,30 @@ class DefaultIterator implements Iterator, Countable
 
     /**
      * Move forward to next result item
-     * Implements Iterator
      *
-     * @throws \Zend\Ldap\Exception\LdapException
+     * @see Iterator
+     *
+     * @return void
      */
     public function next()
     {
-        $code = 0;
-
-        if (is_resource($this->current) && $this->itemCount > 0) {
-            $resource = $this->ldap->getResource();
-            ErrorHandler::start();
-            $this->current = ldap_next_entry($resource, $this->current);
-            ErrorHandler::stop();
-            if ($this->current === false) {
-                $msg = $this->ldap->getLastError($code);
-                if ($code === Exception\LdapException::LDAP_SIZELIMIT_EXCEEDED) {
-                    // we have reached the size limit enforced by the server
-                    return;
-                } elseif ($code > Exception\LdapException::LDAP_SUCCESS) {
-                    throw new Exception\LdapException($this->ldap, 'getting next entry (' . $msg . ')');
-                }
-            }
-        } else {
-            $this->current = false;
-        }
+        next($this->entries);
+        $nextEntry = current($this->entries);
+        $this->current = $nextEntry['resource'];
     }
 
     /**
      * Rewind the Iterator to the first result item
-     * Implements Iterator
      *
+     * @see Iterator
      *
-     * @throws \Zend\Ldap\Exception\LdapException
+     * @return void
      */
     public function rewind()
     {
-        if (is_resource($this->resultId)) {
-            $resource = $this->ldap->getResource();
-            ErrorHandler::start();
-            $this->current = ldap_first_entry($resource, $this->resultId);
-            ErrorHandler::stop();
-            if ($this->current === false
-                && $this->ldap->getLastErrorCode() > Exception\LdapException::LDAP_SUCCESS
-            ) {
-                throw new Exception\LdapException($this->ldap, 'getting first entry');
-            }
-        }
+        reset($this->entries);
+        $nextEntry = current($this->entries);
+        $this->current = $nextEntry['resource'];
     }
 
     /**
@@ -328,5 +344,61 @@ class DefaultIterator implements Iterator, Countable
     public function valid()
     {
         return (is_resource($this->current));
+    }
+
+    /**
+     * Set a sorting-algorithm for this iterator
+     *
+     * The callable has to accept two parameters that will be compared.
+     *
+     * @param callable $sortingAlgorithm The algorithm to be used for sorting
+     *
+     * @return DefaultIterator Provides a fluent interface
+     */
+    public function setSortFunction(callable $sortFunction)
+    {
+        $this->sortFunction = $sortFunction;
+
+        return $this;
+    }
+
+    /**
+     * Sort the iterator
+     *
+     * Sorting is done using the set sortFunction which is by default strnatcasecmp.
+     *
+     * The attribute is determined by lowercasing everything.
+     *
+     * The sort-value will be the first value of the attribute.
+     *
+     * @param string $sortAttribute The attribute to sort by. If not given the
+     *                              value set via setSortAttribute is used.
+     *
+     * @return void
+     */
+    public function sort($sortAttribute)
+    {
+        foreach ($this->entries as $key => $entry) {
+            $attributes = ldap_get_attributes(
+                $this->ldap->getResource(),
+                $entry['resource']
+            );
+
+            $attributes = array_change_key_case($attributes, CASE_LOWER);
+
+            if (isset($attributes[$sortAttribute][0])) {
+                $this->entries[$key]['sortValue'] =
+                    $attributes[$sortAttribute][0];
+            }
+        }
+
+        $sortFunction = $this->sortFunction;
+        $sorted = usort($this->entries, function ($a, $b) use ($sortFunction) {
+            return $sortFunction($a['sortValue'], $b['sortValue']);
+        });
+
+        if (! $sorted) {
+            throw new Exception\LdapException($this, 'sorting result-set');
+        }
     }
 }
