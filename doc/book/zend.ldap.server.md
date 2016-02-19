@@ -10,7 +10,7 @@ a given *LDAP* server.
 - [Novell
 eDirectory](http://www.novell.com/documentation/edir88/edir88/index.html?page=/documentation/edir88/edir88/data/ah59jqq.html)
 
-**Getting hands on the RootDSE**
+### Getting hands on the RootDSE
 
 ```php
 $options = array(/* ... */);
@@ -21,7 +21,7 @@ $serverType = $rootdse->getServerType();
 
 ## Schema Browsing
 
-**Getting hands on the server schema**
+### Getting hands on the server schema
 
 ```php
 $options = array(/* ... */);
@@ -30,9 +30,9 @@ $schema = $ldap->getSchema();
 $classes = $schema->getObjectClasses();
 ```
 
-### OpenLDAP
+#### OpenLDAP
 
-### ActiveDirectory
+#### ActiveDirectory
 
 > ## Note
 #### Schema browsing on ActiveDirectory servers
