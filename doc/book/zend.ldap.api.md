@@ -73,8 +73,6 @@ Converted to `FALSE`.
 **others**  
 All other strings won't be automatically converted and are passed as they are.
 
-<!-- -->
-
 orphan  
 
 # Zend\\Ldap\\Dn
