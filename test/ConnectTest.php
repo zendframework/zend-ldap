@@ -64,7 +64,19 @@ class ConnectTest extends \PHPUnit_Framework_TestCase
             $ldap->connect()->bind('CN=ignored,DC=example,DC=com', 'ignored');
             $this->fail('Expected exception for unknown host');
         } catch (Exception\LdapException $zle) {
-            $this->assertContains('Can\'t contact LDAP server', $zle->getMessage());
+            $alternatives = ['Can\'t contact LDAP server',
+                          'Failed to connect to LDAP server'];
+            $message = $zle->getMessage();
+            $found = false;
+
+            foreach($alternatives as $alternative){
+                if(strstr($message, $alternative)){
+                    $found = true;
+                    break;
+                }
+            }
+
+            $this->assertTrue($found, 'Found one of the expected failure messages');
         }
     }
 
