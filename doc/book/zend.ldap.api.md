@@ -10,24 +10,24 @@ through the `setOptions()` method. The permitted options are as follows:
 > ### Note
 Method names in **italics** are static methods.
 
-# Zend\\Ldap\\Ldap
+### Zend\\Ldap\\Ldap
 
 `Zend\Ldap\Ldap` is the base interface into a *LDAP* server. It provides connection and binding
 methods as well as methods to operate on the *LDAP* tree.
 
-## Zend\\Ldap\\Collection
+### Zend\\Ldap\\Collection
 
 `Zend\Ldap\Collection` implements *Iterator* to allow for item traversal using `foreach()` and
 *Countable* to be able to respond to `count()`. With its protected `createEntry()` method it
 provides a simple extension point for developers needing custom result objects.
 
-# Zend\\Ldap\\Attribute
+### Zend\\Ldap\\Attribute
 
 `Zend\Ldap\Attribute` is a helper class providing only static methods to manipulate arrays suitable
 to the structure used in `Zend\Ldap\Ldap` data modification methods and to the data format required
 by the *LDAP* server. *PHP* data types are converted using `Zend\Ldap\Converter\Converter` methods.
 
-# Zend\\Ldap\\Converter\\Converter
+### Zend\\Ldap\\Converter\\Converter
 
 `Zend\Ldap\Converter\Converter` is a helper class providing only static methods to manipulate arrays
 suitable to the data format required by the *LDAP* server. *PHP* data types are converted the
@@ -67,7 +67,7 @@ Converted to `FALSE`.
 **others**  
 All other strings won't be automatically converted and are passed as they are.
 
-# Zend\\Ldap\\Dn
+### Zend\\Ldap\\Dn
 
 `Zend\Ldap\Dn` provides an object-oriented interface to manipulating *LDAP* distinguished names
 (DN). The parameter `$caseFold` that is used in several methods determines the way DN attributes are
@@ -93,9 +93,9 @@ $offset)*, to `Zend\Ldap\Dn::set($offset, $value)` for `offsetSet()` and to
 `Zend\Ldap\Dn::remove($offset, 1)` for `offsetUnset()`. `offsetExists()` simply checks if the index
 is within the bounds.
 
-# Zend\\Ldap\\Filter
+### Zend\\Ldap\\Filter
 
-# Zend\\Ldap\\Node
+### Zend\\Ldap\\Node
 
 `Zend\Ldap\Node` includes the magic property accessors `__set()`, `__get()`, `__unset()` and
 `__isset()` to access the attributes by their name. They proxy to `Zend\Ldap\Node::setAttribute()`,
@@ -104,7 +104,7 @@ is within the bounds.
 array-style-access to the attributes. `Zend\Ldap\Node` also implements *Iterator* and
 *RecursiveIterator* to allow for recursive tree-traversal.
 
-# Zend\\Ldap\\Node\\RootDse
+### Zend\\Ldap\\Node\\RootDse
 
 The following methods are available on all vendor-specific subclasses.
 
@@ -115,7 +115,7 @@ implemented but they throw a *BadMethodCallException* as modifications are not a
 nodes. Furthermore the class implements *ArrayAccess* for array-style-access to the attributes.
 `offsetSet()` and `offsetUnset()` also throw a *BadMethodCallException* due ro obvious reasons.
 
-## OpenLDAP
+#### OpenLDAP
 
 Additionally the common methods above apply to instances of `Zend\Ldap\Node\RootDse\OpenLdap`.
 
@@ -124,7 +124,7 @@ Refer to [LDAP Operational Attributes and
 Objects](http://www.zytrax.com/books/ldap/ch3/#operational) for information on the attributes of
 OpenLDAP RootDSE.
 
-## ActiveDirectory
+#### ActiveDirectory
 
 Additionally the common methods above apply to instances of
 `Zend\Ldap\Node\RootDse\ActiveDirectory`.
@@ -133,7 +133,7 @@ Additionally the common methods above apply to instances of
 Refer to [RootDSE](http://msdn.microsoft.com/en-us/library/ms684291(VS.85).aspx) for information on
 the attributes of Microsoft ActiveDirectory RootDSE.
 
-## eDirectory
+#### eDirectory
 
 Additionally the common methods above apply to instances of *ZendLdapNodeRootDseeDirectory*.
 
@@ -142,7 +142,7 @@ Refer to [Getting Information about the LDAP
 Server](http://www.novell.com/documentation/edir88/edir88/index.html?page=/documentation/edir88/edir88/data/ah59jqq.html)
 for information on the attributes of Novell eDirectory RootDSE.
 
-# Zend\\Ldap\\Node\\Schema
+### Zend\\Ldap\\Node\\Schema
 
 The following methods are available on all vendor-specific subclasses.
 
@@ -160,11 +160,11 @@ to access the attributes by their name. Furthermore the class implements *ArrayA
 array-style-access to the attributes. *offsetSet()* and *offsetUnset()* throw a
 *BadMethodCallException* as modifications are not allowed on schema information nodes.
 
-## OpenLDAP
+#### OpenLDAP
 
 Additionally the common methods above apply to instances of *ZendLdapNodeSchemaOpenLDAP*.
 
-## ActiveDirectory
+#### ActiveDirectory
 
 > ### Note
 #### Schema browsing on ActiveDirectory servers
@@ -174,4 +174,4 @@ browsing is currently **not** available for Microsoft ActiveDirectory servers.
 
 *ZendLdapNodeSchemaActiveDirectory* does not provide any additional methods.
 
-# Zend\\Ldap\\Ldif\\Encoder
+### Zend\\Ldap\\Ldif\\Encoder

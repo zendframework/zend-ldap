@@ -20,7 +20,7 @@
 
 ## Tree traversal
 
-**Traverse LDAP tree recursively**
+### Traverse LDAP tree recursively
 
 ```php
 $options = array(/* ... */);
