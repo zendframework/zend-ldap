@@ -1110,7 +1110,7 @@ class Node extends Node\AbstractNode implements Iterator, RecursiveIterator
      * Otherwise, marshal the instance in a version-agnostic way, and return
      * it.
      *
-     * @return null\EventManager
+     * @return null|EventManager
      */
     private function getEventManager()
     {
