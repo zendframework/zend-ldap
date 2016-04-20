@@ -7,7 +7,7 @@ through the `setOptions()` method. The permitted options are as follows:
 
 ## API Reference
 
-> ## Note
+> ### Note
 Method names in **italics** are static methods.
 
 orphan  
@@ -135,7 +135,7 @@ nodes. Furthermore the class implements *ArrayAccess* for array-style-access to 
 
 Additionally the common methods above apply to instances of `Zend\Ldap\Node\RootDse\OpenLdap`.
 
-> ## Note
+> ### Note
 Refer to [LDAP Operational Attributes and
 Objects](http://www.zytrax.com/books/ldap/ch3/#operational) for information on the attributes of
 OpenLDAP RootDSE.
@@ -145,7 +145,7 @@ OpenLDAP RootDSE.
 Additionally the common methods above apply to instances of
 `Zend\Ldap\Node\RootDse\ActiveDirectory`.
 
-> ## Note
+> ### Note
 Refer to [RootDSE](http://msdn.microsoft.com/en-us/library/ms684291(VS.85).aspx) for information on
 the attributes of Microsoft ActiveDirectory RootDSE.
 
@@ -153,7 +153,7 @@ the attributes of Microsoft ActiveDirectory RootDSE.
 
 Additionally the common methods above apply to instances of *ZendLdapNodeRootDseeDirectory*.
 
-> ## Note
+> ### Note
 Refer to [Getting Information about the LDAP
 Server](http://www.novell.com/documentation/edir88/edir88/index.html?page=/documentation/edir88/edir88/data/ah59jqq.html)
 for information on the attributes of Novell eDirectory RootDSE.
@@ -184,7 +184,7 @@ Additionally the common methods above apply to instances of *ZendLdapNodeSchemaO
 
 ## ActiveDirectory
 
-> ## Note
+> ### Note
 #### Schema browsing on ActiveDirectory servers
 Due to restrictions on Microsoft ActiveDirectory servers regarding the number of entries returned by
 generic search routines and due to the structure of the ActiveDirectory schema repository, schema
