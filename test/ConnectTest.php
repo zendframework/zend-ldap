@@ -250,4 +250,31 @@ class ConnectTest extends \PHPUnit_Framework_TestCase
             $this->assertContains('Invalid credentials', $zle->getMessage());
         }
     }
+
+    /**
+     * @see https://github.com/zendframework/zend-ldap/issues/19
+     * @dataProvider connectionWithoutPortInOptionsArrayProvider
+     */
+    public function testConnectionWithoutPortInOptionsArray($host, $ssl, $connectURI)
+    {
+        $options = [
+            'host' => $host,
+            'useSsl' => $ssl,
+        ];
+
+        $ldap = new Ldap\Ldap($options);
+        $ldap->connect();
+
+        $this->assertAttributeEquals($connectURI, 'connectString', $ldap);
+    }
+
+    public function connectionWithoutPortInOptionsArrayProvider()
+    {
+        $host = getenv('TESTS_ZEND_LDAP_HOST');
+        return [
+            // ['host', 'boolean whether to use LDAPS or not', 'connectionURI'],
+            [$host, false, 'ldap://' . $host . ':389'],
+            [$host, true, 'ldaps://' . $host . ':636'],
+        ];
+    }
 }
