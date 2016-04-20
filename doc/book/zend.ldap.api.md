@@ -10,8 +10,6 @@ through the `setOptions()` method. The permitted options are as follows:
 > ### Note
 Method names in **italics** are static methods.
 
-orphan  
-
 # Zend\\Ldap\\Ldap
 
 `Zend\Ldap\Ldap` is the base interface into a *LDAP* server. It provides connection and binding
@@ -23,15 +21,11 @@ methods as well as methods to operate on the *LDAP* tree.
 *Countable* to be able to respond to `count()`. With its protected `createEntry()` method it
 provides a simple extension point for developers needing custom result objects.
 
-orphan  
-
 # Zend\\Ldap\\Attribute
 
 `Zend\Ldap\Attribute` is a helper class providing only static methods to manipulate arrays suitable
 to the structure used in `Zend\Ldap\Ldap` data modification methods and to the data format required
 by the *LDAP* server. *PHP* data types are converted using `Zend\Ldap\Converter\Converter` methods.
-
-orphan  
 
 # Zend\\Ldap\\Converter\\Converter
 
@@ -75,8 +69,6 @@ All other strings won't be automatically converted and are passed as they are.
 
 <!-- -->
 
-orphan  
-
 # Zend\\Ldap\\Dn
 
 `Zend\Ldap\Dn` provides an object-oriented interface to manipulating *LDAP* distinguished names
@@ -103,11 +95,7 @@ $offset)*, to `Zend\Ldap\Dn::set($offset, $value)` for `offsetSet()` and to
 `Zend\Ldap\Dn::remove($offset, 1)` for `offsetUnset()`. `offsetExists()` simply checks if the index
 is within the bounds.
 
-orphan  
-
 # Zend\\Ldap\\Filter
-
-orphan  
 
 # Zend\\Ldap\\Node
 
@@ -117,8 +105,6 @@ orphan
 `Zend\Ldap\Node::existsAttribute()` respectively. Furthermore the class implements *ArrayAccess* for
 array-style-access to the attributes. `Zend\Ldap\Node` also implements *Iterator* and
 *RecursiveIterator* to allow for recursive tree-traversal.
-
-orphan  
 
 # Zend\\Ldap\\Node\\RootDse
 
@@ -158,8 +144,6 @@ Refer to [Getting Information about the LDAP
 Server](http://www.novell.com/documentation/edir88/edir88/index.html?page=/documentation/edir88/edir88/data/ah59jqq.html)
 for information on the attributes of Novell eDirectory RootDSE.
 
-orphan  
-
 # Zend\\Ldap\\Node\\Schema
 
 The following methods are available on all vendor-specific subclasses.
@@ -191,7 +175,5 @@ generic search routines and due to the structure of the ActiveDirectory schema r
 browsing is currently **not** available for Microsoft ActiveDirectory servers.
 
 *ZendLdapNodeSchemaActiveDirectory* does not provide any additional methods.
-
-orphan  
 
 # Zend\\Ldap\\Ldif\\Encoder
