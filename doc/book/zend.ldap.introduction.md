@@ -71,8 +71,8 @@ the options array, `Zend\Ldap\Ldap` will first bind with that username, retrieve
 the username supplied to `bind()` and then re-bind with that DN.
 
 This behavior is critical to
-\[Zend\\Authentication\\Adapter\\Ldap\](zend.authentication.adapter.ldap), which passes the username
-supplied by the user directly to `bind()`.
+[`Zend\Authentication\Adapter\Ldap`](https://github.com/zendframework/zend-authentication), which 
+passes the username supplied by the user directly to `bind()`.
 
 The following example illustrates how the non-DN username '**abaker**' can be used with `bind()`:
 
@@ -190,6 +190,7 @@ instruction has no effect in this example, but in practice for error handling an
 purposes, you will probably want to check for `LDAP_X_DOMAIN_MISMATCH` as well as
 `LDAP_NO_SUCH_OBJECT` and `LDAP_INVALID_CREDENTIALS`.
 
-The above code is very similar to code used within Zend\\\\Authentication\\\\Adapter\\\\Ldap
-&lt;zend.authentication.adapter.ldap&gt;. In fact, we recommend that you simply use that
-authentication adapter for multi-domain + failover *LDAP* based authentication (or copy the code).
+The above code is very similar to code used within
+[`Zend\Authentication\Adapter\Ldap`](https://github.com/zendframework/zend-authentication). In
+fact,we recommend that you simply use that authentication adapter for multi-domain + failover 
+*LDAP* based authentication (or copy the code).
