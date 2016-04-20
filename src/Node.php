@@ -123,8 +123,11 @@ class Node extends Node\AbstractNode implements Iterator, RecursiveIterator
     public function getLdap()
     {
         if ($this->ldap === null) {
-            throw new Exception\LdapException(null, 'No LDAP connection specified.',
-                Exception\LdapException::LDAP_OTHER);
+            throw new Exception\LdapException(
+                null,
+                'No LDAP connection specified.',
+                Exception\LdapException::LDAP_OTHER
+            );
         }
 
         return $this->ldap;
@@ -142,8 +145,11 @@ class Node extends Node\AbstractNode implements Iterator, RecursiveIterator
     public function attachLdap(Ldap $ldap)
     {
         if (!Dn::isChildOf($this->_getDn(), $ldap->getBaseDn())) {
-            throw new Exception\LdapException(null, 'LDAP connection is not responsible for given node.',
-                Exception\LdapException::LDAP_OTHER);
+            throw new Exception\LdapException(
+                null,
+                'LDAP connection is not responsible for given node.',
+                Exception\LdapException::LDAP_OTHER
+            );
         }
 
         if ($ldap !== $this->ldap) {
@@ -197,14 +203,11 @@ class Node extends Node\AbstractNode implements Iterator, RecursiveIterator
      */
     protected function triggerEvent($event, $argv = [])
     {
-        if (null === $this->events) {
-            if (class_exists('\Zend\EventManager\EventManager')) {
-                $this->events = new EventManager(__CLASS__);
-            } else {
-                return;
-            }
+        $events = $this->getEventManager();
+        if (! $events) {
+            return;
         }
-        $this->events->trigger($event, $this, $argv);
+        $events->trigger($event, $this, $argv);
     }
 
     /**
@@ -746,7 +749,9 @@ class Node extends Node\AbstractNode implements Iterator, RecursiveIterator
      * @return Node Provides a fluid interface
      * @throws Exception\LdapException
      */
-    public function setPasswordAttribute($password, $hashType = Attribute::PASSWORD_HASH_MD5,
+    public function setPasswordAttribute(
+        $password,
+        $hashType = Attribute::PASSWORD_HASH_MD5,
         $attribName = 'userPassword'
     ) {
         $this->assertChangeableAttribute($attribName);
@@ -930,7 +935,11 @@ class Node extends Node\AbstractNode implements Iterator, RecursiveIterator
     public function searchSubtree($filter, $scope = Ldap::SEARCH_SCOPE_SUB, $sort = null)
     {
         return $this->getLdap()->search(
-            $filter, $this->_getDn(), $scope, ['*', '+'], $sort,
+            $filter,
+            $this->_getDn(),
+            $scope,
+            ['*', '+'],
+            $sort,
             'Zend\Ldap\Node\Collection'
         );
     }
@@ -1089,5 +1098,32 @@ class Node extends Node\AbstractNode implements Iterator, RecursiveIterator
     public function valid()
     {
         return $this->iteratorRewind;
+    }
+
+    /**
+     * Attempt to marshal an EventManager instance.
+     *
+     * If an instance is already available, return it.
+     *
+     * If the zend-eventmanager component is not present, return nothing.
+     *
+     * Otherwise, marshal the instance in a version-agnostic way, and return
+     * it.
+     *
+     * @return null\EventManager
+     */
+    private function getEventManager()
+    {
+        if ($this->events) {
+            return $this->events;
+        }
+
+        if (! class_exists(EventManager::class)) {
+            return;
+        }
+
+        $this->events = new EventManager();
+        $this->events->setIdentifiers([__CLASS__]);
+        return $this->events;
     }
 }
