@@ -67,8 +67,6 @@ Converted to `FALSE`.
 **others**  
 All other strings won't be automatically converted and are passed as they are.
 
-<!-- -->
-
 # Zend\\Ldap\\Dn
 
 `Zend\Ldap\Dn` provides an object-oriented interface to manipulating *LDAP* distinguished names
