@@ -14,7 +14,7 @@
     },
     "require": {
         "php": "^5.5 || ^7.0",
-        "ext-ldap": "*",
+        "ext-ldap": "*"
     },
     "require-dev": {
         "zendframework/zend-config": "^2.5",
