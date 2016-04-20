@@ -10,7 +10,7 @@
 
 ### Retrieving data from the LDAP
 
-**Getting an entry by its DN**
+#### Getting an entry by its DN
 
 ```php
 $options = array(/* ... */);
@@ -29,7 +29,7 @@ array(
 */
 ```
 
-**Check for the existence of a given DN**
+#### Check for the existence of a given DN
 
 ```php
 $options = array(/* ... */);
@@ -38,7 +38,7 @@ $ldap->bind();
 $isThere = $ldap->exists('cn=Hugo Müller,ou=People,dc=my,dc=local');
 ```
 
-**Count children of a given DN**
+#### Count children of a given DN
 
 ```php
 $options = array(/* ... */);
@@ -48,7 +48,7 @@ $childrenCount = $ldap->countChildren(
                             'cn=Hugo Müller,ou=People,dc=my,dc=local');
 ```
 
-**Searching the LDAP tree**
+#### Searching the LDAP tree
 
 ```php
 $options = array(/* ... */);
@@ -64,7 +64,7 @@ foreach ($result as $item) {
 
 ### Adding data to the LDAP
 
-**Add a new entry to the LDAP**
+#### Add a new entry to the LDAP
 
 ```php
 $options = array(/* ... */);
@@ -79,7 +79,7 @@ $ldap->add('cn=Hans Meier,ou=People,dc=my,dc=local', $entry);
 
 ### Deleting from the LDAP
 
-**Delete an existing entry from the LDAP**
+#### Delete an existing entry from the LDAP
 
 ```php
 $options = array(/* ... */);
@@ -90,7 +90,7 @@ $ldap->delete('cn=Hans Meier,ou=People,dc=my,dc=local');
 
 ### Updating the LDAP
 
-**Update an existing entry on the LDAP**
+#### Update an existing entry on the LDAP
 
 ```php
 $options = array(/* ... */);
@@ -108,7 +108,7 @@ $ldap->update('cn=Hugo Müller,ou=People,dc=my,dc=local', $hm);
 
 ### Copy and move entries in the LDAP
 
-**Copy a LDAP entry recursively with all its descendants**
+#### Copy a LDAP entry recursively with all its descendants
 
 ```php
 $options = array(/* ... */);
@@ -119,7 +119,7 @@ $ldap->copy('cn=Hugo Müller,ou=People,dc=my,dc=local',
             true);
 ```
 
-**Move a LDAP entry recursively with all its descendants to a different subtree**
+#### Move a LDAP entry recursively with all its descendants to a different subtree
 
 ```php
 $options = array(/* ... */);
