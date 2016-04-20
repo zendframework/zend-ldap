@@ -39,6 +39,13 @@ All notable changes to this project will be documented in this file, in reverse 
 - [#19](https://github.com/zendframework/zend-ldap/pull/20) checks whether the
   LDAP-connection shall use SSL or not and decides based on that which port to
   use if no port has been set.
+- [#25](https://github.com/zendframework/zend-ldap/issues/25) Check for correct
+  Headers in the documentation and fix it
+- [#27](https://github.com/zendframework/zend-ldap/issues/27) Check for different
+  issues in the documentation and fixed it
+- [#29](https://github.com/zendframework/zend-ldap/issues/29) Check for incorrect
+  Blockquotes in the documentation and fix it
+
 
 ## 2.6.0 - 2016-02-11
 

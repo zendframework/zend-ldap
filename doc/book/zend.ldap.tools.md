@@ -4,7 +4,7 @@
 
 ## Using the filter API to create search filters
 
-**Create simple LDAP filters**
+### Create simple LDAP filters
 
 ```php
 $f1  = Zend\Ldap\Filter::equals('name', 'value');         // (name=value)
@@ -19,7 +19,7 @@ $f9  = Zend\Ldap\Filter::approx('name', 'value');         // (name~=value)
 $f10 = Zend\Ldap\Filter::any('name');                     // (name=*)
 ```
 
-**Create more complex LDAP filters**
+### Create more complex LDAP filters
 
 ```php
 $f1 = Zend\Ldap\Filter::ends('name', 'value')->negate(); // (!(name=*value))
