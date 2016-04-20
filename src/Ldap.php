@@ -11,7 +11,6 @@ namespace Zend\Ldap;
 
 use Traversable;
 use Zend\Ldap\Exception\LdapException;
-use Zend\Stdlib\ErrorHandler;
 
 class Ldap
 {
