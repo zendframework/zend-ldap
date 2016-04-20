@@ -14,7 +14,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Removed
 
-- Nothing.
+- [#21](https://github.com/zendframework/zend-ldap/pull/21) Removes dependency
+  Zend\StdLib
 
 ### Fixed
 

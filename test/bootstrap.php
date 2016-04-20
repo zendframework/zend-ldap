@@ -21,10 +21,16 @@ if (class_exists('PHPUnit_Runner_Version', true)) {
     unset($phpUnitVersion);
 }
 
+
 /**
  * Setup autoloading
  */
 require __DIR__ . '/../vendor/autoload.php';
+
+/**
+ * Setting the Zend\StdLib/ErrorHandler as default ErrorHandler
+ */
+Zend\Ldap\ErrorHandler::setErrorHandler(new ZendTest\Ldap\ErrorHandler());
 
 /**
  * Start output buffering, if enabled
