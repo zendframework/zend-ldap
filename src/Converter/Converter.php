@@ -11,7 +11,7 @@ namespace Zend\Ldap\Converter;
 
 use DateTime;
 use DateTimeZone;
-use Zend\Stdlib\ErrorHandler;
+use Zend\Ldap\ErrorHandler;
 
 /**
  * Zend\Ldap\Converter is a collection of useful LDAP related conversion functions.

@@ -1,7 +1,7 @@
 <?php
 /**
  * @link      http://github.com/zendframework/zend-ldap for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
@@ -10,21 +10,15 @@
  */
 error_reporting(E_ALL | E_STRICT);
 
-if (class_exists('PHPUnit_Runner_Version', true)) {
-    $phpUnitVersion = PHPUnit_Runner_Version::id();
-    if ('@package_version@' !== $phpUnitVersion && version_compare($phpUnitVersion, '4.0.0', '<')) {
-        echo 'This version of PHPUnit (' . PHPUnit_Runner_Version::id() . ') is not supported'
-           . ' in the zend-ldap unit tests. Supported is version 4.0.0 or higher.'
-           . ' See also the CONTRIBUTING.md file in the component root.' . PHP_EOL;
-        exit(1);
-    }
-    unset($phpUnitVersion);
-}
-
 /**
  * Setup autoloading
  */
 require __DIR__ . '/../vendor/autoload.php';
+
+/**
+ * Setting the ZendTest\Ldap\ErrorHandler as default ErrorHandler
+ */
+Zend\Ldap\ErrorHandler::setErrorHandler(new ZendTest\Ldap\ErrorHandler());
 
 /**
  * Start output buffering, if enabled
