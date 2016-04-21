@@ -107,11 +107,17 @@ class SortTest extends AbstractOnlineTestCase
 
         $iterator = new DefaultIterator($this->getLdap(), $search);
         $sortFunction = function ($a, $b) use ($lSorted) {
-            if (array_search($a, $lSorted) % 2 === 0) {
+            // Sort values by the number of "1" in their binary representation
+            // and when that is equals by their position in the alphabet.
+            $f = strlen(str_replace('0', '', decbin(bin2hex($a)))) -
+                 strlen(str_replace('0', '', decbin(bin2hex($b))));
+            if ($f < 0) {
                 return -1;
+            } elseif ($f > 0) {
+                return 1;
             }
+            return strnatcasecmp($a, $b);
 
-            return 1;
         };
         $iterator->setSortFunction($sortFunction);
 
@@ -125,20 +131,20 @@ class SortTest extends AbstractOnlineTestCase
 
         $this->assertAttributeEquals([
             [
-                'resource' => $reflectionEntries[4]['resource'],
-                'sortValue' => 'a',
+                'resource' => $reflectionEntries[1]['resource'],
+                'sortValue' => 'd',
             ], [
                 'resource' => $reflectionEntries[0]['resource'],
                 'sortValue' => 'e',
             ], [
-                'resource' => $reflectionEntries[2]['resource'],
-                'sortValue' => 'c',
+                'resource' => $reflectionEntries[4]['resource'],
+                'sortValue' => 'a',
             ], [
                 'resource' => $reflectionEntries[3]['resource'],
                 'sortValue' => 'b',
             ], [
-                'resource' => $reflectionEntries[1]['resource'],
-                'sortValue' => 'd',
+                'resource' => $reflectionEntries[2]['resource'],
+                'sortValue' => 'c',
             ],
         ], 'entries', $iterator);
     }

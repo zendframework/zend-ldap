@@ -19,6 +19,9 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
+- [#17](https://github.com/zendframework/zend-ldap/issues/17) Fixes HHVM builds
+- [#44](https://github.com/zendframework/zend-ldap/pull/40) Fixes broken builds
+  in PHP7 due to faulty sorting-test
 - [#40](https://github.com/zendframework/zend-ldap/pull/40) Fixes connection test
   that failed due to different failure messages in PHP5 and 7
 
