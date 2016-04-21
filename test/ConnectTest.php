@@ -70,8 +70,8 @@ class ConnectTest extends \PHPUnit_Framework_TestCase
             ];
             $message = $zle->getMessage();
 
-            foreach($alternatives as $alternative){
-                if(strpos($message, $alternative) !== false){
+            foreach ($alternatives as $alternative) {
+                if (strpos($message, $alternative) !== false) {
                     $this->assertTrue(true, 'Found one of the expected failure messages');
                     return;
                 }
