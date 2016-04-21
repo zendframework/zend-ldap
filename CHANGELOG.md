@@ -19,7 +19,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#40](https://github.com/zendframework/zend-ldap/pull/40) Fixes connection test
+  that failed due to different failure messages in PHP5 and 7
 
 ## 2.6.1 - 2016-04-20
 
