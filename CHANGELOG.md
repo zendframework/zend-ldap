@@ -6,7 +6,11 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#43](https://github.com/zendframework/zend-ldap/pull/43) Adds possibility
+  to use [Zend\StdLib](https://github.com/zendframework/zend-stdlib) and
+  [Zend\EventManager](https://github.com/zendframework/zend-eventmanager) in
+  Version 3
+- Support for PHP7
 
 ### Deprecated
 
