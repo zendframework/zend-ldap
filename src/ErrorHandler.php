@@ -70,7 +70,7 @@ class ErrorHandler implements ErrorHandlerInterface
      */
     public function startErrorHandling($level = E_WARNING)
     {
-        set_error_handler(function($errNo, $errString){});
+        set_error_handler(function ($errNo, $errString) {});
     }
 
     /**
