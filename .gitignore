@@ -11,4 +11,6 @@ coveralls-upload.json
 nbproject
 phpunit.xml
 tmp/
+doc/html/
+zf-mkdoc-theme/
 vendor/
