@@ -10,6 +10,8 @@ branches:
 cache:
   directories:
     - $HOME/.composer/cache
+    - $HOME/.local
+    - zf-mkdoc-theme
 
 addons:
   apt:
@@ -21,6 +23,11 @@ env:
   global:
     - TESTS_ZEND_LDAP_ONLINE_ENABLED=true
     - COMPOSER_ARGS="--no-interaction --ignore-platform-reqs"
+    - SITE_URL: https://zendframework.github.io/zend-ldap
+    - GH_USER_NAME: "Matthew Weier O'Phinney"
+    - GH_USER_EMAIL: matthew@weierophinney.net
+    - GH_REF: github.com/zendframework/zend-ldap.git
+    - secure: "oyutreHfOP5k3jQ3zZ28iJj64OSVCNqnCVfQrWnTDf3woV63vK0Le4X1O6WopAbd8yoEaN30nJ49X81zAUFN4lneulvitFHjEHvzNkOxFPWxfBK+APCnu0U0Z/a0BiFyoo1A5CGS3OrRpT1WL+CpTy49gpaqlfCnUVP/EnOP1uisKQIVQFbzoKl+0yAMzIXZ8rS5uFTej9lKbGi0V3+Gg896xXsmhLkb4ElNNNkccvB11cgDBLUarM43qL/s7kINv1uPbJ51WERujlZkcRH/s4OcYKPRREeDr+9aMZTELTuGFKLQKrhuA13YkHOSB/j6NnXEuEIVCpaVndrMXm69NBe/IfOuvSQoa4m0E7Ks6DZlX7nkj3rudlmX/+KakI+uJQdQLs7JDYKchuhX5hDO0dHGNTdwsPJAb06zDKR2HIfgzVZTX27//5PAKSU5DLOEM9sDYJAhQkxt0iC1L4xmQo/XOG8VNXL7usARouVI9FhmgPezmUDaN4CzvrD6kYtOVL3I9UwklnBQ0tJbO/CHnaq/eiWeNFL4tPDNim6c4pz9YayFQbOlu3SUy6lE/fwbXS1YtMl3t0MlO62B8wt+x0XlIJVTmMK0PFVj/cl93WUYZxxTZnFNvcy3VtmK7g6aNtHpAJaDQCl6Fu8K4xrWoTewG9m78KXu7p21gv9BjW8="
 
 matrix:
   fast_finish: true
@@ -42,6 +49,8 @@ matrix:
       env:
         - DEPS=locked
         - TEST_COVERAGE=true
+        - DEPLOY_DOCS="$(if [[ $TRAVIS_BRANCH == 'master' && $TRAVIS_PULL_REQUEST == 'false' ]]; then echo -n 'true' ; else echo -n 'false' ; fi)"
+        - PATH="$HOME/.local/bin:$PATH"
     - php: 5.6
       env:
         - DEPS=latest
@@ -91,6 +100,11 @@ script:
   - if [[ $TEST_COVERAGE == 'true' ]]; then composer test-coverage ; fi
   - if [[ $TEST_COVERAGE != 'true' ]]; then composer test ; fi
   - if [[ $CHECK_CS == 'true' ]]; then composer cs-check ; fi
+  - if [[ $DEPLOY_DOCS == "true" && "$TRAVIS_TEST_RESULT" == "0" ]]; then wget -O theme-installer.sh "https://raw.githubusercontent.com/zendframework/zf-mkdoc-theme/master/theme-installer.sh" ; chmod 755 theme-installer.sh ; ./theme-installer.sh ; fi
+
+after_success:
+  - if [[ $DEPLOY_DOCS == "true" ]]; then echo "Preparing to build and deploy documentation" ; ./zf-mkdoc-theme/deploy.sh ; echo "Completed deploying documentation" ; fi
+
 
 after_script:
   - if [[ $TEST_COVERAGE == 'true' ]]; then travis_retry composer upload-coverage ; fi
