@@ -6,11 +6,12 @@
 .vagrant/
 .*.sw*
 .*.un~
+doc/html/
+tmp/
+vendor/
+zf-mkdoc-theme/
+
 clover.xml
 coveralls-upload.json
 nbproject
 phpunit.xml
-tmp/
-doc/html/
-zf-mkdoc-theme/
-vendor/
