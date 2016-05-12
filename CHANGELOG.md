@@ -6,7 +6,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#48](https://github.com/zendframework/zend-ldap/pull/48) adds and publishes
+  the documentation to https://zendframework.github.io/zend-ldap/
 
 ### Deprecated
 
