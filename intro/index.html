@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <link rel="shortcut icon" href="../img/favicon.ico">
+
+    <title>Intro - zend-ldap</title>
+
+    <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.018/css/hack.min.css">
+    <link href="//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic&subset=latin-ext,latin" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Libre+Baskerville:400,400italic,700&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="../css/base.css" rel="stylesheet">
+    <link href="../css/zf.css" rel="stylesheet">
+    <link href="../css/prism-zf.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+    <script>
+    WebFont.load({
+        google: {
+            families: ['Open Sans', 'PT Sans']
+        }
+    });
+    </script>
+
+    
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <span class="navbar-brand">
+              <a class="logo-link" href="http://framework.zend.com" data-toggle="tooltip" data-placement="bottom" title="Zend Framework"><img src="../img/zf-logo-mark.png" height="28" alt="Zend Framework" /></a>
+              <a href="..">zend-ldap</a>
+            </span>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="..">Home</a>
+                    </li>
+                
+                
+                
+                    <li class="active">
+                        <a href="./">Intro</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reference <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../api/">API overview</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../usage/">Usage Scenarios</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../tools/">Tools</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../node/">Object-oriented access to the LDAP tree</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../server/">Getting information from the LDAP server</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../ldif/">Serializing LDAP data to and from LDIF</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" class="component-toggle" data-toggle="tooltip" data-placement="bottom" title="Show component list">
+                        <i class="fa fa-book"></i> Components
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                
+                    <li>
+                        <a href="https://github.com/zendframework/zend-ldap">
+                            
+                                <i class="fa fa-github"></i>
+                            
+                            GitHub
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <!-- content:begin -->
+    <div class="container">
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#introduction">Introduction</a></li>
+        
+            <li><a href="#theory-of-operation">Theory of operation</a></li>
+        
+    
+    </ul>
+
+    
+    <ul class="pager hidden-print">
+      <li class="previous">
+        <a rel="prev" href=".."><i class="fa fa-arrow-left"></i> Previous</a>
+      </li>
+      <li class="next">
+        <a rel="next" href="../api/">Next <i class="fa fa-arrow-right"></i></a>
+      </li>
+    </ul>
+    
+</div></div>
+        <div class="col-md-9" role="main">
+
+<ol class="breadcrumb" role="navigation" aria-label="breadcrumbs navigation">
+  <li><a href="..">Docs</a> &raquo;</li>
+  
+    
+  
+  <li class="active">Intro</li>
+</ol>
+
+<h1 id="introduction">Introduction</h1>
+<p>zend-ldap lets you perform LDAP operations, including, but not limited to,
+binding, searching and modifying entries in an LDAP directory.</p>
+<h2 id="theory-of-operation">Theory of operation</h2>
+<p>This component currently consists of the main <code>Zend\Ldap\Ldap</code> class, which
+conceptually represents a binding to a single LDAP server and allows for
+executing operations against a LDAP server such as OpenLDAP or ActiveDirectory
+(AD) servers. The parameters for binding may be provided explicitly or in the
+form of an options array. <code>Zend\Ldap\Node</code> provides an object-oriented interface
+for single LDAP nodes and can be used to form a basis for an active-record-like
+interface for a LDAP-based domain model.</p>
+<p>The component provides several helper classes to perform operations on LDAP
+entries (<code>Zend\Ldap\Attribute</code>) such as setting and retrieving attributes (date
+values, passwords, boolean values, ...), to create and modify LDAP filter
+strings (<code>Zend\Ldap\Filter</code>) and to manipulate LDAP distinguished names (DN)
+(<code>Zend\Ldap\Dn</code>).</p>
+<p>Additionally the component abstracts LDAP schema browsing for OpenLDAP and
+ActiveDirectory servers <code>Zend\Ldap\Node\Schema</code> and server information retrieval
+for OpenLDAP-, ActiveDirectory- and Novell eDirectory servers
+(<code>Zend\Ldap\Node\RootDse</code>).</p>
+<p>Usage of zend-ldap depends on the type of LDAP server, and is best summarized with
+some examples.</p>
+<p>If you are using OpenLDAP, consider the following example (note that the
+<code>bindRequiresDn</code> option is important if you are <strong>not</strong> using AD):</p>
+<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
+
+$options = [
+    'host'              =&gt; 's0.foo.net',
+    'username'          =&gt; 'CN=user1,DC=foo,DC=net',
+    'password'          =&gt; 'pass1',
+    'bindRequiresDn'    =&gt; true,
+    'accountDomainName' =&gt; 'foo.net',
+    'baseDn'            =&gt; 'OU=Sales,DC=foo,DC=net',
+];
+
+$ldap = new Ldap($options);
+$acctname = $ldap-&gt;getCanonicalAccountName('abaker', Ldap::ACCTNAME_FORM_DN);
+echo &quot;$acctname\n&quot;;</code></pre>
+
+
+<p>If you are using Microsoft AD:</p>
+<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
+
+$options = [
+    'host'                   =&gt; 'dc1.w.net',
+    'useStartTls'            =&gt; true,
+    'username'               =&gt; 'user1@w.net',
+    'password'               =&gt; 'pass1',
+    'accountDomainName'      =&gt; 'w.net',
+    'accountDomainNameShort' =&gt; 'W',
+    'baseDn'                 =&gt; 'CN=Users,DC=w,DC=net',
+];
+
+$ldap = new Ldap($options);
+$acctname = $ldap-&gt;getCanonicalAccountName('bcarter', Ldap::ACCTNAME_FORM_DN);
+echo &quot;$acctname\n&quot;;</code></pre>
+
+
+<p>Note that we use the <code>getCanonicalAccountName()</code> method to retrieve the account
+DN here only because that is what exercises the most of what little code is
+currently present in this class.</p>
+<h3 id="automatic-username-canonicalization-when-binding">Automatic Username Canonicalization When Binding</h3>
+<p>If <code>bind()</code> is called with a non-DN username but <code>bindRequiresDN</code> is <code>true</code>
+and no username in DN form was supplied as an option, the bind will fail.
+However, if a username in DN form is supplied in the options array,
+<code>Zend\Ldap\Ldap</code> will first bind with that username, retrieve the account DN for
+the username supplied to <code>bind()</code> and then re-bind with that DN.</p>
+<p>This behavior is critical to <a href="http://zendframework.github.io/zend-authentication/adapter/ldap/">Zend\Authentication\Adapter\Ldap</a>,
+which passes the username supplied by the user directly to <code>bind()</code>.</p>
+<p>The following example illustrates how the non-DN username 'abaker' can be used
+with <code>bind()</code>:</p>
+<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
+
+$options = [
+    'host'              =&gt; 's0.foo.net',
+    'username'          =&gt; 'CN=user1,DC=foo,DC=net',
+    'password'          =&gt; 'pass1',
+    'bindRequiresDn'    =&gt; true,
+    'accountDomainName' =&gt; 'foo.net',
+    'baseDn'            =&gt; 'OU=Sales,DC=foo,DC=net',
+];
+
+$ldap = new Ldap($options);
+$ldap-&gt;bind('abaker', 'moonbike55');
+$acctname = $ldap-&gt;getCanonicalAccountName('abaker', Ldap::ACCTNAME_FORM_DN);
+echo &quot;$acctname\n&quot;;</code></pre>
+
+
+<p>The <code>bind()</code> call in this example sees that the username 'abaker' is not in DN
+form, finds <code>bindRequiresDn</code> is <code>TRUE</code>, uses <code>CN=user1,DC=foo,DC=net</code> and
+<code>pass1</code> to bind, retrieves the DN for 'abaker', unbinds and then rebinds with
+the newly discovered <code>CN=Alice Baker,OU=Sales,DC=foo,DC=net</code>.</p>
+<h3 id="account-name-canonicalization">Account Name Canonicalization</h3>
+<p>The <code>accountDomainName</code> and <code>accountDomainNameShort</code> options are used for two
+purposes: (1) they facilitate multi-domain authentication and failover
+capability, and (2) they are also used to canonicalize usernames. Specifically,
+names are canonicalized to the form specified by the <code>accountCanonicalForm</code>
+option. This option may one of the following values:</p>
+<p>The default canonicalization depends on what account domain name options were
+supplied. If <code>accountDomainNameShort</code> was supplied, the default
+<code>accountCanonicalForm</code> value is <code>ACCTNAME_FORM_BACKSLASH</code>. Otherwise, if
+<code>accountDomainName</code> was supplied, the default is <code>ACCTNAME_FORM_PRINCIPAL</code>.</p>
+<p>Account name canonicalization ensures that the string used to identify an
+account is consistent regardless of what was supplied to <code>bind()</code>. For example,
+if the user supplies an account name of <code>abaker@example.com</code> or just <code>abaker</code>
+and the <code>accountCanonicalForm</code> is set to 3, the resulting canonicalized name
+would be <code>EXAMPLE\\abaker</code>.</p>
+<h3 id="multi-domain-authentication-and-failover">Multi-domain Authentication and Failover</h3>
+<p>The <code>Zend\Ldap\Ldap</code> component by itself makes no attempt to authenticate with
+multiple servers.  However, <code>Zend\Ldap\Ldap</code> is specifically designed to handle
+this scenario gracefully. The required technique is to simply iterate over an
+array of arrays of serve options and attempt to bind with each server. As
+described above <code>bind()</code> will automatically canonicalize each name, so it does
+not matter if the user passes <code>abaker@foo.net</code> or <code>Wbcarter</code> or <code>cdavis</code>; the
+<code>bind()</code> method will only succeed if the credentials were successfully used in
+the bind.</p>
+<p>Consider the following example that illustrates the technique required to
+implement multi-domain authentication and failover:</p>
+<pre class="codehilite"><code class="language-php">use Zend\Ldap\Exception\LdapException;
+use Zend\Ldap\Ldap;
+
+$acctname = 'W\\user2';
+$password = 'pass2';
+
+$multiOptions = [
+    'server1' =&gt; [
+        'host'                   =&gt; 's0.foo.net',
+        'username'               =&gt; 'CN=user1,DC=foo,DC=net',
+        'password'               =&gt; 'pass1',
+        'bindRequiresDn'         =&gt; true,
+        'accountDomainName'      =&gt; 'foo.net',
+        'accountDomainNameShort' =&gt; 'FOO',
+        'accountCanonicalForm'   =&gt; 4, // ACCT_FORM_PRINCIPAL
+        'baseDn'                 =&gt; 'OU=Sales,DC=foo,DC=net',
+    ],
+    'server2' =&gt; [
+        'host'                   =&gt; 'dc1.w.net',
+        'useSsl'                 =&gt; true,
+        'username'               =&gt; 'user1@w.net',
+        'password'               =&gt; 'pass1',
+        'accountDomainName'      =&gt; 'w.net',
+        'accountDomainNameShort' =&gt; 'W',
+        'accountCanonicalForm'   =&gt; 4, // ACCT_FORM_PRINCIPAL
+        'baseDn'                 =&gt; 'CN=Users,DC=w,DC=net',
+    ],
+];
+
+$ldap = new Ldap();
+
+foreach ($multiOptions as $name =&gt; $options) {
+    echo &quot;Trying to bind using server options for '$name'\n&quot;;
+
+    $ldap-&gt;setOptions($options);
+    try {
+        $ldap-&gt;bind($acctname, $password);
+        $acctname = $ldap-&gt;getCanonicalAccountName($acctname);
+        echo &quot;SUCCESS: authenticated $acctname\n&quot;;
+        return;
+    } catch (LdapException $zle) {
+        echo '  ' . $zle-&gt;getMessage() . &quot;\n&quot;;
+        if ($zle-&gt;getCode() === LdapException::LDAP_X_DOMAIN_MISMATCH) {
+            continue;
+        }
+    }
+}</code></pre>
+
+
+<p>If the bind fails for any reason, the next set of server options is tried.</p>
+<p>The <code>getCanonicalAccountName()</code> call gets the canonical account name that the
+application would presumably use to associate data with such as preferences. The
+<code>accountCanonicalForm = 4</code> in all server options ensures that the canonical form
+is consistent regardless of which server was ultimately used.</p>
+<p>The special <code>LDAP_X_DOMAIN_MISMATCH</code> exception occurs when an account name with
+a domain component was supplied (e.g., <code>abaker@foo.net</code> or <code>FOO\\abaker</code> and not
+just <code>abaker</code>) but the domain component did not match either domain in the
+currently selected server options. This exception indicates that the server is
+not an authority for the account. In this case, the bind will not be performed,
+thereby eliminating unnecessary communication with the server. Note that the
+<code>continue</code> instruction has no effect in this example, but in practice for error
+handling and debugging purposes, you will probably want to check for
+<code>LDAP_X_DOMAIN_MISMATCH</code> as well as <code>LDAP_NO_SUCH_OBJECT</code> and
+<code>LDAP_INVALID_CREDENTIALS</code>.</p>
+<p>The above code is very similar to code used within
+<a href="http://zendframework.github.io/zend-authentication/adapter/ldap/">Zend\Authentication\Adapter\Ldap</a>.
+In fact,we recommend that you use that authentication adapter for multi-domain +
+failover LDAP based authentication (or copy the code).</p>
+
+<hr />
+
+
+<nav>
+  <ul class="pager hidden-print">
+    <li class="previous">
+      <a rel="prev" href=".."><i class="fa fa-arrow-left"></i> Previous</a>
+    </li>
+    <li class="next">
+      <a rel="next" href="../api/">Next <i class="fa fa-arrow-right"></i></a>
+    </li>
+  </ul>
+</nav>
+</div>
+        
+    </div>
+    <!-- content:end -->
+
+    <footer class="col-md-12 text-center">
+        <hr>
+        <p>
+        <small>Copyright (c) 2016 <a href="http://www.zend.com/">Zend Technologies USA Inc.</a><br></small>
+        </p>
+        <p><small><a href="http://framework.zend.com">Learn more about Zend Framework</a></small></p>
+    </footer>
+
+    <script src="../js/jquery-1.10.2.min.js"></script>
+    <script src="../js/bootstrap-3.0.3.min.js"></script>
+    <script src="../js/prism-zf.js"></script>
+
+    <script>var base_url = '..';</script>
+    <script data-main="../mkdocs/js/search.js" src="../mkdocs/js/require.js"></script>
+    <script src="../js/base.js"></script>
+
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        From here you can search these documents. Enter your search terms below.
+                    </p>
+                    <form role="form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                        </div>
+                    </form>
+                    <div id="mkdocs-search-results"></div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="zf-components">
+  <div class="zf-components-grid">
+    <div class="zf-logo">
+      <a href="http://framework.zend.com" data-toggle="tooltip" data-placement="bottom" title="Go to the ZF homepage"><img src="../img/zf-logo-mark.png" alt="Zend Framework" width="250" /></a>
+    </div>
+
+    <div class="component-list"></div>
+
+    <p class="zf-components-rollup"><a href="#">Hide list</a></p>
+  </div>
+</div>
+
+    <script>
+  // Prepare the component list dropdown for display
+  $(function () {
+    var components = $(".zf-components"),
+        componentList = components.find(".component-list"),
+        sidebar = $(".bs-sidebar.affix"),
+        sidebarInitialPos = sidebar.css("position"),
+        hidden,
+        componentToggle = $(".component-toggle"),
+        navbar = $(".navbar-fixed-top"),
+        rollUpLink = $(".zf-components-rollup a");
+
+    // Initial setup on document load
+    components.insertBefore(navbar);
+    $(".zf-logo a").tooltip();
+    componentToggle.tooltip();
+    rollUpLink.attr({ href: "#", alt: "Hide component list" });
+
+    // Cast initial sidebar position value
+    if (undefined === sidebarInitialPos) {
+      sidebarInitialPos = "fixed";
+    }
+
+    // Setup onclick events to toggle list
+    componentToggle.click(toggleComponentList);
+    rollUpLink.click(toggleComponentList);
+
+    // Toggle the component list display
+    function toggleComponentList(event) {
+      event.preventDefault();
+
+      if (hidden === undefined) {
+        // Not loaded yet; load and display.
+        loadComponentList();
+        return;
+      }
+
+      if (hidden) {
+        // Hidden; display.
+        showComponentList();
+        return;
+      }
+
+      // Currently visible; hide
+      hideComponentList();
+    }
+
+    // Show the component list
+    function showComponentList() {
+      navbar.css({position: "relative"});
+      sidebar.css({position: "relative"});
+      components
+        .css({"margin-top": "-" + components.outerHeight() + "px"})
+        .show()
+        .animate({"margin-top": 0}, {
+          complete: function () {
+            componentToggle
+              .data("placement", "top")
+              .attr("data-original-title", "Hide component list");
+            hidden = false;
+          },
+          queue: false
+        });
+    }
+
+    // Hide the component list
+    function hideComponentList() {
+      components.animate({"margin-top": "-" + components.outerHeight() + "px"}, {
+        complete: function () {
+          navbar.css({position: "fixed"});
+          sidebar.css({position: sidebarInitialPos});
+          componentToggle
+            .data("placement", "bottom")
+            .attr("data-original-title", "Show component list");
+          components.hide();
+          hidden = true;
+        },
+        queue: false
+      });
+      sidebar.animate({ top: sidebarInitialTop + "px" }, { queue: false});
+    }
+
+    // Inject a component into the componet list DOM.
+    function injectComponent(index, component) {
+      componentList.append('<div class="component"><h4><a href="' + component.url + '">' + component.name + '</a></h4><p>' + component.description + '</p></div>');
+    }
+
+    // Parse the component list, build the DOM, and display it.
+    function parseComponentList(components) {
+      $.each(components, injectComponent);
+      showComponentList();
+    }
+
+    // Fetch the component list and display it.
+    function loadComponentList () {
+      $.ajax({
+        url: "//zendframework.github.io/zf-mkdoc-theme/scripts/zf-component-list.json",
+        dataType: "text json",
+        success: parseComponentList,
+        error: function (e) {
+          console.log("Error occurred with XHR call", e);
+        }
+      });
+    }
+  });
+</script>
+    </body>
+
+</html>
