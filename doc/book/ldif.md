@@ -3,34 +3,39 @@
 ## Serialize a LDAP entry to LDIF
 
 ```php
-$data = array(
+use Zend\Ldap\Ldif\Encoder;
+
+$data = [
     'dn'                         => 'uid=rogasawara,ou=営業部,o=Airius',
-    'objectclass'                => array('top',
-                                          'person',
-                                          'organizationalPerson',
-                                          'inetOrgPerson'),
-    'uid'                        => array('rogasawara'),
-    'mail'                       => array('rogasawara@airius.co.jp'),
-    'givenname;lang-ja'          => array('ロドニー'),
-    'sn;lang-ja'                 => array('小笠原'),
-    'cn;lang-ja'                 => array('小笠原 ロドニー'),
-    'title;lang-ja'              => array('営業部 部長'),
-    'preferredlanguage'          => array('ja'),
-    'givenname'                  => array('ロドニー'),
-    'sn'                         => array('小笠原'),
-    'cn'                         => array('小笠原 ロドニー'),
-    'title'                      => array('営業部 部長'),
-    'givenname;lang-ja;phonetic' => array('ろどにー'),
-    'sn;lang-ja;phonetic'        => array('おがさわら'),
-    'cn;lang-ja;phonetic'        => array('おがさわら ろどにー'),
-    'title;lang-ja;phonetic'     => array('えいぎょうぶ ぶちょう'),
-    'givenname;lang-en'          => array('Rodney'),
-    'sn;lang-en'                 => array('Ogasawara'),
-    'cn;lang-en'                 => array('Rodney Ogasawara'),
-    'title;lang-en'              => array('Sales, Director'),
-);
-$ldif = Zend\Ldap\Ldif\Encoder::encode($data, array('sort' => false,
-                                                    'version' => null));
+    'objectclass'                => [
+        'top',
+        'person',
+        'organizationalPerson',
+        'inetOrgPerson',
+    ],
+    'uid'                        => ['rogasawara'],
+    'mail'                       => ['rogasawara@airius.co.jp'],
+    'givenname;lang-ja'          => ['ロドニー'],
+    'sn;lang-ja'                 => ['小笠原'],
+    'cn;lang-ja'                 => ['小笠原 ロドニー'],
+    'title;lang-ja'              => ['営業部 部長'],
+    'preferredlanguage'          => ['ja'],
+    'givenname'                  => ['ロドニー'],
+    'sn'                         => ['小笠原'],
+    'cn'                         => ['小笠原 ロドニー'],
+    'title'                      => ['営業部 部長'],
+    'givenname;lang-ja;phonetic' => ['ろどにー'],
+    'sn;lang-ja;phonetic'        => ['おがさわら'],
+    'cn;lang-ja;phonetic'        => ['おがさわら ろどにー'],
+    'title;lang-ja;phonetic'     => ['えいぎょうぶ ぶちょう'],
+    'givenname;lang-en'          => ['Rodney'],
+    'sn;lang-en'                 => ['Ogasawara'],
+    'cn;lang-en'                 => ['Rodney Ogasawara'],
+    'title;lang-en'              => ['Sales, Director'],
+];
+
+$ldif = Encoder::encode($data, ['sort' => false, 'version' => null]);
+
 /*
 $ldif contains:
 dn:: dWlkPXJvZ2FzYXdhcmEsb3U95Za25qWt6YOoLG89QWlyaXVz
@@ -63,6 +68,8 @@ title;lang-en: Sales, Director
 ## Deserialize a LDIF string into a LDAP entry
 
 ```php
+use Zend\Ldap\Ldif\Encoder;
+
 $ldif = "dn:: dWlkPXJvZ2FzYXdhcmEsb3U95Za25qWt6YOoLG89QWlyaXVz
 objectclass: top
 objectclass: person
@@ -87,33 +94,37 @@ givenname;lang-en: Rodney
 sn;lang-en: Ogasawara
 cn;lang-en: Rodney Ogasawara
 title;lang-en: Sales, Director";
-$data = Zend\Ldap\Ldif\Encoder::decode($ldif);
+
+$data = Encoder::decode($ldif);
+
 /*
-$data = array(
+$data = [
     'dn'                         => 'uid=rogasawara,ou=営業部,o=Airius',
-    'objectclass'                => array('top',
-                                          'person',
-                                          'organizationalPerson',
-                                          'inetOrgPerson'),
-    'uid'                        => array('rogasawara'),
-    'mail'                       => array('rogasawara@airius.co.jp'),
-    'givenname;lang-ja'          => array('ロドニー'),
-    'sn;lang-ja'                 => array('小笠原'),
-    'cn;lang-ja'                 => array('小笠原 ロドニー'),
-    'title;lang-ja'              => array('営業部 部長'),
-    'preferredlanguage'          => array('ja'),
-    'givenname'                  => array('ロドニー'),
-    'sn'                         => array('小笠原'),
-    'cn'                         => array('小笠原 ロドニー'),
-    'title'                      => array('営業部 部長'),
-    'givenname;lang-ja;phonetic' => array('ろどにー'),
-    'sn;lang-ja;phonetic'        => array('おがさわら'),
-    'cn;lang-ja;phonetic'        => array('おがさわら ろどにー'),
-    'title;lang-ja;phonetic'     => array('えいぎょうぶ ぶちょう'),
-    'givenname;lang-en'          => array('Rodney'),
-    'sn;lang-en'                 => array('Ogasawara'),
-    'cn;lang-en'                 => array('Rodney Ogasawara'),
-    'title;lang-en'              => array('Sales, Director'),
-);
+    'objectclass'                => [
+        'top',
+        'person',
+        'organizationalPerson',
+        'inetOrgPerson',
+    ],
+    'uid'                        => ['rogasawara'],
+    'mail'                       => ['rogasawara@airius.co.jp'],
+    'givenname;lang-ja'          => ['ロドニー'],
+    'sn;lang-ja'                 => ['小笠原'],
+    'cn;lang-ja'                 => ['小笠原 ロドニー'],
+    'title;lang-ja'              => ['営業部 部長'],
+    'preferredlanguage'          => ['ja'],
+    'givenname'                  => ['ロドニー'],
+    'sn'                         => ['小笠原'],
+    'cn'                         => ['小笠原 ロドニー'],
+    'title'                      => ['営業部 部長'],
+    'givenname;lang-ja;phonetic' => ['ろどにー'],
+    'sn;lang-ja;phonetic'        => ['おがさわら'],
+    'cn;lang-ja;phonetic'        => ['おがさわら ろどにー'],
+    'title;lang-ja;phonetic'     => ['えいぎょうぶ ぶちょう'],
+    'givenname;lang-en'          => ['Rodney'],
+    'sn;lang-en'                 => ['Ogasawara'],
+    'cn;lang-en'                 => ['Rodney Ogasawara'],
+    'title;lang-en'              => ['Sales, Director'],
+];
 */
 ```

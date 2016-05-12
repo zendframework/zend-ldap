@@ -2,19 +2,20 @@
 
 ## RootDSE
 
-See the following documents for more information on the attributes contained within the RootDSE for
-a given *LDAP* server.
+See the following documents for more information on the attributes contained
+within the RootDSE for a given LDAP server.
 
 - [OpenLDAP](http://www.zytrax.com/books/ldap/ch3/#operational)
 - [Microsoft ActiveDirectory](http://msdn.microsoft.com/en-us/library/ms684291(VS.85).aspx)
-- [Novell
-eDirectory](http://www.novell.com/documentation/edir88/edir88/index.html?page=/documentation/edir88/edir88/data/ah59jqq.html)
+- [Novell eDirectory](http://www.novell.com/documentation/edir88/edir88/index.html?page=/documentation/edir88/edir88/data/ah59jqq.html)
 
 ### Getting hands on the RootDSE
 
 ```php
-$options = array(/* ... */);
-$ldap = new Zend\Ldap\Ldap($options);
+use Zend\Ldap\Ldap;
+
+$options = [/* ... */];
+$ldap = new Ldap($options);
 $rootdse = $ldap->getRootDse();
 $serverType = $rootdse->getServerType();
 ```
@@ -24,18 +25,21 @@ $serverType = $rootdse->getServerType();
 ### Getting hands on the server schema
 
 ```php
-$options = array(/* ... */);
-$ldap = new Zend\Ldap\Ldap($options);
+use Zend\Ldap\Ldap;
+
+$options = [/* ... */];
+$ldap = new Ldap($options);
 $schema = $ldap->getSchema();
 $classes = $schema->getObjectClasses();
 ```
 
 #### OpenLDAP
 
+- TODO
+
 #### ActiveDirectory
 
-> ### Note
-#### Schema browsing on ActiveDirectory servers
-Due to restrictions on Microsoft ActiveDirectory servers regarding the number of entries returned by
-generic search routines and due to the structure of the ActiveDirectory schema repository, schema
-browsing is currently **not** available for Microsoft ActiveDirectory servers.
+Due to restrictions on Microsoft ActiveDirectory servers regarding the number of
+entries returned by generic search routines and due to the structure of the
+ActiveDirectory schema repository, schema browsing is currently **not**
+available for Microsoft ActiveDirectory servers.
