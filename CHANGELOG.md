@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.7.1 - TBD
+## 2.7.1 - 2016-05-23
 
 ### Added
 
@@ -19,7 +19,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#47](https://github.com/zendframework/zend-ldap/pull/47) Fixes a BC-Break caused
+  by the missing default-ErrorHandler
 
 ## 2.7.0 - 2016-04-21
 
