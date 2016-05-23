@@ -16,11 +16,6 @@ error_reporting(E_ALL | E_STRICT);
 require __DIR__ . '/../vendor/autoload.php';
 
 /**
- * Setting the ZendTest\Ldap\ErrorHandler as default ErrorHandler
- */
-Zend\Ldap\ErrorHandler::setErrorHandler(new ZendTest\Ldap\ErrorHandler());
-
-/**
  * Start output buffering, if enabled
  */
 if (defined('TESTS_ZEND_OB_ENABLED') && constant('TESTS_ZEND_OB_ENABLED')) {
