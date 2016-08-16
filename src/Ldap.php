@@ -1089,6 +1089,54 @@ class Ldap
     }
 
     /**
+     * Add one or more attributes to the specified dn
+     *
+     * @param  string|Dn $dn
+     * @param  array $entry
+     * @return Ldap Provides a fluid interface
+     * @throws Exception\LdapException
+     */
+    public function addAttr($dn, $entry)
+    {
+        if ($dn instanceof Dn) {
+            $dn = $dn->toString();
+        }
+        $resource = $this->getResource();
+        ErrorHandler::start(E_WARNING);
+        $entryAdded = ldap_mod_add($resource, $dn, $entry);
+        ErrorHandler::stop();
+        if ($entryAdded === false) {
+            throw new Exception\LdapException($this, 'adding attribute: ' . $dn);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove one or more attributes from the specified dn
+     *
+     * @param  string|Dn $dn
+     * @param  array $entry
+     * @return Ldap Provides a fluid interface
+     * @throws Exception\LdapException
+     */
+    public function delAttr($dn, $entry)
+    {
+        if ($dn instanceof Dn) {
+            $dn = $dn->toString();
+        }
+        $resource = $this->getResource();
+        ErrorHandler::start(E_WARNING);
+        $entryDeleted = ldap_mod_del($resource, $dn, $entry);
+        ErrorHandler::stop();
+        if ($entryDeleted === false) {
+            throw new Exception\LdapException($this, 'adding attribute: ' . $dn);
+        }
+
+        return $this;
+    }
+
+    /**
      * Prepares an ldap data entry array for insert/update operation
      *
      * @param  array $entry
