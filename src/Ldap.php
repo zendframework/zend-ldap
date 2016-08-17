@@ -1089,54 +1089,6 @@ class Ldap
     }
 
     /**
-     * Add one or more attributes to the specified dn
-     *
-     * @param  string|Dn $dn
-     * @param  array $entry
-     * @return Ldap Provides a fluid interface
-     * @throws Exception\LdapException
-     */
-    public function addAttr($dn, $entry)
-    {
-        if ($dn instanceof Dn) {
-            $dn = $dn->toString();
-        }
-        $resource = $this->getResource();
-        ErrorHandler::start(E_WARNING);
-        $entryAdded = ldap_mod_add($resource, $dn, $entry);
-        ErrorHandler::stop();
-        if ($entryAdded === false) {
-            throw new Exception\LdapException($this, 'adding attribute: ' . $dn);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove one or more attributes from the specified dn
-     *
-     * @param  string|Dn $dn
-     * @param  array $entry
-     * @return Ldap Provides a fluid interface
-     * @throws Exception\LdapException
-     */
-    public function delAttr($dn, $entry)
-    {
-        if ($dn instanceof Dn) {
-            $dn = $dn->toString();
-        }
-        $resource = $this->getResource();
-        ErrorHandler::start(E_WARNING);
-        $entryDeleted = ldap_mod_del($resource, $dn, $entry);
-        ErrorHandler::stop();
-        if ($entryDeleted === false) {
-            throw new Exception\LdapException($this, 'adding attribute: ' . $dn);
-        }
-
-        return $this;
-    }
-
-    /**
      * Prepares an ldap data entry array for insert/update operation
      *
      * @param  array $entry
@@ -1327,6 +1279,44 @@ class Ldap
         ErrorHandler::stop();
         if ($isDeleted === false) {
             throw new Exception\LdapException($this, 'deleting: ' . $dn);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Add one or more attributes to the specified dn
+     *
+     * @param  string|Dn $dn
+     * @param  array     $attributes
+     * @param bool       $allowEmptyAttributes
+     * @return Ldap Provides a fluid interface
+     * @throws LdapException
+     */
+    public function addAttributes($dn, array $attributes, $allowEmptyAttributes = false)
+    {
+        // Safety-flap: Check whether there are empty arrays that would cause
+        // complete removal of entries without the emptyAll flag.
+        if ($allowEmptyAttributes !== true) {
+            foreach ($attributes as $key => $value) {
+                if (empty($value)) {
+                    unset($attributes[$key]);
+                }
+            }
+        }
+
+        if ($dn instanceof Dn) {
+            $dn = $dn->toString();
+        }
+        
+        $resource = $this->getResource();
+
+        ErrorHandler::start(E_WARNING);
+        $entryAdded = ldap_mod_add($resource, $dn, $attributes);
+        ErrorHandler::stop();
+
+        if ($entryAdded === false) {
+            throw new Exception\LdapException($this, 'adding attribute: ' . $dn);
         }
 
         return $this;
