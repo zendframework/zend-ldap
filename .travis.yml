@@ -30,18 +30,7 @@ env:
     - secure: "oyutreHfOP5k3jQ3zZ28iJj64OSVCNqnCVfQrWnTDf3woV63vK0Le4X1O6WopAbd8yoEaN30nJ49X81zAUFN4lneulvitFHjEHvzNkOxFPWxfBK+APCnu0U0Z/a0BiFyoo1A5CGS3OrRpT1WL+CpTy49gpaqlfCnUVP/EnOP1uisKQIVQFbzoKl+0yAMzIXZ8rS5uFTej9lKbGi0V3+Gg896xXsmhLkb4ElNNNkccvB11cgDBLUarM43qL/s7kINv1uPbJ51WERujlZkcRH/s4OcYKPRREeDr+9aMZTELTuGFKLQKrhuA13YkHOSB/j6NnXEuEIVCpaVndrMXm69NBe/IfOuvSQoa4m0E7Ks6DZlX7nkj3rudlmX/+KakI+uJQdQLs7JDYKchuhX5hDO0dHGNTdwsPJAb06zDKR2HIfgzVZTX27//5PAKSU5DLOEM9sDYJAhQkxt0iC1L4xmQo/XOG8VNXL7usARouVI9FhmgPezmUDaN4CzvrD6kYtOVL3I9UwklnBQ0tJbO/CHnaq/eiWeNFL4tPDNim6c4pz9YayFQbOlu3SUy6lE/fwbXS1YtMl3t0MlO62B8wt+x0XlIJVTmMK0PFVj/cl93WUYZxxTZnFNvcy3VtmK7g6aNtHpAJaDQCl6Fu8K4xrWoTewG9m78KXu7p21gv9BjW8="
 
 matrix:
-  fast_finish: true
   include:
-    - php: 5.5
-      env:
-        - DEPS=lowest
-    - php: 5.5
-      env:
-        - DEPS=locked
-        - CHECK_CS=true
-    - php: 5.5
-      env:
-        - DEPS=latest
     - php: 5.6
       env:
         - DEPS=lowest
@@ -62,6 +51,7 @@ matrix:
     - php: 7
       env:
         - TEST_COVERAGE=true
+        - CHECK_CS=true
         - DEPS=latest
     - php: 7.1
       env:
