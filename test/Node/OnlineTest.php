@@ -185,7 +185,8 @@ class OnlineTest extends TestLdap\AbstractOnlineTestCase
         $node = $this->getLDAP()->getBaseNode();
         $this->assertEquals(getenv('TESTS_ZEND_LDAP_WRITEABLE_SUBTREE'), $node->getDnString());
 
-        $dn = Ldap\Dn::fromString(getenv('TESTS_ZEND_LDAP_WRITEABLE_SUBTREE'),
+        $dn = Ldap\Dn::fromString(
+            getenv('TESTS_ZEND_LDAP_WRITEABLE_SUBTREE'),
             Ldap\Dn::ATTR_CASEFOLD_LOWER
         );
         $this->assertEquals($dn[0]['ou'], $node->getAttribute('ou', 0));
@@ -194,8 +195,11 @@ class OnlineTest extends TestLdap\AbstractOnlineTestCase
     public function testSearchSubtree()
     {
         $node  = $this->getLDAP()->getNode($this->createDn('ou=Node,'));
-        $items = $node->searchSubtree('(objectClass=organizationalUnit)', Ldap\Ldap::SEARCH_SCOPE_SUB,
-            [], 'ou'
+        $items = $node->searchSubtree(
+            '(objectClass=organizationalUnit)',
+            Ldap\Ldap::SEARCH_SCOPE_SUB,
+            [],
+            'ou'
         );
         $this->assertInstanceOf('Zend\Ldap\Node\Collection', $items);
         $this->assertEquals(3, $items->count());
@@ -222,10 +226,10 @@ class OnlineTest extends TestLdap\AbstractOnlineTestCase
     public function testCountSubtree()
     {
         $node = $this->getLDAP()->getNode(getenv('TESTS_ZEND_LDAP_WRITEABLE_SUBTREE'));
-        $this->assertEquals(9, $node->countSubtree('(objectClass=organizationalUnit)',
-                Ldap\Ldap::SEARCH_SCOPE_SUB
-            )
-        );
+        $this->assertEquals(9, $node->countSubtree(
+            '(objectClass=organizationalUnit)',
+            Ldap\Ldap::SEARCH_SCOPE_SUB
+        ));
     }
 
     public function testCountChildren()
@@ -248,7 +252,8 @@ class OnlineTest extends TestLdap\AbstractOnlineTestCase
     {
         $node  = $this->getLDAP()->getNode($this->createDn('ou=Node,'));
         $pnode = $node->getParent();
-        $this->assertEquals(Ldap\Dn::fromString(getenv('TESTS_ZEND_LDAP_WRITEABLE_SUBTREE'))
+        $this->assertEquals(
+            Ldap\Dn::fromString(getenv('TESTS_ZEND_LDAP_WRITEABLE_SUBTREE'))
                 ->toString(Ldap\Dn::ATTR_CASEFOLD_LOWER),
             $pnode->getDnString(Ldap\Dn::ATTR_CASEFOLD_LOWER)
         );

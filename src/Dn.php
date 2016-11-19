@@ -257,7 +257,7 @@ class Dn implements ArrayAccess
      */
     protected function assertIndex($index)
     {
-        if (!is_int($index)) {
+        if (! is_int($index)) {
             throw new Exception\LdapException(null, 'Parameter $index must be an integer');
         }
         if ($index < 0 || $index >= count($this->dn)) {
@@ -280,7 +280,7 @@ class Dn implements ArrayAccess
         }
 
         foreach (array_keys($value) as $key) {
-            if (!is_string($key)) {
+            if (! is_string($key)) {
                 throw new Exception\LdapException(null, 'RDN Array is malformed: it must use string keys');
             }
         }
@@ -466,14 +466,15 @@ class Dn implements ArrayAccess
      */
     public static function escapeValue($values = [])
     {
-        if (!is_array($values)) {
+        if (! is_array($values)) {
             $values = [$values];
         }
         foreach ($values as $key => $val) {
             // Escaping of filter meta characters
             $val = str_replace(
                 ['\\', ',', '+', '"', '<', '>', ';', '#', '='],
-                ['\\\\', '\,', '\+', '\"', '\<', '\>', '\;', '\#', '\='], $val
+                ['\\\\', '\,', '\+', '\"', '\<', '\>', '\;', '\#', '\='],
+                $val
             );
             $val = Converter\Converter::ascToHex32($val);
 
@@ -509,14 +510,15 @@ class Dn implements ArrayAccess
      */
     public static function unescapeValue($values = [])
     {
-        if (!is_array($values)) {
+        if (! is_array($values)) {
             $values = [$values];
         }
         foreach ($values as $key => $val) {
             // strip slashes from special chars
             $val          = str_replace(
                 ['\\\\', '\,', '\+', '\"', '\<', '\>', '\;', '\#', '\='],
-                ['\\', ',', '+', '"', '<', '>', ';', '#', '=', ], $val
+                ['\\', ',', '+', '"', '<', '>', ';', '#', '=', ],
+                $val
             );
             $values[$key] = Converter\Converter::hex32ToAsc($val);
         }
@@ -543,12 +545,14 @@ class Dn implements ArrayAccess
      * @throws Exception\LdapException
      */
     public static function explodeDn(
-        $dn, array &$keys = null, array &$vals = null,
+        $dn,
+        array &$keys = null,
+        array &$vals = null,
         $caseFold = self::ATTR_CASEFOLD_NONE
     ) {
         $k = [];
         $v = [];
-        if (!self::checkDn($dn, $k, $v, $caseFold)) {
+        if (! self::checkDn($dn, $k, $v, $caseFold)) {
             throw new Exception\LdapException(null, 'DN is malformed');
         }
         $ret = [];
@@ -582,7 +586,9 @@ class Dn implements ArrayAccess
      * @return bool True if the DN was successfully parsed or false if the string is not a valid DN.
      */
     public static function checkDn(
-        $dn, array &$keys = null, array &$vals = null,
+        $dn,
+        array &$keys = null,
+        array &$vals = null,
         $caseFold = self::ATTR_CASEFOLD_NONE
     ) {
         /* This is a classic state machine parser. Each iteration of the

@@ -93,8 +93,10 @@ abstract class AbstractNode implements ArrayAccess, Countable
      *
      * @return \Zend\Ldap\Dn
      */
+    // @codingStandardsIgnoreStart
     protected function _getDn()
     {
+        // @codingStandardsIgnoreEnd
         return $this->dn;
     }
 
@@ -251,7 +253,7 @@ abstract class AbstractNode implements ArrayAccess, Countable
         if ($includeSystemAttributes === false) {
             $data = [];
             foreach ($this->currentData as $key => $value) {
-                if (!in_array($key, static::$systemAttributes)) {
+                if (! in_array($key, static::$systemAttributes)) {
                     $data[$key] = $value;
                 }
             }

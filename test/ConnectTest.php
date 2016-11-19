@@ -27,7 +27,7 @@ class ConnectTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        if (!getenv('TESTS_ZEND_LDAP_ONLINE_ENABLED')) {
+        if (! getenv('TESTS_ZEND_LDAP_ONLINE_ENABLED')) {
             $this->markTestSkipped("Zend_Ldap online tests are not enabled");
         }
 

@@ -57,21 +57,21 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
     {
         $tz = new DateTimeZone('UTC');
         return [
-            [['date'=> 0,
+            [['date' => 0,
                         'utc' => true], '19700101000000Z'],
-            [['date'=> new DateTime('2010-05-12 13:14:45+0300', $tz),
+            [['date' => new DateTime('2010-05-12 13:14:45+0300', $tz),
                         'utc' => false], '20100512131445+0300'],
-            [['date'=> new DateTime('2010-05-12 13:14:45+0300', $tz),
+            [['date' => new DateTime('2010-05-12 13:14:45+0300', $tz),
                         'utc' => true], '20100512101445Z'],
-            [['date'=> '2010-05-12 13:14:45+0300',
+            [['date' => '2010-05-12 13:14:45+0300',
                         'utc' => false], '20100512131445+0300'],
-            [['date'=> '2010-05-12 13:14:45+0300',
+            [['date' => '2010-05-12 13:14:45+0300',
                         'utc' => true], '20100512101445Z'],
-            [['date'=> DateTime::createFromFormat(DateTime::ISO8601, '2010-05-12T13:14:45+0300'),
+            [['date' => DateTime::createFromFormat(DateTime::ISO8601, '2010-05-12T13:14:45+0300'),
                         'utc' => true], '20100512101445Z'],
-            [['date'=> DateTime::createFromFormat(DateTime::ISO8601, '2010-05-12T13:14:45+0300'),
+            [['date' => DateTime::createFromFormat(DateTime::ISO8601, '2010-05-12T13:14:45+0300'),
                         'utc' => false], '20100512131445+0300'],
-            [['date'=> date_timestamp_set(new DateTime(), 0),
+            [['date' => date_timestamp_set(new DateTime(), 0),
                         'utc' => true], '19700101000000Z'],
         ];
     }
@@ -112,7 +112,7 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
             ['i:1;', 1],
             [serialize(new DateTime('@0')), new DateTime('@0')],
             ['a:3:{i:0;s:4:"test";i:1;i:1;s:3:"foo";s:3:"bar";}', ['test', 1,
-                                                                             'foo'=> 'bar']],
+                                                                             'foo' => 'bar']],
         ];
     }
 
@@ -132,19 +132,19 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
                 'type'  => 0,
             ]],
             ['19700101000000Z', [
-                'value'=> 0,
+                'value' => 0,
                 'type' => 2,
             ]],
             ['0', [
-                'value'=> 0,
+                'value' => 0,
                 'type' => 0,
             ]],
             ['FALSE', [
-                'value'=> 0,
+                'value' => 0,
                 'type' => 1,
             ]],
             ['19700101000000Z', [
-                'value'=> DateTime::createFromFormat(DateTime::ISO8601, '1970-01-01T00:00:00+0000'),
+                'value' => DateTime::createFromFormat(DateTime::ISO8601, '1970-01-01T00:00:00+0000'),
                 'type' => 0,
             ]],
             [Converter::toLdapBoolean(true), [

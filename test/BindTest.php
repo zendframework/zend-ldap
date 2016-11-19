@@ -30,7 +30,7 @@ class BindTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        if (!getenv('TESTS_ZEND_LDAP_ONLINE_ENABLED')) {
+        if (! getenv('TESTS_ZEND_LDAP_ONLINE_ENABLED')) {
             $this->markTestSkipped("Zend_Ldap online tests are not enabled");
         }
 
@@ -202,7 +202,8 @@ class BindTest extends \PHPUnit_Framework_TestCase
             $ldap->bind($this->altUsername, '');
             $this->fail('Expected exception for empty password');
         } catch (Exception\LdapException $zle) {
-            $this->assertContains('Empty password not allowed - see allowEmptyPassword option.',
+            $this->assertContains(
+                'Empty password not allowed - see allowEmptyPassword option.',
                 $zle->getMessage()
             );
         }
@@ -219,8 +220,7 @@ class BindTest extends \PHPUnit_Framework_TestCase
             } else {
                 $message = $zle->getMessage();
                 $this->assertTrue(strstr($message, 'Invalid credentials')
-                        || strstr($message, 'Server is unwilling to perform')
-                );
+                        || strstr($message, 'Server is unwilling to perform'));
                 return;
             }
         }
@@ -237,7 +237,8 @@ class BindTest extends \PHPUnit_Framework_TestCase
             $ldap->bind();
             $this->fail('Expected exception for empty password');
         } catch (Exception\LdapException $zle) {
-            $this->assertContains('Binding requires username in DN form',
+            $this->assertContains(
+                'Binding requires username in DN form',
                 $zle->getMessage()
             );
         }

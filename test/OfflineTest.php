@@ -81,8 +81,7 @@ class OfflineTest extends \PHPUnit_Framework_TestCase
                                  'optReferrals'           => false,
                                  'tryUsernameSplit'       => true,
                                  'networkTimeout'         => null,
-                            ], $ldap->getOptions()
-        );
+                            ], $ldap->getOptions());
     }
 
     public function testConfigObject()
@@ -111,15 +110,19 @@ class OfflineTest extends \PHPUnit_Framework_TestCase
                                  'optReferrals'           => false,
                                  'tryUsernameSplit'       => true,
                                  'networkTimeout'         => null,
-                            ], $ldap->getOptions()
-        );
+                            ], $ldap->getOptions());
     }
 
     /**
      * @dataProvider removingAttributesProvider
      */
-    public function testRemovingAttributes($dn, $attributes, $allowEmptyAttributes, $expectedDn, $expectedAttributesToRemove)
-    {
+    public function testRemovingAttributes(
+        $dn,
+        $attributes,
+        $allowEmptyAttributes,
+        $expectedDn,
+        $expectedAttributesToRemove
+    ) {
         $ldap_mod_del = $this->getFunctionMock('Zend\\Ldap', "ldap_mod_del");
         $ldap_mod_del->expects($this->once())
                      ->with(

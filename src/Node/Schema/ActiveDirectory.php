@@ -42,14 +42,16 @@ class ActiveDirectory extends Node\Schema
     {
         parent::parseSchema($dn, $ldap);
         foreach ($ldap->search(
-            '(objectClass=classSchema)', $dn,
+            '(objectClass=classSchema)',
+            $dn,
             Ldap\Ldap::SEARCH_SCOPE_ONE
         ) as $node) {
             $val                                  = new ObjectClass\ActiveDirectory($node);
             $this->objectClasses[$val->getName()] = $val;
         }
         foreach ($ldap->search(
-            '(objectClass=attributeSchema)', $dn,
+            '(objectClass=attributeSchema)',
+            $dn,
             Ldap\Ldap::SEARCH_SCOPE_ONE
         ) as $node) {
             $val                                   = new AttributeType\ActiveDirectory($node);

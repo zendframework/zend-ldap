@@ -77,7 +77,7 @@ abstract class AbstractOnlineTestCase extends AbstractTestCase
 
     protected function setUp()
     {
-        if (!getenv('TESTS_ZEND_LDAP_ONLINE_ENABLED')) {
+        if (! getenv('TESTS_ZEND_LDAP_ONLINE_ENABLED')) {
             $this->markTestSkipped("Zend_Ldap online tests are not enabled");
         }
 
@@ -137,7 +137,7 @@ abstract class AbstractOnlineTestCase extends AbstractTestCase
 
     protected function cleanupLDAPServer()
     {
-        if (!getenv('TESTS_ZEND_LDAP_ONLINE_ENABLED')) {
+        if (! getenv('TESTS_ZEND_LDAP_ONLINE_ENABLED')) {
             return;
         }
         $ldap = $this->getLDAP()->getResource();

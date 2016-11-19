@@ -202,8 +202,11 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
     public function testPasswordSettingCustomAttribute()
     {
         $data = [];
-        Attribute::setPassword($data, 'pa$$w0rd',
-            Attribute::PASSWORD_HASH_SHA, 'myAttribute'
+        Attribute::setPassword(
+            $data,
+            'pa$$w0rd',
+            Attribute::PASSWORD_HASH_SHA,
+            'myAttribute'
         );
         $password = Attribute::getAttribute($data, 'myAttribute', 0);
         $this->assertNotNull($password);
@@ -428,31 +431,37 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(Attribute::attributeHasValue($data, 'boolean1', true));
         $this->assertFalse(Attribute::attributeHasValue($data, 'boolean1', false));
 
-        $this->assertTrue(Attribute::attributeHasValue($data, 'strings1',
-                ['value1', 'value2']
-            )
-        );
-        $this->assertTrue(Attribute::attributeHasValue($data, 'strings1',
-                ['value1', 'value2', 'value3']
-            )
-        );
-        $this->assertFalse(Attribute::attributeHasValue($data, 'strings1',
-                ['value1', 'value2', 'value3', 'value4']
-            )
-        );
-        $this->assertTrue(Attribute::attributeHasValue($data, 'strings2',
-                ['value1', 'value2', 'value3', 'value4']
-            )
-        );
+        $this->assertTrue(Attribute::attributeHasValue(
+            $data,
+            'strings1',
+            ['value1', 'value2']
+        ));
+        $this->assertTrue(Attribute::attributeHasValue(
+            $data,
+            'strings1',
+            ['value1', 'value2', 'value3']
+        ));
+        $this->assertFalse(Attribute::attributeHasValue(
+            $data,
+            'strings1',
+            ['value1', 'value2', 'value3', 'value4']
+        ));
+        $this->assertTrue(Attribute::attributeHasValue(
+            $data,
+            'strings2',
+            ['value1', 'value2', 'value3', 'value4']
+        ));
 
-        $this->assertTrue(Attribute::attributeHasValue($data, 'boolean2',
-                [true, false]
-            )
-        );
-        $this->assertFalse(Attribute::attributeHasValue($data, 'boolean1',
-                [true, false]
-            )
-        );
+        $this->assertTrue(Attribute::attributeHasValue(
+            $data,
+            'boolean2',
+            [true, false]
+        ));
+        $this->assertFalse(Attribute::attributeHasValue(
+            $data,
+            'boolean1',
+            [true, false]
+        ));
     }
 
     public function testPasswordGenerationSSHA()

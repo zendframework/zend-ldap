@@ -95,7 +95,7 @@ class CrudTest extends AbstractOnlineTestCase
                 $exThrown = true;
             }
             $this->getLDAP()->delete($dn);
-            if (!$exThrown) {
+            if (! $exThrown) {
                 $this->fail('no exception thrown while illegally updating entry');
             }
         } catch (Exception\LdapException $e) {
@@ -141,7 +141,8 @@ class CrudTest extends AbstractOnlineTestCase
         } catch (Exception\LdapException $e) {
             $exCaught = true;
         }
-        $this->assertTrue($exCaught,
+        $this->assertTrue(
+            $exCaught,
             'Execption not raised when deleting item with children without specifiying recursive delete'
         );
         $this->getLDAP()->delete($topDn, true);
