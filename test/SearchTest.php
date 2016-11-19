@@ -619,7 +619,7 @@ class SearchTest extends AbstractOnlineTestCase
     {
         $dn   = $this->createDn('ou=Node,');
         $list = $this->getLDAP()->search('objectClass=*', $dn, Ldap\Ldap::SEARCH_SCOPE_BASE);
-        $list->getInnerIterator()->setAttributeNameTreatment([__NAMESPACE__ . '\CustomNaming', 'name1']);
+        $list->getInnerIterator()->setAttributeNameTreatment([__NAMESPACE__ . '\TestAsset\CustomNaming', 'name1']);
         $this->assertArrayHasKey('edoclatsop', $list->current());
     }
 
