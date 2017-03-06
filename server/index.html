@@ -204,23 +204,21 @@ within the RootDSE for a given LDAP server.</p>
 <li><a href="http://www.novell.com/documentation/edir88/edir88/index.html?page=/documentation/edir88/edir88/data/ah59jqq.html">Novell eDirectory</a></li>
 </ul>
 <h3 id="getting-hands-on-the-rootdse">Getting hands on the RootDSE</h3>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
+<pre class="codehilite"><code class="language-php linenums">use Zend\Ldap\Ldap;
 
 $options = [/* ... */];
 $ldap = new Ldap($options);
 $rootdse = $ldap-&gt;getRootDse();
 $serverType = $rootdse-&gt;getServerType();</code></pre>
 
-
 <h2 id="schema-browsing">Schema Browsing</h2>
 <h3 id="getting-hands-on-the-server-schema">Getting hands on the server schema</h3>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
+<pre class="codehilite"><code class="language-php linenums">use Zend\Ldap\Ldap;
 
 $options = [/* ... */];
 $ldap = new Ldap($options);
 $schema = $ldap-&gt;getSchema();
 $classes = $schema-&gt;getObjectClasses();</code></pre>
-
 
 <h4 id="openldap">OpenLDAP</h4>
 <ul>

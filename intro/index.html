@@ -212,7 +212,7 @@ for OpenLDAP-, ActiveDirectory- and Novell eDirectory servers
 some examples.</p>
 <p>If you are using OpenLDAP, consider the following example (note that the
 <code>bindRequiresDn</code> option is important if you are <strong>not</strong> using AD):</p>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
+<pre class="codehilite"><code class="language-php linenums">use Zend\Ldap\Ldap;
 
 $options = [
     'host'              =&gt; 's0.foo.net',
@@ -227,9 +227,8 @@ $ldap = new Ldap($options);
 $acctname = $ldap-&gt;getCanonicalAccountName('abaker', Ldap::ACCTNAME_FORM_DN);
 echo &quot;$acctname\n&quot;;</code></pre>
 
-
 <p>If you are using Microsoft AD:</p>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
+<pre class="codehilite"><code class="language-php linenums">use Zend\Ldap\Ldap;
 
 $options = [
     'host'                   =&gt; 'dc1.w.net',
@@ -245,7 +244,6 @@ $ldap = new Ldap($options);
 $acctname = $ldap-&gt;getCanonicalAccountName('bcarter', Ldap::ACCTNAME_FORM_DN);
 echo &quot;$acctname\n&quot;;</code></pre>
 
-
 <p>Note that we use the <code>getCanonicalAccountName()</code> method to retrieve the account
 DN here only because that is what exercises the most of what little code is
 currently present in this class.</p>
@@ -259,7 +257,7 @@ the username supplied to <code>bind()</code> and then re-bind with that DN.</p>
 which passes the username supplied by the user directly to <code>bind()</code>.</p>
 <p>The following example illustrates how the non-DN username 'abaker' can be used
 with <code>bind()</code>:</p>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
+<pre class="codehilite"><code class="language-php linenums">use Zend\Ldap\Ldap;
 
 $options = [
     'host'              =&gt; 's0.foo.net',
@@ -274,7 +272,6 @@ $ldap = new Ldap($options);
 $ldap-&gt;bind('abaker', 'moonbike55');
 $acctname = $ldap-&gt;getCanonicalAccountName('abaker', Ldap::ACCTNAME_FORM_DN);
 echo &quot;$acctname\n&quot;;</code></pre>
-
 
 <p>The <code>bind()</code> call in this example sees that the username 'abaker' is not in DN
 form, finds <code>bindRequiresDn</code> is <code>TRUE</code>, uses <code>CN=user1,DC=foo,DC=net</code> and
@@ -306,7 +303,7 @@ not matter if the user passes <code>abaker@foo.net</code> or <code>Wbcarter</cod
 the bind.</p>
 <p>Consider the following example that illustrates the technique required to
 implement multi-domain authentication and failover:</p>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Exception\LdapException;
+<pre class="codehilite"><code class="language-php linenums">use Zend\Ldap\Exception\LdapException;
 use Zend\Ldap\Ldap;
 
 $acctname = 'W\\user2';
@@ -353,7 +350,6 @@ foreach ($multiOptions as $name =&gt; $options) {
         }
     }
 }</code></pre>
-
 
 <p>If the bind fails for any reason, the next set of server options is tried.</p>
 <p>The <code>getCanonicalAccountName()</code> call gets the canonical account name that the

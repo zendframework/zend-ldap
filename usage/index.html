@@ -209,7 +209,7 @@
 <h2 id="basic-crud-operations">Basic CRUD operations</h2>
 <h3 id="retrieving-data-from-the-ldap">Retrieving data from the LDAP</h3>
 <h4 id="getting-an-entry-by-its-dn">Getting an entry by its DN</h4>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
+<pre class="codehilite"><code class="language-php linenums">use Zend\Ldap\Ldap;
 
 $options = [/* ... */];
 $ldap = new Ldap($options);
@@ -227,27 +227,24 @@ $hm is an array of the following structure:
 ]
 */</code></pre>
 
-
 <h4 id="check-for-the-existence-of-a-given-dn">Check for the existence of a given DN</h4>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
+<pre class="codehilite"><code class="language-php linenums">use Zend\Ldap\Ldap;
 
 $options = [/* ... */];
 $ldap = new Ldap($options);
 $ldap-&gt;bind();
 $isThere = $ldap-&gt;exists('cn=Hugo Müller,ou=People,dc=my,dc=local');</code></pre>
 
-
 <h4 id="count-children-of-a-given-dn">Count children of a given DN</h4>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
+<pre class="codehilite"><code class="language-php linenums">use Zend\Ldap\Ldap;
 
 $options = [/* ... */];
 $ldap = new Ldap($options);
 $ldap-&gt;bind();
 $childrenCount = $ldap-&gt;countChildren('cn=Hugo Müller,ou=People,dc=my,dc=local');</code></pre>
 
-
 <h4 id="searching-the-ldap-tree">Searching the LDAP tree</h4>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
+<pre class="codehilite"><code class="language-php linenums">use Zend\Ldap\Ldap;
 
 $options = [/* ... */];
 $ldap = new Ldap($options);
@@ -262,10 +259,9 @@ foreach ($result as $item) {
     echo $item[&quot;dn&quot;] . ': ' . $item['cn'][0] . PHP_EOL;
 }</code></pre>
 
-
 <h3 id="adding-data-to-the-ldap">Adding data to the LDAP</h3>
 <h4 id="add-a-new-entry-to-the-ldap">Add a new entry to the LDAP</h4>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Attribute;
+<pre class="codehilite"><code class="language-php linenums">use Zend\Ldap\Attribute;
 use Zend\Ldap\Ldap;
 
 $options = [/* ... */];
@@ -279,20 +275,18 @@ Attribute::setAttribute($entry, 'objectClass', 'inetOrgPerson');
 
 $ldap-&gt;add('cn=Hans Meier,ou=People,dc=my,dc=local', $entry);</code></pre>
 
-
 <h3 id="deleting-from-the-ldap">Deleting from the LDAP</h3>
 <h4 id="delete-an-existing-entry-from-the-ldap">Delete an existing entry from the LDAP</h4>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
+<pre class="codehilite"><code class="language-php linenums">use Zend\Ldap\Ldap;
 
 $options = [/* ... */];
 $ldap = new Ldap($options);
 $ldap-&gt;bind();
 $ldap-&gt;delete('cn=Hans Meier,ou=People,dc=my,dc=local');</code></pre>
 
-
 <h3 id="updating-the-ldap">Updating the LDAP</h3>
 <h4 id="update-an-existing-entry-on-the-ldap">Update an existing entry on the LDAP</h4>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Attribute;
+<pre class="codehilite"><code class="language-php linenums">use Zend\Ldap\Attribute;
 use Zend\Ldap\Ldap;
 
 $options = [/* ... */];
@@ -305,11 +299,10 @@ Attribute::setPassword($hm, 'newPa$$w0rd', Attribute::PASSWORD_HASH_SHA1);
 
 $ldap-&gt;update('cn=Hugo Müller,ou=People,dc=my,dc=local', $hm);</code></pre>
 
-
 <h2 id="extended-operations">Extended operations</h2>
 <h3 id="copy-and-move-entries-in-the-ldap">Copy and move entries in the LDAP</h3>
 <h4 id="copy-a-ldap-entry-recursively-with-all-its-descendants">Copy a LDAP entry recursively with all its descendants</h4>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
+<pre class="codehilite"><code class="language-php linenums">use Zend\Ldap\Ldap;
 
 $options = [/* ... */];
 $ldap = new Ldap($options);
@@ -320,9 +313,8 @@ $ldap-&gt;copy(
     true
 );</code></pre>
 
-
 <h4 id="move-a-ldap-entry-recursively-with-all-its-descendants-to-a-different-subtree">Move a LDAP entry recursively with all its descendants to a different subtree</h4>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
+<pre class="codehilite"><code class="language-php linenums">use Zend\Ldap\Ldap;
 
 $options = [/* ... */];
 $ldap = new Ldap($options);

@@ -200,7 +200,7 @@
 <h2 id="creation-and-modification-of-dn-strings">Creation and modification of DN strings</h2>
 <h2 id="using-the-filter-api-to-create-search-filters">Using the filter API to create search filters</h2>
 <h3 id="create-simple-ldap-filters">Create simple LDAP filters</h3>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Filter;
+<pre class="codehilite"><code class="language-php linenums">use Zend\Ldap\Filter;
 
 $f1  = Filter::equals('name', 'value');         // (name=value)
 $f2  = Filter::begins('name', 'value');         // (name=value*)
@@ -213,9 +213,8 @@ $f8  = Filter::lessOrEqual('name', 'value');    // (name&lt;=value)
 $f9  = Filter::approx('name', 'value');         // (name~=value)
 $f10 = Filter::any('name');                     // (name=*)</code></pre>
 
-
 <h3 id="create-more-complex-ldap-filters">Create more complex LDAP filters</h3>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Filter;
+<pre class="codehilite"><code class="language-php linenums">use Zend\Ldap\Filter;
 
 $f1 = Filter::ends('name', 'value')-&gt;negate(); // (!(name=*value))
 
@@ -228,7 +227,6 @@ $f5 = Filter::andFilter($f2, $f3, $f4);
 
 // (|(name=value)(name=value*)(name=*value))
 $f6 = Filter::orFilter($f2, $f3, $f4);</code></pre>
-
 
 <h2 id="modify-ldap-entries-using-the-attribute-api">Modify LDAP entries using the Attribute API</h2>
 <ul>

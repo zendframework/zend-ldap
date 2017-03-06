@@ -196,7 +196,7 @@
 
 <h1 id="serializing-ldap-data-to-and-from-ldif">Serializing LDAP data to and from LDIF</h1>
 <h2 id="serialize-a-ldap-entry-to-ldif">Serialize a LDAP entry to LDIF</h2>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldif\Encoder;
+<pre class="codehilite"><code class="language-php linenums">use Zend\Ldap\Ldif\Encoder;
 
 $data = [
     'dn'                         =&gt; 'uid=rogasawara,ou=営業部,o=Airius',
@@ -257,9 +257,8 @@ cn;lang-en: Rodney Ogasawara
 title;lang-en: Sales, Director
 */</code></pre>
 
-
 <h2 id="deserialize-a-ldif-string-into-a-ldap-entry">Deserialize a LDIF string into a LDAP entry</h2>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldif\Encoder;
+<pre class="codehilite"><code class="language-php linenums">use Zend\Ldap\Ldif\Encoder;
 
 $ldif = &quot;dn:: dWlkPXJvZ2FzYXdhcmEsb3U95Za25qWt6YOoLG89QWlyaXVz
 objectclass: top

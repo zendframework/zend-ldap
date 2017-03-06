@@ -413,7 +413,7 @@ methods as well as methods to operate on the LDAP tree.</p>
 </table></div>
 <h4 id="search">search()</h4>
 <p>The <code>search()</code> signature is as follows:</p>
-<pre class="codehilite"><code class="language-php">search(
+<pre class="codehilite"><code class="language-php linenums">search(
     string|Filter\AbstractFilter $filter,
     string|Dn $basedn,
     int $scope,
@@ -423,7 +423,6 @@ methods as well as methods to operate on the LDAP tree.</p>
     int $sizelimit,
     int $timelimit
 ) : Collection</code></pre>
-
 
 <p>where:</p>
 <ul>
@@ -457,7 +456,7 @@ methods as well as methods to operate on the LDAP tree.</p>
   Setting this to <code>0</code> means no limit.</li>
 </ul>
 <h4 id="searchentries">searchEntries()</h4>
-<pre class="codehilite"><code class="language-php">searchEntries(
+<pre class="codehilite"><code class="language-php linenums">searchEntries(
     string|Dn $basedn,
     int $scope,
     array $attributes,
@@ -466,7 +465,6 @@ methods as well as methods to operate on the LDAP tree.</p>
     int $sizelimit,
     int $timelimit
 ) : array</code></pre>
-
 
 <p>Arguments are essentially the same as for <a href="#search">search()</a>, with two
 differences:</p>
@@ -560,13 +558,12 @@ data types are converted using <code>Zend\Ldap\Converter\Converter</code> method
 </table></div>
 <h4 id="setpassword">setPassword()</h4>
 <p>The full signature of <code>setPassword()</code> is as follows:</p>
-<pre class="codehilite"><code class="language-php">static setPassword(
+<pre class="codehilite"><code class="language-php linenums">static setPassword(
     array &amp;$data,
     string $password,
     string $hashType,
     string $attribName
 ) : void</code></pre>
-
 
 <p>Sets an LDAP password for the attribute <code>$attribName</code> in <code>$data</code>. <code>$attribName</code>
 defaults to <code>userPassword</code> which is the standard password attribute. The
@@ -575,14 +572,13 @@ password hash can be specified with <code>$hashType</code>. The default value he
 possibility.</p>
 <h4 id="setdatetimeattribute">setDateTimeAttribute()</h4>
 <p>The full signature of <code>setDateTimeAttribute()</code> is as follows:</p>
-<pre class="codehilite"><code class="language-php">static setDateTimeAttribute(
+<pre class="codehilite"><code class="language-php linenums">static setDateTimeAttribute(
     array &amp;$data,
     string $attribName,
     int|array $value,
     boolean $utc,
     boolean $append
 ) : void</code></pre>
-
 
 <p>Sets the attribute <code>$attribName</code> in <code>$data</code> to the date/time value <code>$value</code>. if
 <code>$append</code> is <code>true</code> (<code>false</code> by default) <code>$value</code> will be appended to the
@@ -591,12 +587,11 @@ Date-time-conversion according to <code>Converter\Converter::toLdapDateTime()</c
 take place.</p>
 <h4 id="getdatetimeattribute">getDateTimeAttribute()</h4>
 <p>The full signature of <code>getDateTimeAttribute()</code> is as follows:</p>
-<pre class="codehilite"><code class="language-php">static getDateTimeAttribute(
+<pre class="codehilite"><code class="language-php linenums">static getDateTimeAttribute(
     array $data,
     string $attribName,
     int|null $index
 ) : array|int</code></pre>
-
 
 <p>Returns the date/time attribute <code>$attribName</code> from <code>$data</code>. If <code>$index</code> is
 <code>null</code> (default), an array will be returned containing all the date/time values
@@ -900,8 +895,8 @@ tree-traversal.</p>
 <td>Creates an "or" filter from the current filter and all filters passed in as the arguments.</td>
 </tr>
 <tr>
-<td>`escapeValue(string</td>
-<td>array $values) : string</td>
+<td><code>escapeValue(string|array $values) : string|array</code></td>
+<td>Escapes the given <code>$values</code> according to RFC 2254 so that they can be safely used in LDAP filters. If a single string is given, a string is returned, otherwise an array is returned.  Any control characters with an ASCII code <code>&lt; 32</code> as well as characters with special meaning in LDAP filters (<code>*</code>, <code>(</code>, <code>)</code>, and <code>\\</code> (the backslash)) are converted into the representation of a backslash followed by two hex digits representing the hexadecimal value of the character.</td>
 </tr>
 <tr>
 <td><code>unescapeValue(string|array $values) : string|array</code></td>
@@ -911,14 +906,13 @@ tree-traversal.</p>
 </table></div>
 <h4 id="node-constructor">Node constructor</h4>
 <p>The full signature of the <code>Zend\Ldap\Node</code> constructor is:</p>
-<pre class="codehilite"><code class="language-php">__construct(
+<pre class="codehilite"><code class="language-php linenums">__construct(
     string $attr,
     string $value,
     string $filtertype,
     string|null $prepend,
     string|null $append
 ) : void</code></pre>
-
 
 <p>The resulting filter will be a concatenation of <code>$attr</code>, <code>$filtertype</code>,
 <code>$prepend</code>, <code>$value</code>, and <code>$append</code>. Normally this constructor is not needed, as
