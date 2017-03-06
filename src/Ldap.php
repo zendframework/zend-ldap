@@ -1315,6 +1315,44 @@ class Ldap
     }
 
     /**
+     * Add one or more attributes to the specified dn
+     *
+     * @param  string|Dn $dn
+     * @param  array     $attributes
+     * @param bool       $allowEmptyAttributes
+     * @return Ldap Provides a fluid interface
+     * @throws LdapException
+     */
+    public function addAttributes($dn, array $attributes, $allowEmptyAttributes = false)
+    {
+        // Safety-flap: Check whether there are empty arrays that would cause
+        // complete removal of entries without the emptyAll flag.
+        if ($allowEmptyAttributes !== true) {
+            foreach ($attributes as $key => $value) {
+                if (empty($value)) {
+                    unset($attributes[$key]);
+                }
+            }
+        }
+
+        if ($dn instanceof Dn) {
+            $dn = $dn->toString();
+        }
+        
+        $resource = $this->getResource();
+
+        ErrorHandler::start(E_WARNING);
+        $entryAdded = ldap_mod_add($resource, $dn, $attributes);
+        ErrorHandler::stop();
+
+        if ($entryAdded === false) {
+            throw new Exception\LdapException($this, 'adding attribute: ' . $dn);
+        }
+
+        return $this;
+    }
+
+    /**
      * Delete single attributes from a LDAP-Node
      *
      * This method removes single attributes from a node identified by
