@@ -88,7 +88,7 @@ class CopyRenameTest extends AbstractOnlineTestCase
 
     protected function tearDown()
     {
-        if (!getenv('TESTS_ZEND_LDAP_ONLINE_ENABLED')) {
+        if (! getenv('TESTS_ZEND_LDAP_ONLINE_ENABLED')) {
             return;
         }
         if ($this->getLDAP()->exists($this->newDn)) {
@@ -182,8 +182,11 @@ class CopyRenameTest extends AbstractOnlineTestCase
      */
     public function testRenameEmulationTargetParentNotExists()
     {
-        $this->getLDAP()->rename($this->orgDn, $this->createDn('ou=Test1,ou=ParentDoesNotExist,'),
-            false, true
+        $this->getLDAP()->rename(
+            $this->orgDn,
+            $this->createDn('ou=Test1,ou=ParentDoesNotExist,'),
+            false,
+            true
         );
     }
 
@@ -323,7 +326,8 @@ class CopyRenameTest extends AbstractOnlineTestCase
         $this->assertFalse($this->getLDAP()->exists($orgSubTreeDn));
         $this->assertTrue($this->getLDAP()->exists('ou=OrgSubtree,' . $targetSubTreeDn->toString()));
         $this->assertEquals(3, $this->getLDAP()->countChildren('ou=OrgSubtree,' . $targetSubTreeDn->toString()));
-        $this->assertEquals(3,
+        $this->assertEquals(
+            3,
             $this->getLDAP()->countChildren('ou=Subtree1,ou=OrgSubtree,' . $targetSubTreeDn->toString())
         );
     }
@@ -339,7 +343,8 @@ class CopyRenameTest extends AbstractOnlineTestCase
         $this->assertEquals(3, $this->getLDAP()->countChildren($orgSubTreeDn));
         $this->assertEquals(3, $this->getLDAP()->countChildren('ou=Subtree1,' . $orgSubTreeDn->toString()));
         $this->assertEquals(3, $this->getLDAP()->countChildren('ou=OrgSubtree,' . $targetSubTreeDn->toString()));
-        $this->assertEquals(3,
+        $this->assertEquals(
+            3,
             $this->getLDAP()->countChildren('ou=Subtree1,ou=OrgSubtree,' . $targetSubTreeDn->toString())
         );
     }

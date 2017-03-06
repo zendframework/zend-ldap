@@ -58,7 +58,9 @@ class SimpleEncoderTest extends TestLdap\AbstractTestCase
                   'dn: cn=Barbara Jensen, ou=Product Development, dc=airius, dc=com'],
             [['dn' => 'cn=Jürgen Österreicher, ou=Äpfel, dc=airius, dc=com'],
                   'dn:: ' . base64_encode('cn=Jürgen Österreicher, ou=Äpfel, dc=airius, dc=com')],
+            // @codingStandardsIgnoreStart
             [['description' => 'Babs is a big sailing fan, and travels extensively in search of perfect sailing conditions.'],
+                // @codingStandardsIgnoreEnd
                   'description: Babs is a big sailing fan, and travels extensively in search of p'
                       . PHP_EOL . ' erfect sailing conditions.'],
             [['description' => "CHR(127) \x7f in string"],
@@ -244,8 +246,7 @@ class SimpleEncoderTest extends TestLdap\AbstractTestCase
             'cn;lang-en: Rodney Ogasawara' . PHP_EOL .
             'title;lang-en: Sales, Director';
         $actual   = Ldif\Encoder::encode($data, ['sort'   => false,
-                                                     'version' => null]
-        );
+                                                     'version' => null]);
         $this->assertEquals($expected, $actual);
     }
 }

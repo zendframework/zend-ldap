@@ -60,8 +60,10 @@ class Encoder
      * @param  string $string
      * @return array
      */
+    // @codingStandardsIgnoreStart
     protected function _decode($string)
     {
+        // @codingStandardsIgnoreEnd
         $items = [];
         $item  = [];
         $last  = null;
@@ -69,7 +71,7 @@ class Encoder
         foreach (explode("\n", $string) as $line) {
             $line    = rtrim($line, "\x09\x0A\x0D\x00\x0B");
             $matches = [];
-            if (substr($line, 0, 1) === ' ' && $last !== null && !$inComment) {
+            if (substr($line, 0, 1) === ' ' && $last !== null && ! $inComment) {
                 $last[2] .= substr($line, 1);
             } elseif (substr($line, 0, 1) === '#') {
                 $inComment = true;
@@ -145,8 +147,10 @@ class Encoder
      * @param  mixed $value The value to be encoded
      * @return string Encoded value
      */
+    // @codingStandardsIgnoreStart
     protected function _encode($value)
     {
+        // @codingStandardsIgnoreEnd
         if (is_scalar($value)) {
             return $this->encodeString($value);
         } elseif (is_array($value)) {
@@ -170,7 +174,7 @@ class Encoder
     protected function encodeString($string, &$base64 = null)
     {
         $string = (string) $string;
-        if (!is_numeric($string) && empty($string)) {
+        if (! is_numeric($string) && empty($string)) {
             return '';
         }
 
@@ -227,7 +231,7 @@ class Encoder
      */
     protected function encodeAttribute($name, $value)
     {
-        if (!is_array($value)) {
+        if (! is_array($value)) {
             $value = [$value];
         }
 
@@ -267,7 +271,7 @@ class Encoder
     {
         $string     = '';
         $attributes = array_change_key_case($attributes, CASE_LOWER);
-        if (!$this->versionWritten && array_key_exists('dn', $attributes) && isset($this->options['version'])
+        if (! $this->versionWritten && array_key_exists('dn', $attributes) && isset($this->options['version'])
             && array_key_exists('objectclass', $attributes)
         ) {
             $string .= sprintf('version: %d', $this->options['version']) . PHP_EOL;

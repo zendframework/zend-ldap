@@ -158,8 +158,7 @@ class CreationTest extends \PHPUnit_Framework_TestCase
         $dnString = 'Cn=Users+Ou=Lab,dc=example,dc=com';
         $dn       = Ldap\Dn::fromString($dnString);
         $this->assertEquals(['Cn' => 'Users',
-                                 'Ou'  => 'Lab'], $dn->getRdn()
-        );
+                                 'Ou'  => 'Lab'], $dn->getRdn());
         $this->assertEquals('Cn=Users+Ou=Lab', $dn->getRdnString());
     }
 

@@ -171,10 +171,10 @@ class DefaultIterator implements Iterator, Countable
     public function setAttributeNameTreatment($attributeNameTreatment)
     {
         if (is_callable($attributeNameTreatment)) {
-            if (is_string($attributeNameTreatment) && !function_exists($attributeNameTreatment)) {
+            if (is_string($attributeNameTreatment) && ! function_exists($attributeNameTreatment)) {
                 $this->attributeNameTreatment = self::ATTRIBUTE_TO_LOWER;
             } elseif (is_array($attributeNameTreatment)
-                && !method_exists($attributeNameTreatment[0], $attributeNameTreatment[1])
+                && ! method_exists($attributeNameTreatment[0], $attributeNameTreatment[1])
             ) {
                 $this->attributeNameTreatment = self::ATTRIBUTE_TO_LOWER;
             } else {
@@ -227,10 +227,10 @@ class DefaultIterator implements Iterator, Countable
      */
     public function current()
     {
-        if (!is_resource($this->current)) {
+        if (! is_resource($this->current)) {
             $this->rewind();
         }
-        if (!is_resource($this->current)) {
+        if (! is_resource($this->current)) {
             return;
         }
 
@@ -246,7 +246,7 @@ class DefaultIterator implements Iterator, Countable
             $data = ldap_get_values_len($resource, $this->current, $name);
             ErrorHandler::stop();
 
-            if (!$data) {
+            if (! $data) {
                 $data = [];
             }
 
@@ -287,7 +287,7 @@ class DefaultIterator implements Iterator, Countable
      */
     public function key()
     {
-        if (!is_resource($this->current)) {
+        if (! is_resource($this->current)) {
             $this->rewind();
         }
         if (is_resource($this->current)) {

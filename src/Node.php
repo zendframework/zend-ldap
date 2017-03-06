@@ -144,7 +144,7 @@ class Node extends Node\AbstractNode implements Iterator, RecursiveIterator
      */
     public function attachLdap(Ldap $ldap)
     {
-        if (!Dn::isChildOf($this->_getDn(), $ldap->getBaseDn())) {
+        if (! Dn::isChildOf($this->_getDn(), $ldap->getBaseDn())) {
             throw new Exception\LdapException(
                 null,
                 'LDAP connection is not responsible for given node.',
@@ -288,7 +288,7 @@ class Node extends Node\AbstractNode implements Iterator, RecursiveIterator
      */
     public static function fromArray(array $data, $fromDataSource = false)
     {
-        if (!array_key_exists('dn', $data)) {
+        if (! array_key_exists('dn', $data)) {
             throw new Exception\LdapException(null, '\'dn\' key is missing in array.');
         }
         if (is_string($data['dn']) || is_array($data['dn'])) {
@@ -314,9 +314,9 @@ class Node extends Node\AbstractNode implements Iterator, RecursiveIterator
     protected function ensureRdnAttributeValues($overwrite = false)
     {
         foreach ($this->getRdnArray() as $key => $value) {
-            if (!array_key_exists($key, $this->currentData) || $overwrite) {
+            if (! array_key_exists($key, $this->currentData) || $overwrite) {
                 Attribute::setAttribute($this->currentData, $key, $value, false);
-            } elseif (!in_array($value, $this->currentData[$key])) {
+            } elseif (! in_array($value, $this->currentData[$key])) {
                 Attribute::setAttribute($this->currentData, $key, $value, true);
             }
         }
@@ -421,7 +421,7 @@ class Node extends Node\AbstractNode implements Iterator, RecursiveIterator
             $this->attachLdap($ldap);
         }
         $ldap = $this->getLdap();
-        if (!($ldap instanceof Ldap)) {
+        if (! ($ldap instanceof Ldap)) {
             throw new Exception\LdapException(null, 'No LDAP connection available');
         }
 
@@ -475,8 +475,10 @@ class Node extends Node\AbstractNode implements Iterator, RecursiveIterator
      *
      * @return Dn
      */
+    // @codingStandardsIgnoreStart
     protected function _getDn()
     {
+        // @codingStandardsIgnoreEnd
         return ($this->newDn === null) ? parent::_getDn() : $this->newDn;
     }
 
@@ -603,7 +605,7 @@ class Node extends Node\AbstractNode implements Iterator, RecursiveIterator
     {
         $changed = [];
         foreach ($this->currentData as $key => $value) {
-            if (!array_key_exists($key, $this->originalData) && !empty($value)) {
+            if (! array_key_exists($key, $this->originalData) && ! empty($value)) {
                 $changed[$key] = $value;
             } elseif ($this->originalData[$key] !== $this->currentData[$key]) {
                 $changed[$key] = $value;
@@ -627,9 +629,9 @@ class Node extends Node\AbstractNode implements Iterator, RecursiveIterator
             'delete'  => [],
             'replace' => []];
         foreach ($this->currentData as $key => $value) {
-            if (!array_key_exists($key, $this->originalData) && !empty($value)) {
+            if (! array_key_exists($key, $this->originalData) && ! empty($value)) {
                 $changes['add'][$key] = $value;
-            } elseif (count($this->originalData[$key]) === 0 && !empty($value)) {
+            } elseif (count($this->originalData[$key]) === 0 && ! empty($value)) {
                 $changes['add'][$key] = $value;
             } elseif ($this->originalData[$key] !== $this->currentData[$key]) {
                 if (empty($value)) {
@@ -684,8 +686,10 @@ class Node extends Node\AbstractNode implements Iterator, RecursiveIterator
      * @param  bool $append
      * @throws Exception\LdapException
      */
+    // @codingStandardsIgnoreStart
     protected function _setAttribute($name, $value, $append)
     {
+        // @codingStandardsIgnoreEnd
         $this->assertChangeableAttribute($name);
         Attribute::setAttribute($this->currentData, $name, $value, $append);
     }
@@ -734,8 +738,10 @@ class Node extends Node\AbstractNode implements Iterator, RecursiveIterator
      * @param  bool       $append
      * @throws Exception\LdapException
      */
+    // @codingStandardsIgnoreStart
     protected function _setDateTimeAttribute($name, $value, $utc, $append)
     {
+        // @codingStandardsIgnoreEnd
         $this->assertChangeableAttribute($name);
         Attribute::setDateTimeAttribute($this->currentData, $name, $value, $utc, $append);
     }
@@ -998,7 +1004,7 @@ class Node extends Node\AbstractNode implements Iterator, RecursiveIterator
      */
     public function hasChildren()
     {
-        if (!is_array($this->children)) {
+        if (! is_array($this->children)) {
             if ($this->isAttached()) {
                 return ($this->countChildren() > 0);
             }
@@ -1017,7 +1023,7 @@ class Node extends Node\AbstractNode implements Iterator, RecursiveIterator
      */
     public function getChildren()
     {
-        if (!is_array($this->children)) {
+        if (! is_array($this->children)) {
             $this->children = [];
             if ($this->isAttached()) {
                 $children = $this->searchChildren('(objectClass=*)', null);

@@ -117,7 +117,6 @@ class SortTest extends AbstractOnlineTestCase
                 return 1;
             }
             return strnatcasecmp($a, $b);
-
         };
         $iterator->setSortFunction($sortFunction);
 

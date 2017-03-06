@@ -125,7 +125,7 @@ class Collection implements Iterator, Countable
             if ($this->current < 0) {
                 $this->rewind();
             }
-            if (!array_key_exists($this->current, $this->cache)) {
+            if (! array_key_exists($this->current, $this->cache)) {
                 $current = $this->iterator->current();
                 if ($current === null) {
                     return;

@@ -15,8 +15,10 @@ use Zend\Ldap\Node;
  * Zend\Ldap\Node\RootDse\eDirectory provides a simple data-container for the
  * RootDse node of a Novell eDirectory server.
  */
+// @codingStandardsIgnoreStart
 class eDirectory extends Node\RootDse
 {
+    // @codingStandardsIgnoreEnd
     /**
      * Determines if the extension is supported
      *

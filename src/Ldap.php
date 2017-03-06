@@ -75,9 +75,12 @@ class Ldap
      */
     public function __construct($options = [])
     {
-        if (!extension_loaded('ldap')) {
-            throw new Exception\LdapException(null, 'LDAP extension not loaded',
-                Exception\LdapException::LDAP_X_EXTENSION_NOT_LOADED);
+        if (! extension_loaded('ldap')) {
+            throw new Exception\LdapException(
+                null,
+                'LDAP extension not loaded',
+                Exception\LdapException::LDAP_X_EXTENSION_NOT_LOADED
+            );
         }
         $this->setOptions($options);
     }
@@ -97,7 +100,7 @@ class Ldap
      */
     public function getResource()
     {
-        if (!is_resource($this->resource) || $this->boundUser === false) {
+        if (! is_resource($this->resource) || $this->boundUser === false) {
             $this->bind();
         }
 
@@ -151,14 +154,14 @@ class Ldap
             $estr1 = ldap_err2str($errorCode);
             ErrorHandler::stop();
         }
-        if (!empty($estr1)) {
+        if (! empty($estr1)) {
             $errorMessages[] = $estr1;
         }
 
         ErrorHandler::start(E_WARNING);
         ldap_get_option($this->resource, LDAP_OPT_ERROR_STRING, $estr2);
         ErrorHandler::stop();
-        if (!empty($estr2) && !in_array($estr2, $errorMessages)) {
+        if (! empty($estr2) && ! in_array($estr2, $errorMessages)) {
             $errorMessages[] = $estr2;
         }
 
@@ -358,7 +361,7 @@ class Ldap
          * names have been supplied.
          */
         $accountCanonicalForm = $this->options['accountCanonicalForm'];
-        if (!$accountCanonicalForm) {
+        if (! $accountCanonicalForm) {
             $accountDomainName      = $this->getAccountDomainName();
             $accountDomainNameShort = $this->getAccountDomainNameShort();
             if ($accountDomainNameShort) {
@@ -454,7 +457,7 @@ class Ldap
         if ($accountFilterFormat) {
             return sprintf($accountFilterFormat, $aname);
         }
-        if (!$this->getBindRequiresDn()) {
+        if (! $this->getBindRequiresDn()) {
             // is there a better way to detect this?
             return sprintf("(&(objectClass=user)(sAMAccountName=%s))", $aname);
         }
@@ -473,7 +476,7 @@ class Ldap
         $dname = null;
         $aname = $name;
 
-        if (!$this->getTryUsernameSplit()) {
+        if (! $this->getTryUsernameSplit()) {
             return;
         }
 
@@ -543,13 +546,15 @@ class Ldap
 
         $this->splitName($acctname, $dname, $uname);
 
-        if (!$this->isPossibleAuthority($dname)) {
-            throw new Exception\LdapException(null,
+        if (! $this->isPossibleAuthority($dname)) {
+            throw new Exception\LdapException(
+                null,
                 "Binding domain is not an authority for user: $acctname",
-                Exception\LdapException::LDAP_X_DOMAIN_MISMATCH);
+                Exception\LdapException::LDAP_X_DOMAIN_MISMATCH
+            );
         }
 
-        if (!$uname) {
+        if (! $uname) {
             throw new Exception\LdapException(null, "Invalid account name syntax: $acctname");
         }
 
@@ -570,13 +575,13 @@ class Ldap
                 return $uname;
             case self::ACCTNAME_FORM_BACKSLASH:
                 $accountDomainNameShort = $this->getAccountDomainNameShort();
-                if (!$accountDomainNameShort) {
+                if (! $accountDomainNameShort) {
                     throw new Exception\LdapException(null, 'Option required: accountDomainNameShort');
                 }
                 return "$accountDomainNameShort\\$uname";
             case self::ACCTNAME_FORM_PRINCIPAL:
                 $accountDomainName = $this->getAccountDomainName();
-                if (!$accountDomainName) {
+                if (! $accountDomainName) {
                     throw new Exception\LdapException(null, 'Option required: accountDomainName');
                 }
                 return "$uname@$accountDomainName";
@@ -594,16 +599,16 @@ class Ldap
     protected function getAccount($acctname, array $attrs = null)
     {
         $baseDn = $this->getBaseDn();
-        if (!$baseDn) {
+        if (! $baseDn) {
             throw new Exception\LdapException(null, 'Base DN not set');
         }
 
         $accountFilter = $this->getAccountFilter($acctname);
-        if (!$accountFilter) {
+        if (! $accountFilter) {
             throw new Exception\LdapException(null, 'Invalid account filter');
         }
 
-        if (!is_resource($this->getResource())) {
+        if (! is_resource($this->getResource())) {
             $this->bind();
         }
 
@@ -691,7 +696,7 @@ class Ldap
             $networkTimeout = (int) $networkTimeout;
         }
 
-        if (!$host) {
+        if (! $host) {
             throw new Exception\LdapException(null, 'A host parameter is required');
         }
 
@@ -739,7 +744,7 @@ class Ldap
                 if ($networkTimeout) {
                     ldap_set_option($resource, LDAP_OPT_NETWORK_TIMEOUT, $networkTimeout);
                 }
-                if ($useSsl || !$useStartTls || ldap_start_tls($resource)) {
+                if ($useSsl || ! $useStartTls || ldap_start_tls($resource)) {
                     ErrorHandler::stop();
                     return $this;
                 }
@@ -782,7 +787,7 @@ class Ldap
         } else {
             /* Check to make sure the username is in DN form.
              */
-            if (!Dn::checkDn($username)) {
+            if (! Dn::checkDn($username)) {
                 if ($this->getBindRequiresDn()) {
                     /* moreCreds stops an infinite loop if getUsername does not
                      * return a DN and the bind requires it
@@ -797,10 +802,12 @@ class Ldap
                                 case Exception\LdapException::LDAP_X_EXTENSION_NOT_LOADED:
                                     throw $zle;
                             }
-                            throw new Exception\LdapException(null,
+                            throw new Exception\LdapException(
+                                null,
                                 'Failed to retrieve DN for account: ' . $username .
                                     ' [' . $zle->getMessage() . ']',
-                                Exception\LdapException::LDAP_OPERATIONS_ERROR);
+                                Exception\LdapException::LDAP_OPERATIONS_ERROR
+                            );
                         }
                     } else {
                         throw new Exception\LdapException(null, 'Binding requires username in DN form');
@@ -814,13 +821,15 @@ class Ldap
             }
         }
 
-        if (!is_resource($this->resource)) {
+        if (! is_resource($this->resource)) {
             $this->connect();
         }
 
         if ($username !== null && $password === '' && $this->getAllowEmptyPassword() !== true) {
-            $zle = new Exception\LdapException(null,
-                'Empty password not allowed - see allowEmptyPassword option.');
+            $zle = new Exception\LdapException(
+                null,
+                'Empty password not allowed - see allowEmptyPassword option.'
+            );
         } else {
             ErrorHandler::start(E_WARNING);
             $bind = ldap_bind($this->resource, $username, $password);
@@ -871,8 +880,15 @@ class Ldap
      * @return Collection
      * @throws Exception\LdapException
      */
-    public function search($filter, $basedn = null, $scope = self::SEARCH_SCOPE_SUB, array $attributes = [],
-                           $sort = null, $collectionClass = null, $sizelimit = 0, $timelimit = 0
+    public function search(
+        $filter,
+        $basedn = null,
+        $scope = self::SEARCH_SCOPE_SUB,
+        array $attributes = [],
+        $sort = null,
+        $collectionClass = null,
+        $sizelimit = 0,
+        $timelimit = 0
     ) {
         if (is_array($filter)) {
             $options = array_change_key_case($filter, CASE_LOWER);
@@ -953,13 +969,17 @@ class Ldap
             return new Collection($iterator);
         } else {
             $collectionClass = (string) $collectionClass;
-            if (!class_exists($collectionClass)) {
-                throw new Exception\LdapException(null,
-                    "Class '$collectionClass' can not be found");
+            if (! class_exists($collectionClass)) {
+                throw new Exception\LdapException(
+                    null,
+                    "Class '$collectionClass' can not be found"
+                );
             }
-            if (!is_subclass_of($collectionClass, 'Zend\Ldap\Collection')) {
-                throw new Exception\LdapException(null,
-                    "Class '$collectionClass' must subclass 'Zend\\Ldap\\Collection'");
+            if (! is_subclass_of($collectionClass, 'Zend\Ldap\Collection')) {
+                throw new Exception\LdapException(
+                    null,
+                    "Class '$collectionClass' must subclass 'Zend\\Ldap\\Collection'"
+                );
             }
 
             return new $collectionClass($iterator);
@@ -1038,10 +1058,17 @@ class Ldap
      * @return array
      * @throws Exception\LdapException
      */
-    public function searchEntries($filter, $basedn = null, $scope = self::SEARCH_SCOPE_SUB,
-                                  array $attributes = [], $sort = null, $reverseSort = false, $sizelimit = 0,
-                                  $timelimit = 0)
-    {
+    public function searchEntries(
+        $filter,
+        $basedn = null,
+        $scope = self::SEARCH_SCOPE_SUB,
+        array $attributes = [],
+        $sort = null,
+        $reverseSort = false,
+        $sizelimit = 0,
+        $timelimit = 0
+    ) {
+
         if (is_array($filter)) {
             $filter = array_change_key_case($filter, CASE_LOWER);
             if (isset($filter['collectionclass'])) {
@@ -1074,8 +1101,11 @@ class Ldap
     {
         try {
             $result = $this->search(
-                "(objectClass=*)", $dn, self::SEARCH_SCOPE_BASE,
-                $attributes, null
+                "(objectClass=*)",
+                $dn,
+                self::SEARCH_SCOPE_BASE,
+                $attributes,
+                null
             );
 
             return $result->getFirst();
@@ -1105,7 +1135,7 @@ class Ldap
                 foreach ($value as $i => $v) {
                     if ($v === null) {
                         unset($value[$i]);
-                    } elseif (!is_scalar($v)) {
+                    } elseif (! is_scalar($v)) {
                         throw new Exception\InvalidArgumentException('Only scalar values allowed in LDAP data');
                     } else {
                         $v = (string) $v;
@@ -1120,7 +1150,7 @@ class Ldap
             } else {
                 if ($value === null) {
                     $entry[$key] = [];
-                } elseif (!is_scalar($value)) {
+                } elseif (! is_scalar($value)) {
                     throw new Exception\InvalidArgumentException('Only scalar values allowed in LDAP data');
                 } else {
                     $value = (string) $value;
@@ -1145,7 +1175,7 @@ class Ldap
      */
     public function add($dn, array $entry)
     {
-        if (!($dn instanceof Dn)) {
+        if (! ($dn instanceof Dn)) {
             $dn = Dn::factory($dn, null);
         }
         static::prepareLdapEntryArray($entry);
@@ -1158,9 +1188,9 @@ class Ldap
         $rdnParts = $dn->getRdn(Dn::ATTR_CASEFOLD_LOWER);
         foreach ($rdnParts as $key => $value) {
             $value = Dn::unescapeValue($value);
-            if (!array_key_exists($key, $entry)) {
+            if (! array_key_exists($key, $entry)) {
                 $entry[$key] = [$value];
-            } elseif (!in_array($value, $entry[$key])) {
+            } elseif (! in_array($value, $entry[$key])) {
                 $entry[$key] = array_merge([$value], $entry[$key]);
             }
         }
@@ -1193,7 +1223,7 @@ class Ldap
      */
     public function update($dn, array $entry)
     {
-        if (!($dn instanceof Dn)) {
+        if (! ($dn instanceof Dn)) {
             $dn = Dn::factory($dn, null);
         }
         static::prepareLdapEntryArray($entry);
@@ -1201,7 +1231,7 @@ class Ldap
         $rdnParts = $dn->getRdn(Dn::ATTR_CASEFOLD_LOWER);
         foreach ($rdnParts as $key => $value) {
             $value = Dn::unescapeValue($value);
-            if (array_key_exists($key, $entry) && !in_array($value, $entry[$key])) {
+            if (array_key_exists($key, $entry) && ! in_array($value, $entry[$key])) {
                 $entry[$key] = array_merge([$value], $entry[$key]);
             }
         }
@@ -1358,11 +1388,9 @@ class Ldap
         $resource = $this->getResource();
         ErrorHandler::start(E_WARNING);
         $search = ldap_list($resource, $parentDn, '(objectClass=*)', ['dn']);
-        for (
-            $entry = ldap_first_entry($resource, $search);
+        for ($entry = ldap_first_entry($resource, $search);
             $entry !== false;
-            $entry = ldap_next_entry($resource, $entry)
-        ) {
+            $entry = ldap_next_entry($resource, $entry)) {
             $childDn = ldap_get_dn($resource, $entry);
             if ($childDn === false) {
                 ErrorHandler::stop();
@@ -1438,7 +1466,7 @@ class Ldap
     public function rename($from, $to, $recursively = false, $alwaysEmulate = false)
     {
         $emulate = (bool) $alwaysEmulate;
-        if (!function_exists('ldap_rename')) {
+        if (! function_exists('ldap_rename')) {
             $emulate = true;
         } elseif ($recursively) {
             $emulate = true;
@@ -1464,7 +1492,7 @@ class Ldap
             ErrorHandler::stop();
             if ($isOK === false) {
                 throw new Exception\LdapException($this, 'renaming ' . $from . ' to ' . $to);
-            } elseif (!$this->exists($to)) {
+            } elseif (! $this->exists($to)) {
                 $emulate = true;
             }
         }

@@ -25,7 +25,8 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function setup()
     {
-        $this->dummyErrorHandler = function ($errno, $error) {};
+        $this->dummyErrorHandler = function ($errno, $error) {
+        };
     }
     public function testErrorHandlerSettingWorks()
     {

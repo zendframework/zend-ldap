@@ -21,7 +21,7 @@ class SimpleDecoderTest extends TestLdap\AbstractTestCase
     public function testDecodeSimpleSingleItem()
     {
         $data =
-"version: 1
+        "version: 1
 dn: cn=test3,ou=example,dc=cno
 objectclass: oc1
 attr3: foo";
@@ -36,7 +36,7 @@ attr3: foo";
     public function testDecodeSingleItemWithFoldedAttribute()
     {
         $data =
-"dn: cn=test blabla,ou=example,dc=cno
+        "dn: cn=test blabla,ou=example,dc=cno
 objectclass: oc2
 attr1: 12345
 attr2: 1234
@@ -65,7 +65,7 @@ verylong: fhu08rhvt7b478vt5hv78h45nfgt45h78t34hhhhhhhhhv5bg8
     public function testDecodeSingleItemWithBase64Attributes()
     {
         $data =
-"dn:: Y249dGVzdCBibGFibGEsb3U9ZXhhbXBsZSxkYz1jbm8=
+        "dn:: Y249dGVzdCBibGFibGEsb3U9ZXhhbXBsZSxkYz1jbm8=
 objectclass: oc3
 attr1: 12345
 attr2: 1234
@@ -95,7 +95,7 @@ cn:: dGVzdCDDtsOkw7w=";
     public function testDecodeSingleItemWithFoldedBase64Attribute()
     {
         $data =
-"dn:: Y249dGVzdCBibGFibGEsb
+        "dn:: Y249dGVzdCBibGFibGEsb
  3U9ZXhhbXBsZSxkYz1jbm8=
 objectclass: oc3
 attr1: 12345
@@ -117,7 +117,7 @@ attr3: bar";
     public function testDecodeTwoItems()
     {
         $data =
-"version: 1
+        "version: 1
 dn: cn=Barbara Jensen, ou=Product Development, dc=airius, dc=com
 objectclass: top
 objectclass: person
@@ -162,7 +162,7 @@ telephonenumber: +1 408 555 1212";
     public function testDecodeStringContainingEntryWithFoldedAttributeValue()
     {
         $data =
-"version: 1
+        "version: 1
 dn:cn=Barbara Jensen, ou=Product Development, dc=airius, dc=com
 objectclass:top
 objectclass:person
@@ -194,7 +194,7 @@ title:Product Manager, Rod and Reel Division";
     public function testDecodeStringContainingBase64EncodedValue()
     {
         $data =
-"version: 1
+        "version: 1
 dn: cn=Gern Jensen, ou=Product Testing, dc=airius, dc=com
 objectclass: top
 objectclass: person
@@ -227,7 +227,7 @@ description:: V2hhdCBhIGNhcmVmdWwgcmVhZGVyIHlvdSBhcmUhICBUaGlzIHZhbHVl
     public function testDecodeStringContainingEntriesWithUtf8EncodedAttributeValues()
     {
         $data =
-"version: 1
+        "version: 1
 dn:: b3U95Za25qWt6YOoLG89QWlyaXVz
 # dn:: ou=営業部,o=Airius
 objectclass: top
@@ -293,7 +293,8 @@ title;lang-en: Sales, Director";
 
         $this->assertEquals('uid=rogasawara,ou=営業部,o=Airius', $actual[1]['dn']);
         $this->assertEquals('{SHA}O3HSv1MusyL4kTjP+HKI5uxuNoM=', $actual[1]['userpassword'][0]);
-        $this->assertEquals(['top', 'person', 'organizationalPerson', 'inetOrgPerson'],
+        $this->assertEquals(
+            ['top', 'person', 'organizationalPerson', 'inetOrgPerson'],
             $actual[1]['objectclass']
         );
         $this->assertEquals('rogasawara', $actual[1]['uid'][0]);
@@ -320,7 +321,7 @@ title;lang-en: Sales, Director";
     public function testDecodeSingleItemWithFoldedAttributesAndEmptyLinesBetween()
     {
         $data =
-"dn: cn=test blabla,ou=example,dc=cno
+        "dn: cn=test blabla,ou=example,dc=cno
 
 objectclass: top
 
@@ -370,7 +371,7 @@ verylong: fhu08rhvt7b478vt5hv78h45nfgt45h78t34hhhhhhhhhv5bg8
     public function testDecodeSimpleSingleItemWithUri()
     {
         $data =
-"version: 1
+        "version: 1
 dn: cn=test3,ou=example,dc=cno
 objectclass: oc1
 memberurl: ldap:///(&(cn=myName)(uid=something))";
@@ -386,7 +387,7 @@ memberurl: ldap:///(&(cn=myName)(uid=something))";
     public function testDecodeSimpleSingleItemWithMultilineComment()
     {
         $data =
-"version: 1
+        "version: 1
 dn: cn=test3,ou=example,dc=cno
 objectclass: oc1
 attr3:: w7bDpMO8
