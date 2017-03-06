@@ -71,7 +71,7 @@ class Attribute
     {
         $attribName = strtolower($attribName);
         if ($index === null) {
-            if (!isset($data[$attribName])) {
+            if (! isset($data[$attribName])) {
                 return [];
             }
             $retArray = [];
@@ -80,7 +80,7 @@ class Attribute
             }
             return $retArray;
         } elseif (is_int($index)) {
-            if (!isset($data[$attribName])) {
+            if (! isset($data[$attribName])) {
                 return;
             } elseif ($index >= 0 && $index < count($data[$attribName])) {
                 return self::valueFromLdap($data[$attribName][$index]);
@@ -103,7 +103,7 @@ class Attribute
     public static function attributeHasValue(array &$data, $attribName, $value)
     {
         $attribName = strtolower($attribName);
-        if (!isset($data[$attribName])) {
+        if (! isset($data[$attribName])) {
             return false;
         }
 
@@ -113,7 +113,7 @@ class Attribute
 
         foreach ($value as $v) {
             $v = self::valueToLdap($v);
-            if (!in_array($v, $data[$attribName], true)) {
+            if (! in_array($v, $data[$attribName], true)) {
                 return false;
             }
         }
@@ -131,7 +131,7 @@ class Attribute
     public static function removeDuplicatesFromAttribute(array &$data, $attribName)
     {
         $attribName = strtolower($attribName);
-        if (!isset($data[$attribName])) {
+        if (! isset($data[$attribName])) {
             return;
         }
         $data[$attribName] = array_values(array_unique($data[$attribName]));
@@ -148,7 +148,7 @@ class Attribute
     public static function removeFromAttribute(array &$data, $attribName, $value)
     {
         $attribName = strtolower($attribName);
-        if (!isset($data[$attribName])) {
+        if (! isset($data[$attribName])) {
             return;
         }
 
@@ -211,7 +211,9 @@ class Attribute
      * @param string $attribName Optional
      */
     public static function setPassword(
-        array &$data, $password, $hashType = self::PASSWORD_HASH_MD5,
+        array &$data,
+        $password,
+        $hashType = self::PASSWORD_HASH_MD5,
         $attribName = null
     ) {
         if ($attribName === null) {
@@ -287,7 +289,10 @@ class Attribute
      * @param  bool                    $append
      */
     public static function setDateTimeAttribute(
-        array &$data, $attribName, $value, $utc = false,
+        array &$data,
+        $attribName,
+        $value,
+        $utc = false,
         $append = false
     ) {
         $convertedValues = [];

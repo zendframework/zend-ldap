@@ -23,7 +23,8 @@ class EscapingTest extends \PHPUnit_Framework_TestCase
         $expected = '\20\20\16 t\,e\+s\"t\,\\\\v\<a\>l\;u\#e\=!\20\20\20\20';
         $this->assertEquals($expected, Ldap\Dn::escapeValue($dnval));
         $this->assertEquals($expected, Ldap\Dn::escapeValue([$dnval]));
-        $this->assertEquals([$expected, $expected, $expected],
+        $this->assertEquals(
+            [$expected, $expected, $expected],
             Ldap\Dn::escapeValue([$dnval, $dnval, $dnval])
         );
     }
@@ -34,7 +35,8 @@ class EscapingTest extends \PHPUnit_Framework_TestCase
         $expected = '  ' . chr(22) . ' t,e+s "t,\\v<a>l;u#e=!    ';
         $this->assertEquals($expected, Ldap\Dn::unescapeValue($dnval));
         $this->assertEquals($expected, Ldap\Dn::unescapeValue([$dnval]));
-        $this->assertEquals([$expected, $expected, $expected],
+        $this->assertEquals(
+            [$expected, $expected, $expected],
             Ldap\Dn::unescapeValue([$dnval, $dnval, $dnval])
         );
     }

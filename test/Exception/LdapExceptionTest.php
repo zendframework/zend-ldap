@@ -12,7 +12,7 @@ namespace ZendTest\Ldap\Exception;
 use Zend\Ldap\Exception\LdapException;
 use Zend\Ldap\Ldap;
 
-class LdapExceptionTest  extends \PHPUnit_Framework_TestCase
+class LdapExceptionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider constructorArgumentsProvider

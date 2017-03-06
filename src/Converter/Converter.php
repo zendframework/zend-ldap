@@ -125,7 +125,7 @@ class Converter
      */
     public static function toLdapDateTime($date, $asUtc = true)
     {
-        if (!($date instanceof DateTime)) {
+        if (! ($date instanceof DateTime)) {
             if (is_int($date)) {
                 $date = new DateTime('@' . $date);
                 $date->setTimezone(new DateTimeZone(date_default_timezone_get()));
@@ -159,7 +159,7 @@ class Converter
     public static function toLdapBoolean($value)
     {
         $return = 'FALSE';
-        if (!is_scalar($value)) {
+        if (! is_scalar($value)) {
             return $return;
         }
         if (true === $value || (is_string($value) && 'true' === strtolower($value)) || 1 === $value) {
@@ -234,7 +234,7 @@ class Converter
     public static function fromLdapDateTime($date, $asUtc = true)
     {
         $datepart = [];
-        if (!preg_match('/^(\d{4})/', $date, $datepart)) {
+        if (! preg_match('/^(\d{4})/', $date, $datepart)) {
             throw new Exception\InvalidArgumentException('Invalid date format found');
         }
 

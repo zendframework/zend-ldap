@@ -25,8 +25,7 @@ class ModificationTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(['cn' => 'Baker, Alice'], $dn->get(0));
         $this->assertEquals(['cn' => 'Users',
-                                 'ou'  => 'Lab'], $dn->get(1)
-        );
+                                 'ou'  => 'Lab'], $dn->get(1));
         $this->assertEquals(['dc' => 'example'], $dn->get(2));
         $this->assertEquals(['dc' => 'com'], $dn->get(3));
         try {
@@ -52,68 +51,58 @@ class ModificationTest extends \PHPUnit_Framework_TestCase
                                  ['cn' => 'Baker, Alice'],
                                  ['cn' => 'Users',
                                        'ou' => 'Lab']
-                            ], $dn->get(0, 2)
-        );
+                            ], $dn->get(0, 2));
         $this->assertEquals([
                                  ['cn' => 'Baker, Alice'],
                                  ['cn' => 'Users',
                                        'ou' => 'Lab'],
                                  ['dc' => 'example']
-                            ], $dn->get(0, 3)
-        );
+                            ], $dn->get(0, 3));
         $this->assertEquals([
                                  ['cn' => 'Baker, Alice'],
                                  ['cn' => 'Users',
                                        'ou' => 'Lab'],
                                  ['dc' => 'example'],
                                  ['dc' => 'com']
-                            ], $dn->get(0, 4)
-        );
+                            ], $dn->get(0, 4));
         $this->assertEquals([
                                  ['cn' => 'Baker, Alice'],
                                  ['cn' => 'Users',
                                        'ou' => 'Lab'],
                                  ['dc' => 'example'],
                                  ['dc' => 'com']
-                            ], $dn->get(0, 5)
-        );
+                            ], $dn->get(0, 5));
 
         $this->assertEquals([
                                  ['cn' => 'Users',
                                        'ou' => 'Lab'],
                                  ['dc' => 'example']
-                            ], $dn->get(1, 2)
-        );
+                            ], $dn->get(1, 2));
         $this->assertEquals([
                                  ['cn' => 'Users',
                                        'ou' => 'Lab'],
                                  ['dc' => 'example'],
                                  ['dc' => 'com']
-                            ], $dn->get(1, 3)
-        );
+                            ], $dn->get(1, 3));
         $this->assertEquals([
                                  ['cn' => 'Users',
                                        'ou' => 'Lab'],
                                  ['dc' => 'example'],
                                  ['dc' => 'com']
-                            ], $dn->get(1, 4)
-        );
+                            ], $dn->get(1, 4));
 
         $this->assertEquals([
                                  ['dc' => 'example'],
                                  ['dc' => 'com']
-                            ], $dn->get(2, 2)
-        );
+                            ], $dn->get(2, 2));
         $this->assertEquals([
                                  ['dc' => 'example'],
                                  ['dc' => 'com']
-                            ], $dn->get(2, 3)
-        );
+                            ], $dn->get(2, 3));
 
         $this->assertEquals([
                                  ['dc' => 'com']
-                            ], $dn->get(3, 2)
-        );
+                            ], $dn->get(3, 2));
     }
 
     public function testDnManipulationSet()
@@ -121,18 +110,21 @@ class ModificationTest extends \PHPUnit_Framework_TestCase
         $dnString = 'cn=Baker\\, Alice,cn=Users+ou=Lab,dc=example,dc=com';
         $dn       = Ldap\Dn::fromString($dnString);
 
-        $this->assertEquals('uid=abaker,cn=Users+ou=Lab,dc=example,dc=com',
+        $this->assertEquals(
+            'uid=abaker,cn=Users+ou=Lab,dc=example,dc=com',
             $dn->set(0, ['uid' => 'abaker'])->toString()
         );
-        $this->assertEquals('uid=abaker,ou=Lab,dc=example,dc=com',
+        $this->assertEquals(
+            'uid=abaker,ou=Lab,dc=example,dc=com',
             $dn->set(1, ['ou' => 'Lab'])->toString()
         );
-        $this->assertEquals('uid=abaker,ou=Lab,dc=example+ou=Test,dc=com',
+        $this->assertEquals(
+            'uid=abaker,ou=Lab,dc=example+ou=Test,dc=com',
             $dn->set(2, ['dc' => 'example',
-                             'ou'  => 'Test']
-            )->toString()
+                             'ou'  => 'Test'])->toString()
         );
-        $this->assertEquals('uid=abaker,ou=Lab,dc=example+ou=Test,dc=de\+fr',
+        $this->assertEquals(
+            'uid=abaker,ou=Lab,dc=example+ou=Test,dc=de\+fr',
             $dn->set(3, ['dc' => 'de+fr'])->toString()
         );
 
@@ -164,7 +156,8 @@ class ModificationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('cn=Baker\\, Alice,cn=Users+ou=Lab,dc=com', $dn->remove(2)->toString());
 
         $dn = Ldap\Dn::fromString($dnString);
-        $this->assertEquals('cn=Baker\\, Alice,cn=Users+ou=Lab,dc=example',
+        $this->assertEquals(
+            'cn=Baker\\, Alice,cn=Users+ou=Lab,dc=example',
             $dn->remove(3)->toString()
         );
 
@@ -177,17 +170,20 @@ class ModificationTest extends \PHPUnit_Framework_TestCase
         }
 
         $dn = Ldap\Dn::fromString($dnString);
-        $this->assertEquals('cn=Baker\\, Alice,dc=com',
+        $this->assertEquals(
+            'cn=Baker\\, Alice,dc=com',
             $dn->remove(1, 2)->toString()
         );
 
         $dn = Ldap\Dn::fromString($dnString);
-        $this->assertEquals('cn=Baker\\, Alice',
+        $this->assertEquals(
+            'cn=Baker\\, Alice',
             $dn->remove(1, 3)->toString()
         );
 
         $dn = Ldap\Dn::fromString($dnString);
-        $this->assertEquals('cn=Baker\\, Alice',
+        $this->assertEquals(
+            'cn=Baker\\, Alice',
             $dn->remove(1, 4)->toString()
         );
     }
@@ -197,11 +193,13 @@ class ModificationTest extends \PHPUnit_Framework_TestCase
         $dnString = 'OU=Sales,DC=example';
         $dn       = Ldap\Dn::fromString($dnString);
 
-        $this->assertEquals('OU=Sales,DC=example,DC=com',
+        $this->assertEquals(
+            'OU=Sales,DC=example,DC=com',
             $dn->append(['DC' => 'com'])->toString()
         );
 
-        $this->assertEquals('OU=New York,OU=Sales,DC=example,DC=com',
+        $this->assertEquals(
+            'OU=New York,OU=Sales,DC=example,DC=com',
             $dn->prepend(['OU' => 'New York'])->toString()
         );
 
@@ -224,22 +222,26 @@ class ModificationTest extends \PHPUnit_Framework_TestCase
         $dnString = 'cn=Baker\\, Alice,cn=Users,dc=example,dc=com';
 
         $dn = Ldap\Dn::fromString($dnString);
-        $this->assertEquals('cn=Baker\\, Alice,dc=test,cn=Users,dc=example,dc=com',
+        $this->assertEquals(
+            'cn=Baker\\, Alice,dc=test,cn=Users,dc=example,dc=com',
             $dn->insert(0, ['dc' => 'test'])->toString()
         );
 
         $dn = Ldap\Dn::fromString($dnString);
-        $this->assertEquals('cn=Baker\\, Alice,cn=Users,dc=test,dc=example,dc=com',
+        $this->assertEquals(
+            'cn=Baker\\, Alice,cn=Users,dc=test,dc=example,dc=com',
             $dn->insert(1, ['dc' => 'test'])->toString()
         );
 
         $dn = Ldap\Dn::fromString($dnString);
-        $this->assertEquals('cn=Baker\\, Alice,cn=Users,dc=example,dc=test,dc=com',
+        $this->assertEquals(
+            'cn=Baker\\, Alice,cn=Users,dc=example,dc=test,dc=com',
             $dn->insert(2, ['dc' => 'test'])->toString()
         );
 
         $dn = Ldap\Dn::fromString($dnString);
-        $this->assertEquals('cn=Baker\\, Alice,cn=Users,dc=example,dc=com,dc=test',
+        $this->assertEquals(
+            'cn=Baker\\, Alice,cn=Users,dc=example,dc=com,dc=test',
             $dn->insert(3, ['dc' => 'test'])->toString()
         );
 

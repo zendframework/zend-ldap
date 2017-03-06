@@ -118,7 +118,7 @@ class LdapException extends \Exception implements ExceptionInterface
             }
         }
 
-        if (!empty($str)) {
+        if (! empty($str)) {
             $message .= $str;
         } else {
             $message .= 'no exception message';

@@ -85,7 +85,7 @@ abstract class AbstractFilter
      */
     public static function escapeValue($values = [])
     {
-        if (!is_array($values)) {
+        if (! is_array($values)) {
             $values = [$values];
         }
         foreach ($values as $key => $val) {
@@ -114,7 +114,7 @@ abstract class AbstractFilter
      */
     public static function unescapeValue($values = [])
     {
-        if (!is_array($values)) {
+        if (! is_array($values)) {
             $values = [$values];
         }
         foreach ($values as $key => $value) {

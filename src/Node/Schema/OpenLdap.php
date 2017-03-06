@@ -254,14 +254,14 @@ class OpenLdap extends Node\Schema
     {
         $data    = $node->getData();
         $parents = $data['sup'];
-        if ($parents === null || !is_array($parents) || count($parents) < 1) {
+        if ($parents === null || ! is_array($parents) || count($parents) < 1) {
             return;
         }
         foreach ($parents as $parent) {
-            if (!array_key_exists($parent, $repository)) {
+            if (! array_key_exists($parent, $repository)) {
                 continue;
             }
-            if (!array_key_exists('_parents', $data) || !is_array($data['_parents'])) {
+            if (! array_key_exists('_parents', $data) || ! is_array($data['_parents'])) {
                 $data['_parents'] = [];
             }
             $data['_parents'][] = $repository[$parent];
@@ -391,7 +391,7 @@ class OpenLdap extends Node\Schema
      */
     protected function ensureNameAttribute(array &$data)
     {
-        if (!array_key_exists('name', $data) || empty($data['name'])) {
+        if (! array_key_exists('name', $data) || empty($data['name'])) {
             // force a name
             $data['name'] = $data['oid'];
         }
@@ -451,7 +451,7 @@ class OpenLdap extends Node\Schema
                     $data[$token] = Converter\Converter::fromLdap($data[$token]);
                 }
                 // create an array if the value should be multivalued but was not
-                if (in_array($token, $multiValue) && !is_array($data[$token])) {
+                if (in_array($token, $multiValue) && ! is_array($data[$token])) {
                     $data[$token] = [$data[$token]];
                 }
             }
@@ -476,7 +476,7 @@ class OpenLdap extends Node\Schema
         for ($i = 0; $i < $cMatches; $i++) { // number of tokens (full pattern match)
             for ($j = 1; $j < $cPattern; $j++) { // each subpattern
                 $tok = trim($matches[$j][$i]);
-                if (!empty($tok)) { // pattern match in this subpattern
+                if (! empty($tok)) { // pattern match in this subpattern
                     $tokens[$i] = $tok; // this is the token
                 }
             }

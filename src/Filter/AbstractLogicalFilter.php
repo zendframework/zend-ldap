@@ -43,7 +43,7 @@ abstract class AbstractLogicalFilter extends AbstractFilter
         foreach ($subfilters as $key => $s) {
             if (is_string($s)) {
                 $subfilters[$key] = new StringFilter($s);
-            } elseif (!($s instanceof AbstractFilter)) {
+            } elseif (! ($s instanceof AbstractFilter)) {
                 throw new Exception\FilterException('Only strings or Zend\Ldap\Filter\AbstractFilter allowed.');
             }
         }

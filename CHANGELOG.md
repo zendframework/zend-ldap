@@ -24,7 +24,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#57](https://github.com/zendframework/zend-ldap/pull/57) adds support for new
+coding-standards.
 
 ### Deprecated
 

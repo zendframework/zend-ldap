@@ -161,8 +161,7 @@ class OfflineTest extends TestLdap\AbstractTestCase
                                  'empty'       => [],
                                  'boolean'     => [true, false],
                                  'objectclass' => ['account', 'top'],
-                            ], $node->toArray()
-        );
+                            ], $node->toArray());
     }
 
     public function testToJson()
@@ -173,8 +172,7 @@ class OfflineTest extends TestLdap\AbstractTestCase
                             '"cn":["name"],' .
                             '"empty":[],' .
                             '"host":["a","b","c"],' .
-                            '"objectclass":["account","top"]}', $node->toJson()
-        );
+                            '"objectclass":["account","top"]}', $node->toJson());
     }
 
     public function testGetData()
@@ -463,8 +461,7 @@ class OfflineTest extends TestLdap\AbstractTestCase
         $dn3   = Ldap\Dn::fromString('cn=name2,dc=example,dc=org');
         $node3 = Ldap\Node::fromArray([
                                            'dn' => $dn3,
-                                           'ou' => 'Test'], false
-        );
+                                           'ou' => 'Test'], false);
         $dn3->prepend(['cn' => 'name']);
         $this->assertNotEquals($dn3->toString(), $node3->getDn()->toString());
     }
@@ -486,8 +483,7 @@ class OfflineTest extends TestLdap\AbstractTestCase
                                  'replace' => [
                                      'host' => ['d']
                                  ]
-                            ], $changes
-        );
+                            ], $changes);
 
         $node       = Ldap\Node::create('uid=test,dc=example,dc=org', ['account']);
         $node->host = 'host';
@@ -500,8 +496,7 @@ class OfflineTest extends TestLdap\AbstractTestCase
                                  'objectclass' => ['account', 'domain'],
                                  'host'        => ['host'],
                                  'givenname'   => ['givenName']
-                            ], $node->getChangedData()
-        );
+                            ], $node->getChangedData());
         $this->assertEquals([
                                  'add'     => [
                                      'uid'         => ['test'],
@@ -511,8 +506,7 @@ class OfflineTest extends TestLdap\AbstractTestCase
                                  ],
                                  'delete'  => [],
                                  'replace' => []
-                            ], $node->getChanges()
-        );
+                            ], $node->getChanges());
     }
 
     public function testHasValue()
