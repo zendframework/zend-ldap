@@ -1338,11 +1338,9 @@ class Ldap
         if ($dn instanceof Dn) {
             $dn = $dn->toString();
         }
-        
-        $resource = $this->getResource();
 
         ErrorHandler::start(E_WARNING);
-        $entryAdded = ldap_mod_add($resource, $dn, $attributes);
+        $entryAdded = ldap_mod_add($this->resource, $dn, $attributes);
         ErrorHandler::stop();
 
         if ($entryAdded === false) {
