@@ -2,10 +2,12 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.7.2 - TBD
+## 2.8.0 - TBD
 
 ### Added
 
+- [#53](https://github.com/zendframework/zend-ldap/pull/53) Adds addAttribute-method
+to Ldap-class
 - [#57](https://github.com/zendframework/zend-ldap/pull/57) adds support for new
 coding-standards.
 
