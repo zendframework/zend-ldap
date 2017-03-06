@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <ruleset name="Zend Framework coding standard">
     <rule ref="./vendor/zendframework/zend-coding-standard/ruleset.xml"/>
 
