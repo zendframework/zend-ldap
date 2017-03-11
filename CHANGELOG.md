@@ -24,7 +24,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#60](https://github.com/zendframework/zend-ldap/pull/60) Adds tests for nightly PHP-builds
 
 ### Deprecated
 
