@@ -14,7 +14,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Removed
 
-- Nothing.
+- [#61](https://github.com/zendframework/zend-ldap/pull/61) Removed support for PHP 5.5.
 
 ### Fixed
 
