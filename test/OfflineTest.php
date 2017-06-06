@@ -81,6 +81,7 @@ class OfflineTest extends \PHPUnit_Framework_TestCase
                                  'optReferrals'           => false,
                                  'tryUsernameSplit'       => true,
                                  'networkTimeout'         => null,
+                                 'saslOpts'               => null,
                             ], $ldap->getOptions());
     }
 
@@ -110,6 +111,7 @@ class OfflineTest extends \PHPUnit_Framework_TestCase
                                  'optReferrals'           => false,
                                  'tryUsernameSplit'       => true,
                                  'networkTimeout'         => null,
+                                 'saslOpts'               => null,
                             ], $ldap->getOptions());
     }
 

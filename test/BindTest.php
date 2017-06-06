@@ -274,6 +274,43 @@ class BindTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(getenv('TESTS_ZEND_LDAP_USERNAME'), $ldap->getBoundUser());
     }
 
+    protected function getSslLdap($options)
+    {
+        $options['useSsl'] = true;
+        $options['port'] = 6360;
+
+        return new Ldap\Ldap($options);
+    }
+
+    public function testSaslBind()
+    {
+        $options = $this->options;
+        $options['saslOpts'] = [
+            'sasl_mech' => 'EXTERNAL',
+        ];
+        $ldap = $this->getSslLdap($options);
+        $ldap->bind();
+
+        $this->assertEquals(
+            getenv('TESTS_ZEND_LDAP_USERNAME'),
+            $ldap->getBoundUser()
+        );
+    }
+
+    public function testSaslBindNoExplicitUsername()
+    {
+        // Username should not be required, as it can be derived from the
+        // client certificate.
+        $options = $this->options;
+        unset($options['username']);
+        unset($options['password']);
+        $options['saslOpts'] = [
+            'sasl_mech' => 'EXTERNAL',
+        ];
+        $ldap = $this->getSslLdap($options);
+        $ldap->bind();
+    }
+
     /**
      * @see https://net.educause.edu/ir/library/pdf/csd4875.pdf
      */

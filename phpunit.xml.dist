@@ -80,5 +80,7 @@
         <env name="TESTS_ZEND_LDAP_ALT_PASSWORD" value="user1" />
         <env name="TESTS_ZEND_LDAP_WRITEABLE_SUBTREE" value="ou=test,dc=example,dc=com" />
         <env name="TESTS_ZEND_LDAP_ANONYMOUS_BIND_ALLOWED" value="true"/>
+        <env name="TESTS_ZEND_LDAP_SASL_CERTIFICATE" value="/tmp/client.crt" />
+        <env name="TESTS_ZEND_LDAP_SASL_KEY" value="/tmp/client.key" />
     </php>
 </phpunit>
