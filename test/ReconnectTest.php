@@ -279,6 +279,8 @@ class ReconnectTest extends AbstractOnlineTestCase
         $new_dn = $this->createDn('ou=TestRenamedOnReconnect');
         $this->getLDAP()->rename($dn, $new_dn);
         $this->assertEquals(1, $this->getLDAP()->getReconnectsAttempted());
+
+        $this->getLDAP()->delete($new_dn, true);
     }
 
     public function testErroneousModificationDoesNotTriggerReconnect()
