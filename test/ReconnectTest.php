@@ -16,10 +16,14 @@ class ReconnectTest extends AbstractOnlineTestCase
 {
     public function setUp()
     {
+        $this->getLDAP()->setOptions(static::getStandardOptions());
+    }
+
+    public function tearDown()
+    {
         // Make sure we're using a non-expired connection with known settings
         // for each test.
         $this->getLDAP()->disconnect();
-        $this->getLDAP()->setOptions(static::getStandardOptions());
     }
 
     protected function triggerReconnection()
@@ -80,8 +84,7 @@ class ReconnectTest extends AbstractOnlineTestCase
             $entry['uid'][0]
         );
 
-        // Wait for the connection to timeout
-        sleep(getenv('TESTS_ZEND_LDAP_IDLE_TIMEOUT') + 2);
+        $this->waitForTimeout();
 
         $this->assertNull(
             $this->getLDAP()->getEntry(

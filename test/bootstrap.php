@@ -45,7 +45,8 @@ putenv(sprintf("LDAPTLS_KEY=%s", getenv('TESTS_ZEND_LDAP_SASL_KEY')));
  * phpunit would find them and error while attempting to serialize global
  * variables.
  */
-class LdapReusableMocks {
+class LdapReusableMocks
+{
     public static $ldap_connect_mock = null;
     public static $ldap_bind_mock = null;
     public static $ldap_set_option_mock = null;
