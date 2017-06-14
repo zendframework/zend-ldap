@@ -68,5 +68,6 @@
         <env name="TESTS_ZEND_LDAP_ANONYMOUS_BIND_ALLOWED" value="true"/>
         <env name="TESTS_ZEND_LDAP_SASL_CERTIFICATE" value="/tmp/client.crt" />
         <env name="TESTS_ZEND_LDAP_SASL_KEY" value="/tmp/client.key" />
+        <env name="TESTS_ZEND_LDAP_IDLE_TIMEOUT" value="4" />
     </php>
 </phpunit>

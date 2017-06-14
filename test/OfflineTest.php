@@ -81,6 +81,7 @@ class OfflineTest extends TestCase
                                  'useStartTls'            => false,
                                  'optReferrals'           => false,
                                  'tryUsernameSplit'       => true,
+                                 'reconnectAttempts'      => 0,
                                  'networkTimeout'         => null,
                                  'saslOpts'               => null,
                             ], $ldap->getOptions());
@@ -111,6 +112,7 @@ class OfflineTest extends TestCase
                                  'useStartTls'            => false,
                                  'optReferrals'           => false,
                                  'tryUsernameSplit'       => true,
+                                 'reconnectAttempts'      => 0,
                                  'networkTimeout'         => null,
                                  'saslOpts'               => null,
                             ], $ldap->getOptions());
@@ -215,11 +217,68 @@ class OfflineTest extends TestCase
      */
     public function testAddingAttributesFails()
     {
-        $ldap_mod_del = $this->getFunctionMock('Zend\\Ldap', 'ldap_mod_add');
-        $ldap_mod_del->expects($this->once())
+        $ldap_mod_add = $this->getFunctionMock('Zend\\Ldap', 'ldap_mod_add');
+        $ldap_mod_add->expects($this->once())
                      ->willReturn(false);
 
         $ldap = new \Zend\Ldap\Ldap();
         $ldap->addAttributes('foo', ['bar']);
+    }
+
+    protected function activateBindableOfflineMocks()
+    {
+        $a_resource = fopen(__FILE__, 'r');
+        $ldap_connect = $this->getFunctionMock('Zend\\Ldap', 'ldap_connect');
+        $ldap_connect->expects($this->atLeastOnce())
+            ->willReturn($a_resource);
+        $ldap_bind = $this->getFunctionMock('Zend\\Ldap', 'ldap_bind');
+        $ldap_bind->expects($this->atLeastOnce())
+            ->willReturn(true);
+        $ldap_set_option = $this->getFunctionMock('Zend\\Ldap', 'ldap_set_option');
+        $ldap_set_option->expects($this->atLeastOnce())
+            ->willReturn(true);
+    }
+
+    protected function reportErrorsAsConnectionFailure()
+    {
+        $ldap_errno = $this->getFunctionMock('Zend\\Ldap', 'ldap_errno');
+        $ldap_errno->expects($this->atLeastOnce())
+            ->willReturn(-1);
+    }
+
+    public function testAddingAttributesReconnect()
+    {
+        $this->activateBindableOfflineMocks();
+        $this->reportErrorsAsConnectionFailure();
+
+        $ldap_mod_add = $this->getFunctionMock('Zend\\Ldap', 'ldap_mod_add');
+        $ldap_mod_add->expects($this->exactly(2))
+            ->willReturnOnConsecutiveCalls(false, true);
+
+        $ldap = new \Zend\Ldap\Ldap([
+            'host' => 'offline phony',
+            'reconnectAttempts' => 1
+        ]);
+        $ldap->bind();
+        $ldap->addAttributes('foo', ['bar']);
+        $this->assertEquals(1, $ldap->getReconnectsAttempted());
+    }
+
+    public function testRemovingAttributesReconnect()
+    {
+        $this->activateBindableOfflineMocks();
+        $this->reportErrorsAsConnectionFailure();
+
+        $ldap_mod_del = $this->getFunctionMock('Zend\\Ldap', 'ldap_mod_del');
+        $ldap_mod_del->expects($this->exactly(2))
+            ->willReturnOnConsecutiveCalls(false, true);
+
+        $ldap = new \Zend\Ldap\Ldap([
+            'host' => 'offline phony',
+            'reconnectAttempts' => 1
+        ]);
+        $ldap->bind();
+        $ldap->deleteAttributes('foo', ['bar']);
+        $this->assertEquals(1, $ldap->getReconnectsAttempted());
     }
 }
