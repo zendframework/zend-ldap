@@ -260,6 +260,10 @@ class ReconnectTest extends AbstractOnlineTestCase
 
     public function testRenameReconnect()
     {
+        if (! function_exists('ldap_rename')) {
+            $this->markTestSkipped("Test would provide no useful coverage
+            because the php installation lacks ldap_rename().");
+        }
         $options = $this->getLDAP()->getOptions();
         $options['reconnectAttempts'] = 1;
         $this->getLDAP()->setOptions($options);

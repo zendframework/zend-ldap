@@ -15,6 +15,8 @@ use phpmock\Mock;
 use Zend\Config;
 use Zend\Ldap;
 use Zend\Ldap\Exception;
+use phpmock\phpunit\PHPMock;
+use ZendTest\Ldap\TestAsset\BuiltinFunctionMocks;
 
 /**
  * @group      Zend_Ldap
@@ -50,9 +52,9 @@ class OfflineTest extends TestCase
      */
     protected function activateBindableOfflineMocks()
     {
-        \LdapReusableMocks::$ldap_connect_mock->enable();
-        \LdapReusableMocks::$ldap_bind_mock->enable();
-        \LdapReusableMocks::$ldap_set_option_mock->enable();
+        BuiltinFunctionMocks::$ldap_connect_mock->enable();
+        BuiltinFunctionMocks::$ldap_bind_mock->enable();
+        BuiltinFunctionMocks::$ldap_set_option_mock->enable();
     }
 
     public function tearDown()

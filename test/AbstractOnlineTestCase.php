@@ -85,6 +85,7 @@ abstract class AbstractOnlineTestCase extends AbstractTestCase
             $this->markTestSkipped("Zend_Ldap online tests are not enabled");
         }
 
+        $this->getLDAP()->disconnect();
         $this->getLDAP()->bind();
     }
 
