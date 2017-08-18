@@ -716,6 +716,7 @@ class Ldap
                 $useUri              = true;
             } else {
                 $this->connectString = 'ldap://' . $host;
+                $useUri              = true;
             }
             if ($port) {
                 $this->connectString .= ':' . $port;
