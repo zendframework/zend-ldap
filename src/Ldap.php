@@ -705,9 +705,10 @@ class Ldap
          * connect string here for reporting it in error handling in bind().
          */
         $hosts = [];
-        if (preg_match_all('~ldap(?:i|s)?://~', $host, $hosts, PREG_SET_ORDER) > 0) {
+        if (preg_match_all('~ldap(i|s)?://~', $host, $hosts, PREG_SET_ORDER) > 0) {
             $this->connectString = $host;
-            $useSsl              = false;
+            // assign $useSsl to true in case of ldaps schema
+            $useSsl = (isset($hosts[0][1]) && $hosts[0][1] === 's') ? true : false;
         } else {
             if ($useSsl) {
                 $this->connectString = 'ldaps://' . $host;
@@ -721,7 +722,7 @@ class Ldap
 
         $this->disconnect();
 
-        // We supporting here only OpenLDAP 2.2 + which supports URLs (drop support of old-style host/port connections).
+        // We supporting here only OpenLDAP 2.2 + which uses URLs for conections (drop support of old-style host/port connections).
         ErrorHandler::start();
         $resource = ldap_connect($this->connectString);
         ErrorHandler::stop();
