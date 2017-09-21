@@ -68,5 +68,4 @@ class OfflineReconnectTest extends OfflineTest
         $ldap->deleteAttributes('foo', ['bar']);
         $this->assertEquals(1, $ldap->getReconnectsAttempted());
     }
-
 }
