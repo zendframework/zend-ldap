@@ -23,11 +23,6 @@ abstract class AbstractOnlineTestCase extends AbstractTestCase
 
     public static function setUpBeforeClass()
     {
-        self::$ldap = new Ldap\Ldap(static::getStandardOptions());
-    }
-
-    protected static function getStandardOptions()
-    {
         $options = [
             'host'     => getenv('TESTS_ZEND_LDAP_HOST'),
             'username' => getenv('TESTS_ZEND_LDAP_USERNAME'),
@@ -55,7 +50,8 @@ abstract class AbstractOnlineTestCase extends AbstractTestCase
         if (getenv('TESTS_ZEND_LDAP_ACCOUNT_DOMAIN_NAME_SHORT')) {
             $options['accountDomainNameShort'] = getenv('TESTS_ZEND_LDAP_ACCOUNT_DOMAIN_NAME_SHORT');
         }
-        return $options;
+
+        self::$ldap = new Ldap\Ldap($options);
     }
 
     public static function tearDownAfterClass()
@@ -85,7 +81,6 @@ abstract class AbstractOnlineTestCase extends AbstractTestCase
             $this->markTestSkipped("Zend_Ldap online tests are not enabled");
         }
 
-        $this->getLDAP()->disconnect();
         $this->getLDAP()->bind();
     }
 

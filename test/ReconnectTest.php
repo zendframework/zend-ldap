@@ -10,12 +10,50 @@
 namespace ZendTest\Ldap;
 
 use Zend\Ldap\Exception\LdapException;
-use Zend\Ldap\Ldap;
 
 class ReconnectTest extends AbstractOnlineTestCase
 {
+    protected static function getStandardOptions()
+    {
+        // Options array setup copied verbatim from
+        // AbstractOnlineTestCase::setUpBeforeClass(), where it is unfortunately
+        // not readily accessible without refactoring AbstractOnlineTestCase.
+        $options = [
+            'host'     => getenv('TESTS_ZEND_LDAP_HOST'),
+            'username' => getenv('TESTS_ZEND_LDAP_USERNAME'),
+            'password' => getenv('TESTS_ZEND_LDAP_PASSWORD'),
+            'baseDn'   => getenv('TESTS_ZEND_LDAP_WRITEABLE_SUBTREE'),
+        ];
+        if (getenv('TESTS_ZEND_LDAP_PORT') && getenv('TESTS_ZEND_LDAP_PORT') != 389) {
+            $options['port'] = getenv('TESTS_ZEND_LDAP_PORT');
+        }
+        if (getenv('TESTS_ZEND_LDAP_USE_START_TLS')) {
+            $options['useStartTls'] = getenv('TESTS_ZEND_LDAP_USE_START_TLS');
+        }
+        if (getenv('TESTS_ZEND_LDAP_USE_SSL')) {
+            $options['useSsl'] = getenv('TESTS_ZEND_LDAP_USE_SSL');
+        }
+        if (getenv('TESTS_ZEND_LDAP_BIND_REQUIRES_DN')) {
+            $options['bindRequiresDn'] = getenv('TESTS_ZEND_LDAP_BIND_REQUIRES_DN');
+        }
+        if (getenv('TESTS_ZEND_LDAP_ACCOUNT_FILTER_FORMAT')) {
+            $options['accountFilterFormat'] = getenv('TESTS_ZEND_LDAP_ACCOUNT_FILTER_FORMAT');
+        }
+        if (getenv('TESTS_ZEND_LDAP_ACCOUNT_DOMAIN_NAME')) {
+            $options['accountDomainName'] = getenv('TESTS_ZEND_LDAP_ACCOUNT_DOMAIN_NAME');
+        }
+        if (getenv('TESTS_ZEND_LDAP_ACCOUNT_DOMAIN_NAME_SHORT')) {
+            $options['accountDomainNameShort'] = getenv('TESTS_ZEND_LDAP_ACCOUNT_DOMAIN_NAME_SHORT');
+        }
+        return $options;
+    }
+
     public function setUp()
     {
+        if (! getenv('TESTS_ZEND_LDAP_ONLINE_ENABLED')) {
+            $this->markTestSkipped("Zend_Ldap online tests are not enabled");
+        }
+
         $this->getLDAP()->setOptions(static::getStandardOptions());
     }
 
