@@ -111,7 +111,7 @@ class Ldap
      */
     public function __destruct()
     {
-        $this->unbind();
+        $this->disconnect();
     }
 
     /**
@@ -700,15 +700,11 @@ class Ldap
      * @return mixed
      *   If a reconnect attempt is being made, the value used for the parameter
      *   last time it was supplied by an external invocation. Otherwise, the
-     *   value
+     *   value.
      */
     protected function selectParam($method, $parameter, $property)
     {
         if ($this->reconnectCount > 0) {
-            return self::coalesce(
-                $this->lastConnectBindParams[$method][$parameter],
-                $property
-            );
             return self::coalesce(
                 isset($this->lastConnectBindParams[$method]) ? $this->lastConnectBindParams[$method][$parameter] : null,
                 $property
@@ -1022,6 +1018,9 @@ class Ldap
                 if ($e->getCode() === -1) {
                     // Attempt failed; consider another retry.
                     return $this->shouldReconnect($this->getResource());
+                } else {
+                    // The calling function should throw an Exception.
+                    return false;
                 }
             }
         } else {
