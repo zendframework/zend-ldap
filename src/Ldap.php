@@ -977,10 +977,10 @@ class Ldap
             if ($bind !== false) {
                 $this->boundUser = $username;
                 return $this;
-            } else {
-                if ($this->shouldReconnect($this->resource)) {
-                    return $this;
-                }
+            }
+
+            if ($this->shouldReconnect($this->resource)) {
+              return $this;
             }
 
             $message = ($username === null) ? $this->connectString : $username;
@@ -1001,33 +1001,29 @@ class Ldap
 
     protected function shouldReconnect($resource)
     {
-        if ($this->reconnectCount < $this->getReconnectsToAttempt()
-            && ldap_errno($resource) === -1
+        if ($this->reconnectCount >= $this->getReconnectsToAttempt()
+            || ldap_errno($resource) !== -1
         ) {
-            $this->reconnectCount++;
-            $this->reconnectSleep();
-
-            try {
-                $this->connect();
-                $this->bind();
-
-                $this->reconnectsAttempted = $this->reconnectCount;
-                $this->reconnectCount = 0;
-                return true;
-            } catch (LdapException $e) {
-                if ($e->getCode() === -1) {
-                    // Attempt failed; consider another retry.
-                    return $this->shouldReconnect($this->getResource());
-                } else {
-                    // The calling function should throw an Exception.
-                    return false;
-                }
-            }
-        } else {
             $this->reconnectsAttempted = $this->reconnectCount;
             $this->reconnectCount = 0;
             return false;
         }
+
+        $this->reconnectCount++;
+        $this->reconnectSleep();
+
+        try {
+            $this->connect();
+            $this->bind();
+            $this->reconnectsAttempted = $this->reconnectCount;
+            $this->reconnectCount = 0;
+            return true;
+        } catch (LdapException $e) {
+            if ($e->getCode() !== -1) {
+                return false;
+            }
+        }
+        return $this->shouldReconnect($this->getResource());
     }
 
     protected function reconnectSleep()
