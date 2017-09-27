@@ -18,7 +18,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#71](https://github.com/zendframework/zend-ldap/pull/71) Removes composer-flag ```--ignore-platform-deps``` to fix Travis-CI build
 
 ## 2.8.0 - 2017-03-06
 
