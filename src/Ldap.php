@@ -1376,10 +1376,10 @@ class Ldap
         }
 
         ErrorHandler::start(E_WARNING);
-        $entryAdded = ldap_mod_replace($this->resource, $dn, $attributes);
+        $entryUpdated = ldap_mod_replace($this->resource, $dn, $attributes);
         ErrorHandler::stop();
 
-        if ($entryAdded === false) {
+        if ($entryUpdated === false) {
             throw new Exception\LdapException($this, 'updating attribute: ' . $dn);
         }
 
