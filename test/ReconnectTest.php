@@ -79,7 +79,7 @@ class ReconnectTest extends AbstractOnlineTestCase
             $this->getLDAP()->getReconnectsAttempted()
         );
 
-        $this->waitForTimeout();
+        $this->causeLdapConnectionFailure();
 
         $entry = $this->getLDAP()->getEntry(
             'uid=' . getenv('TESTS_ZEND_LDAP_ALT_USERNAME') . ',' . getenv('TESTS_ZEND_LDAP_BASE_DN'),
@@ -96,11 +96,14 @@ class ReconnectTest extends AbstractOnlineTestCase
         );
     }
 
-    protected function waitForTimeout()
+    protected function causeLdapConnectionFailure()
     {
-        // Wait for the connection to timeout
-        // sleep(getenv('TESTS_ZEND_LDAP_IDLE_TIMEOUT') + 2);
-        usleep((getenv('TESTS_ZEND_LDAP_IDLE_TIMEOUT') + 2.5) * 1000000);
+        $url = sprintf(
+            'http://%s:%s/drop_3890.php',
+            getenv('TESTS_ZEND_LDAP_HOST'),
+            getenv('TESTS_ZEND_LDAP_SCRIPTS_PORT')
+        );
+        file_get_contents($url);
     }
 
     public function testNoReconnectWhenNotRequested()
@@ -122,7 +125,7 @@ class ReconnectTest extends AbstractOnlineTestCase
             $entry['uid'][0]
         );
 
-        $this->waitForTimeout();
+        $this->causeLdapConnectionFailure();
 
         $this->assertNull(
             $this->getLDAP()->getEntry(
@@ -230,7 +233,7 @@ class ReconnectTest extends AbstractOnlineTestCase
 
         $this->assertEquals(0, $this->getLDAP()->getReconnectsAttempted());
 
-        $this->waitForTimeout();
+        $this->causeLdapConnectionFailure();
 
         $this->getLDAP()->add($dn, $data);
         $this->assertEquals(1, $this->getLDAP()->getReconnectsAttempted());
@@ -261,7 +264,7 @@ class ReconnectTest extends AbstractOnlineTestCase
         $entry = $this->getLDAP()->getEntry($dn);
 
         $this->assertEquals(0, $this->getLDAP()->getReconnectsAttempted());
-        $this->waitForTimeout();
+        $this->causeLdapConnectionFailure();
 
         $entry['l'] = 'mylocation2';
         $this->getLDAP()->update($dn, $entry);
@@ -290,7 +293,7 @@ class ReconnectTest extends AbstractOnlineTestCase
         }
 
         $this->assertEquals(0, $this->getLDAP()->getReconnectsAttempted());
-        $this->waitForTimeout();
+        $this->causeLdapConnectionFailure();
 
         $this->getLDAP()->delete($dn);
         $this->assertEquals(1, $this->getLDAP()->getReconnectsAttempted());
@@ -319,7 +322,7 @@ class ReconnectTest extends AbstractOnlineTestCase
         }
 
         $this->assertEquals(0, $this->getLDAP()->getReconnectsAttempted());
-        $this->waitForTimeout();
+        $this->causeLdapConnectionFailure();
 
         $new_dn = $this->createDn('ou=TestRenamedOnReconnect');
         $this->getLDAP()->rename($dn, $new_dn);
