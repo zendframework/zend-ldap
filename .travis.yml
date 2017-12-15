@@ -96,7 +96,7 @@ install:
   - if [[ ${TRAVIS_PHP_VERSION:0:3} == "5.5" ]]; then composer require $COMPOSER_ARGS --dev --no-update "phpunit/phpunit:^4"; fi
   - if [[ $DEPS == 'latest' ]]; then travis_retry composer update $COMPOSER_ARGS ; fi
   - if [[ $DEPS == 'lowest' ]]; then travis_retry composer update --prefer-lowest --prefer-stable $COMPOSER_ARGS ; fi
-  - if [[ $TEST_COVERAGE == 'true' ]]; then travis_retry composer require $COMPOSER_ARGS --dev satooshi/php-coveralls ; fi
+  - if [[ $TEST_COVERAGE == 'true' ]]; then travis_retry php vendor/bin/php-coveralls -v ; fi
   - travis_retry composer install $COMPOSER_ARGS
   - composer show --installed
 
@@ -116,4 +116,4 @@ after_success:
 
 
 after_script:
-  - if [[ $TEST_COVERAGE == 'true' ]]; then travis_retry composer upload-coverage ; fi
+  - if [[ $TEST_COVERAGE == 'true' ]]; then travis_retry php vendor/bin/php-coveralls -v ; fi
