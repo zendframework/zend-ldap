@@ -26,6 +26,11 @@ class ErrorHandlerTest extends TestCase
 
     public function setup()
     {
+        /** @todo: remove when migrate to PHP 7.1+ and PHPUnit 7+ only */
+        if (class_exists(\PHPUnit_Util_ErrorHandler::class)) {
+            $this->currentErrorHandler[0] = \PHPUnit_Util_ErrorHandler::class;
+        }
+
         $this->dummyErrorHandler = function ($errno, $error) {
         };
     }
