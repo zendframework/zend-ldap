@@ -34,7 +34,7 @@ class ChildrenTest extends TestLdap\AbstractOnlineTestCase
         $node     = $this->getLDAP()->getBaseNode();
         $children = $node->getChildren();
         $this->assertInstanceOf('Zend\Ldap\Node\ChildrenIterator', $children);
-        $this->assertEquals(6, count($children));
+        $this->assertCount(6, $children);
         $this->assertInstanceOf('Zend\Ldap\Node', $children['ou=Node']);
     }
 
@@ -44,14 +44,14 @@ class ChildrenTest extends TestLdap\AbstractOnlineTestCase
         $node->detachLDAP();
         $children = $node->getChildren();
         $this->assertInstanceOf('Zend\Ldap\Node\ChildrenIterator', $children);
-        $this->assertEquals(0, count($children));
+        $this->assertCount(0, $children);
 
         $node->attachLDAP($this->getLDAP());
         $node->reload();
         $children = $node->getChildren();
 
         $this->assertInstanceOf('Zend\Ldap\Node\ChildrenIterator', $children);
-        $this->assertEquals(6, count($children));
+        $this->assertCount(6, $children);
         $this->assertInstanceOf('Zend\Ldap\Node', $children['ou=Node']);
     }
 
@@ -122,20 +122,20 @@ class ChildrenTest extends TestLdap\AbstractOnlineTestCase
 
         $children = $node->getChildren();
         $this->assertTrue($node->hasChildren());
-        $this->assertEquals(2, count($children));
+        $this->assertCount(2, $children);
 
         $string = serialize($node);
         $node2  = unserialize($string);
 
         $children2 = $node2->getChildren();
         $this->assertTrue($node2->hasChildren());
-        $this->assertEquals(2, count($children2));
+        $this->assertCount(2, $children2);
 
         $node2->attachLDAP($this->getLDAP());
 
         $children2 = $node2->getChildren();
         $this->assertTrue($node2->hasChildren());
-        $this->assertEquals(2, count($children2));
+        $this->assertCount(2, $children2);
 
         $node = $this->getLDAP()->getNode($this->createDn('ou=Node,'));
         $this->assertTrue($node->hasChildren());
