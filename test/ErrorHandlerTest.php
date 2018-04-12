@@ -24,7 +24,7 @@ class ErrorHandlerTest extends TestCase
         'handleError',
     ];
 
-    public function setup()
+    public function setUp()
     {
         /** @todo: remove when migrate to PHP 7.1+ and PHPUnit 7+ only */
         if (class_exists(\PHPUnit_Util_ErrorHandler::class)) {
