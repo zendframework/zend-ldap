@@ -9,17 +9,18 @@
 
 namespace ZendTest\Ldap;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Ldap\ErrorHandler;
 
 /**
  * @group      Zend_Ldap
  */
-class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
+class ErrorHandlerTest extends TestCase
 {
     protected $dummyErrorHandler;
 
     protected $currentErrorHandler = [
-        'PHPUnit_Util_ErrorHandler',
+        \PHPUnit\Util\ErrorHandler::class,
         'handleError',
     ];
 

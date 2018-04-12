@@ -9,12 +9,13 @@
 
 namespace ZendTest\Ldap;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Ldap\Attribute;
 
 /**
  * @group      Zend_Ldap
  */
-class AttributeTest extends \PHPUnit_Framework_TestCase
+class AttributeTest extends TestCase
 {
     protected function assertLocalDateTimeString($timestamp, $value)
     {

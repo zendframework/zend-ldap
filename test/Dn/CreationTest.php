@@ -9,6 +9,7 @@
 
 namespace ZendTest\Ldap\Dn;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Ldap;
 use Zend\Ldap\Exception;
 
@@ -16,7 +17,7 @@ use Zend\Ldap\Exception;
  * @group      Zend_Ldap
  * @group      Zend_Ldap_Dn
  */
-class CreationTest extends \PHPUnit_Framework_TestCase
+class CreationTest extends TestCase
 {
     public function testDnCreation()
     {
