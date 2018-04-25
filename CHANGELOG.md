@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file, in reverse 
 ### Fixed
 
 - [#71](https://github.com/zendframework/zend-ldap/pull/71) Removes composer-flag ```--ignore-platform-deps``` to fix Travis-CI build
+- [#77](https://github.com/zendframework/zend-ldap/pull/77) Fixes links to PR in CHANGELOG.md)
 
 ## 2.8.0 - 2017-03-06
 
