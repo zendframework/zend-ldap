@@ -2,11 +2,12 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 2.9.0 - TBD
+## 2.9.0 - 2018-04-25
 
 ### Added
 
 - [#78](https://github.com/zendframework/zend-ldap/pull/78) Added support for PHP 7.2
+- [#60](https://github.com/zendframework/zend-ldap/pull/60) Adds tests for nightly PHP-builds
 
 ### Deprecated
 
@@ -19,27 +20,10 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- [#78](https://github.com/zendframework/zend-ldap/pull/78) Updated Location for docs.
-- [#78](https://github.com/zendframework/zend-ldap/pull/78) Updated PHPUnit.
-
-## 2.8.1 - TBD
-
-### Added
-
-- [#60](https://github.com/zendframework/zend-ldap/pull/60) Adds tests for nightly PHP-builds
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
 - [#71](https://github.com/zendframework/zend-ldap/pull/71) Removes composer-flag ```--ignore-platform-deps``` to fix Travis-CI build
 - [#77](https://github.com/zendframework/zend-ldap/pull/77) Fixes links to PR in CHANGELOG.md)
+- [#78](https://github.com/zendframework/zend-ldap/pull/78) Updated Location for docs.
+- [#78](https://github.com/zendframework/zend-ldap/pull/78) Updated PHPUnit.
 
 ## 2.8.0 - 2017-03-06
 
