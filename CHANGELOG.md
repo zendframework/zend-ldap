@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#78](https://github.com/zendframework/zend-ldap/pull/78) Added support for PHP 7.2
 
 ### Deprecated
 
@@ -15,10 +15,12 @@ All notable changes to this project will be documented in this file, in reverse 
 ### Removed
 
 - [#61](https://github.com/zendframework/zend-ldap/pull/61) Removed support for PHP 5.5.
+- [#78](https://github.com/zendframework/zend-ldap/pull/78) Removed support for HHVM.
 
 ### Fixed
 
-- Nothing.
+- [#78](https://github.com/zendframework/zend-ldap/pull/78) Updated Location for docs.
+- [#78](https://github.com/zendframework/zend-ldap/pull/78) Updated PHPUnit.
 
 ## 2.8.1 - TBD
 
