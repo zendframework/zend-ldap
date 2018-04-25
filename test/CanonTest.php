@@ -9,6 +9,7 @@
 
 namespace ZendTest\Ldap;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Ldap;
 use Zend\Ldap\Exception;
 
@@ -21,7 +22,7 @@ use Zend\Ldap\Exception;
 /**
  * @group      Zend_Ldap
  */
-class CanonTest extends \PHPUnit_Framework_TestCase
+class CanonTest extends TestCase
 {
     /**
      * @var array

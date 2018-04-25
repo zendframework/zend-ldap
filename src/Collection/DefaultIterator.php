@@ -12,8 +12,8 @@ namespace Zend\Ldap\Collection;
 use Countable;
 use Iterator;
 use Zend\Ldap;
-use Zend\Ldap\Exception;
 use Zend\Ldap\ErrorHandler;
+use Zend\Ldap\Exception;
 
 /**
  * Zend\Ldap\Collection\DefaultIterator is the default collection iterator implementation

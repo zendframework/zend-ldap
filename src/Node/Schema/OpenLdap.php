@@ -136,7 +136,7 @@ class OpenLdap extends Node\Schema
             $this->attributeTypes[$val->getName()] = $val;
         }
         foreach ($this->attributeTypes as $val) {
-            if (count($val->sup) > 0) {
+            if (! empty($val->sup) && count($val->sup) > 0) {
                 $this->resolveInheritance($val, $this->attributeTypes);
             }
             foreach ($val->aliases as $alias) {

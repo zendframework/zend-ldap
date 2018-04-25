@@ -9,13 +9,14 @@
 
 namespace ZendTest\Ldap;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Ldap;
 use Zend\Ldap\Filter;
 
 /**
  * @group      Zend_Ldap
  */
-class FilterTest extends \PHPUnit_Framework_TestCase
+class FilterTest extends TestCase
 {
     public function testFilterEscapeBasicOperation()
     {

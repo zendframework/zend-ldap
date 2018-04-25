@@ -9,22 +9,28 @@
 
 namespace ZendTest\Ldap;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Ldap\ErrorHandler;
 
 /**
  * @group      Zend_Ldap
  */
-class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
+class ErrorHandlerTest extends TestCase
 {
     protected $dummyErrorHandler;
 
     protected $currentErrorHandler = [
-        'PHPUnit_Util_ErrorHandler',
+        \PHPUnit\Util\ErrorHandler::class,
         'handleError',
     ];
 
-    public function setup()
+    public function setUp()
     {
+        /** @todo: remove when migrate to PHP 7.1+ and PHPUnit 7+ only */
+        if (class_exists(\PHPUnit_Util_ErrorHandler::class)) {
+            $this->currentErrorHandler[0] = \PHPUnit_Util_ErrorHandler::class;
+        }
+
         $this->dummyErrorHandler = function ($errno, $error) {
         };
     }
