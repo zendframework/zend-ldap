@@ -11,13 +11,14 @@ namespace ZendTest\Ldap\Converter;
 
 use DateTime;
 use DateTimeZone;
+use PHPUnit\Framework\TestCase;
 use stdClass;
 use Zend\Ldap\Converter\Converter;
 
 /**
  * @group      Zend_Ldap
  */
-class ConverterTest extends \PHPUnit_Framework_TestCase
+class ConverterTest extends TestCase
 {
     public function testAsc2hex32()
     {
@@ -176,7 +177,7 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
 
     public function testFromLdapUnserializeThrowsException()
     {
-        $this->setExpectedException('UnexpectedValueException');
+        $this->expectException('UnexpectedValueException');
         Converter::fromLdapUnserialize('--');
     }
 
@@ -193,7 +194,7 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertTrue(Converter::fromLdapBoolean('TRUE'));
         $this->assertFalse(Converter::fromLdapBoolean('FALSE'));
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         Converter::fromLdapBoolean('test');
     }
 

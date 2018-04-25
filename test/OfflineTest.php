@@ -9,16 +9,17 @@
 
 namespace ZendTest\Ldap;
 
+use phpmock\phpunit\PHPMock;
+use PHPUnit\Framework\TestCase;
 use Zend\Config;
 use Zend\Ldap;
 use Zend\Ldap\Exception;
-use phpmock\phpunit\PHPMock;
 
 /**
  * @group      Zend_Ldap
  * @requires extension ldap
  */
-class OfflineTest extends \PHPUnit_Framework_TestCase
+class OfflineTest extends TestCase
 {
     use PHPMock;
 

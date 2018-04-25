@@ -9,13 +9,14 @@
 
 namespace ZendTest\Ldap\Dn;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Ldap;
 
 /**
  * @group      Zend_Ldap
  * @group      Zend_Ldap_Dn
  */
-class MiscTest extends \PHPUnit_Framework_TestCase
+class MiscTest extends TestCase
 {
     public function testIsChildOfIllegalDn1()
     {

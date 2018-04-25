@@ -30,7 +30,7 @@ class AttributeIterationTest extends TestLdap\AbstractTestCase
             $i++;
         }
         $this->assertEquals(5, $i);
-        $this->assertEquals($i, count($node));
+        $this->assertCount($i, $node);
         $this->assertEquals([
                                  'boolean'     => [true, false],
                                  'cn'          => ['name'],

@@ -270,7 +270,7 @@ class OfflineTest extends TestLdap\AbstractTestCase
         $this->assertTrue($node->existsAttribute('key', true));
         $this->assertTrue($node->existsAttribute('key', false));
         $node->deleteAttribute('key');
-        $this->assertEquals(0, count($node->getAttribute('key')));
+        $this->assertCount(0, $node->getAttribute('key'));
         $this->assertTrue($node->existsAttribute('key', true));
         $this->assertFalse($node->existsAttribute('key', false));
 
@@ -286,7 +286,7 @@ class OfflineTest extends TestLdap\AbstractTestCase
         $this->assertTrue($node->existsAttribute('key', true));
         $this->assertTrue($node->existsAttribute('key', false));
         $node->deleteAttribute('key');
-        $this->assertEquals(0, count($node->getAttribute('key')));
+        $this->assertCount(0, $node->getAttribute('key'));
         $this->assertTrue($node->existsAttribute('key', true));
         $this->assertFalse($node->existsAttribute('key', false));
 
@@ -295,7 +295,7 @@ class OfflineTest extends TestLdap\AbstractTestCase
         $this->assertTrue($node->existsAttribute('userPassword', true));
         $this->assertTrue($node->existsAttribute('userPassword', false));
         $node->deleteAttribute('userPassword');
-        $this->assertEquals(0, count($node->getAttribute('userPassword')));
+        $this->assertCount(0, $node->getAttribute('userPassword'));
         $this->assertTrue($node->existsAttribute('userPassword', true));
         $this->assertFalse($node->existsAttribute('userPassword', false));
     }
@@ -308,7 +308,7 @@ class OfflineTest extends TestLdap\AbstractTestCase
         $this->assertEquals('value1', $node->key[0]);
         $this->assertTrue(isset($node->key));
         unset($node->key);
-        $this->assertEquals(0, count($node->key));
+        $this->assertCount(0, $node->key);
         $this->assertFalse(isset($node->key));
     }
 
@@ -345,7 +345,7 @@ class OfflineTest extends TestLdap\AbstractTestCase
         $this->assertEquals('value1', $node['key'][0]);
         $this->assertTrue(isset($node['key']));
         unset($node['key']);
-        $this->assertEquals(0, count($node['key']));
+        $this->assertCount(0, $node['key']);
         $this->assertFalse(isset($node['key']));
     }
 
