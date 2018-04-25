@@ -9,8 +9,10 @@
 
 namespace ZendTest\Ldap;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Ldap;
 use Zend\Ldap\Exception;
+use Zend\Ldap\Exception\LdapException;
 
 /* Note: The ldap_connect function does not actually try to connect. This
  * is why many tests attempt to bind with invalid credentials. If the
@@ -21,7 +23,7 @@ use Zend\Ldap\Exception;
 /**
  * @group      Zend_Ldap
  */
-class BindTest extends \PHPUnit_Framework_TestCase
+class BindTest extends TestCase
 {
     protected $options = null;
     protected $altPrincipalName;
@@ -280,7 +282,8 @@ class BindTest extends \PHPUnit_Framework_TestCase
     public function testBindWithNullPassword()
     {
         $ldap = new Ldap\Ldap($this->options);
-        $this->setExpectedException('Zend\Ldap\Exception\LdapException', 'Invalid credentials');
+        $this->expectException(LdapException::class);
+        $this->expectExceptionMessage('Invalid credentials');
         $ldap->bind($this->altUsername, "\0invalidpassword");
     }
 }

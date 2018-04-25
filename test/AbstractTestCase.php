@@ -9,12 +9,13 @@
 
 namespace ZendTest\Ldap;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Ldap\Node;
 
 /**
  * @group      Zend_Ldap
  */
-abstract class AbstractTestCase extends \PHPUnit_Framework_TestCase
+abstract class AbstractTestCase extends TestCase
 {
     /**
      * @return array

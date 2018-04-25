@@ -38,7 +38,7 @@ class SearchTest extends AbstractOnlineTestCase
         $this->assertEquals($dn, $entry["dn"]);
         $this->assertArrayHasKey('ou', $entry);
         $this->assertContains('Test1', $entry['ou']);
-        $this->assertEquals(1, count($entry['ou']));
+        $this->assertCount(1, $entry['ou']);
     }
 
     public function testGetSingleIllegalEntry()
@@ -92,7 +92,7 @@ class SearchTest extends AbstractOnlineTestCase
             Ldap\Ldap::SEARCH_SCOPE_SUB
         );
         $this->assertEquals(9, $items->count());
-        $this->assertEquals(9, count($items));
+        $this->assertCount(9, $items);
 
         $i = 0;
         foreach ($items as $key => $item) {
@@ -125,7 +125,7 @@ class SearchTest extends AbstractOnlineTestCase
             Ldap\Ldap::SEARCH_SCOPE_SUB
         );
         $this->assertInternalType("array", $entries);
-        $this->assertEquals(9, count($entries));
+        $this->assertCount(9, $entries);
     }
 
     /**
@@ -231,7 +231,7 @@ class SearchTest extends AbstractOnlineTestCase
 
         $entries = $this->getLDAP()->searchEntries($filter, $dn, Ldap\Ldap::SEARCH_SCOPE_SUB);
         $this->assertInternalType("array", $entries);
-        $this->assertEquals(9, count($entries));
+        $this->assertCount(9, $entries);
     }
 
     public function testGetSingleEntryWithDnObject()
@@ -365,7 +365,7 @@ class SearchTest extends AbstractOnlineTestCase
                                  'baseDn' => getenv('TESTS_ZEND_LDAP_WRITEABLE_SUBTREE'),
                                  'scope'  => Ldap\Ldap::SEARCH_SCOPE_SUB
                             ]);
-        $this->assertEquals(9, count($items));
+        $this->assertCount(9, $items);
     }
 
     /**
@@ -434,7 +434,7 @@ class SearchTest extends AbstractOnlineTestCase
             'uid'
         );
         $entries = $entries->toArray();
-        $this->assertEquals(0, count($entries));
+        $this->assertCount(0, $entries);
         $i = 0;
         foreach ($entries as $key => $item) {
             $i++;

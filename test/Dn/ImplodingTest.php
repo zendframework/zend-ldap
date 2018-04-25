@@ -9,13 +9,14 @@
 
 namespace ZendTest\Ldap\Dn;
 
+use PHPUnit\Framework\TestCase;
 use Zend\Ldap;
 
 /**
  * @group      Zend_Ldap
  * @group      Zend_Ldap_Dn
  */
-class ImplodingTest extends \PHPUnit_Framework_TestCase
+class ImplodingTest extends TestCase
 {
     public function testDnWithMultiValuedRdnRoundTrip()
     {
