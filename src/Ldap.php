@@ -213,6 +213,7 @@ class Ldap
      *  optReferrals
      *  tryUsernameSplit
      *  networkTimeout
+     *  saslOpts
      *
      * @param  array|Traversable $options Options used in connecting, binding, etc.
      * @return Ldap Provides a fluent interface
@@ -241,6 +242,7 @@ class Ldap
             'optReferrals'           => false,
             'tryUsernameSplit'       => true,
             'networkTimeout'         => null,
+            'saslOpts'               => null,
         ];
 
         foreach ($permittedOptions as $key => $val) {
@@ -265,6 +267,9 @@ class Ldap
                         $permittedOptions[$key] = ($val === true
                             || $val === '1'
                             || strcasecmp($val, 'true') == 0);
+                        break;
+                    case 'saslOpts':
+                        $permittedOptions[$key] = $val;
                         break;
                     default:
                         $permittedOptions[$key] = trim($val);
@@ -347,6 +352,16 @@ class Ldap
     public function getBaseDn()
     {
         return $this->options['baseDn'];
+    }
+
+    /**
+     * Gets any options that have been set for sasl binds.
+     *
+     * @return string[]|null
+     */
+    public function getSaslOpts()
+    {
+        return $this->options['saslOpts'];
     }
 
     /**
@@ -762,10 +777,11 @@ class Ldap
     /**
      * @param  string $username The username for authenticating the bind
      * @param  string $password The password for authenticating the bind
+     * @param  string[]|null $saslOpts Options when performing SASL binds.
      * @return Ldap Provides a fluent interface
      * @throws Exception\LdapException
      */
-    public function bind($username = null, $password = null)
+    public function bind($username = null, $password = null, $saslOpts = null)
     {
         $moreCreds = true;
 
@@ -777,6 +793,10 @@ class Ldap
             $username  = $this->getUsername();
             $password  = $this->getPassword();
             $moreCreds = false;
+        }
+
+        if ($saslOpts === null) {
+            $saslOpts = $this->getSaslOpts();
         }
 
         if (empty($username)) {
@@ -832,7 +852,26 @@ class Ldap
             );
         } else {
             ErrorHandler::start(E_WARNING);
-            $bind = ldap_bind($this->resource, $username, $password);
+            if (is_array($saslOpts)) {
+                $sasl_mech = array_key_exists('sasl_mech', $saslOpts) ? $saslOpts['sasl_mech'] : null;
+                $sasl_realm = array_key_exists('sasl_realm', $saslOpts) ? $saslOpts['sasl_realm'] : null;
+                $sasl_authc_id = array_key_exists('sasl_authc_id', $saslOpts) ? $saslOpts['sasl_authc_id'] : null;
+                $sasl_authz_id = array_key_exists('sasl_authz_id', $saslOpts) ? $saslOpts['sasl_authz_id'] : null;
+                $sasl_props = array_key_exists('props', $saslOpts) ? $saslOpts['props'] : null;
+
+                $bind = ldap_sasl_bind(
+                    $this->resource,
+                    $username,
+                    $password,
+                    $sasl_mech,
+                    $sasl_realm,
+                    $sasl_authc_id,
+                    $sasl_authz_id,
+                    $sasl_props
+                );
+            } else {
+                $bind = ldap_bind($this->resource, $username, $password);
+            }
             ErrorHandler::stop();
             if ($bind) {
                 $this->boundUser = $username;
