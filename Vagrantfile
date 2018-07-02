@@ -19,6 +19,7 @@ Vagrant.configure(2) do |config|
 
   # LDAP port
   config.vm.network 'forwarded_port', guest: 3890, host: 3890
+  config.vm.network 'forwarded_port', guest: 6360, host: 6360
 
   config.vm.provision 'shell', inline: $install_ldap
   config.vm.provision 'shell', privileged: false, inline: '/vagrant/.ci/OpenLDAP_run.sh', :run => 'always'

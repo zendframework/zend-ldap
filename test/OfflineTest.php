@@ -82,6 +82,7 @@ class OfflineTest extends TestCase
                                  'optReferrals'           => false,
                                  'tryUsernameSplit'       => true,
                                  'networkTimeout'         => null,
+                                 'saslOpts'               => null,
                             ], $ldap->getOptions());
     }
 
@@ -111,6 +112,7 @@ class OfflineTest extends TestCase
                                  'optReferrals'           => false,
                                  'tryUsernameSplit'       => true,
                                  'networkTimeout'         => null,
+                                 'saslOpts'               => null,
                             ], $ldap->getOptions());
     }
 
