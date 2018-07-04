@@ -23,6 +23,7 @@ allowEmptyPassword     | Some LDAP servers can be configured to accept an empty 
 optReferrals           | If set to `true`, this option indicates to the LDAP client that referrals should be followed. The default value is `false`.
 tryUsernameSplit       | If set to `false`, this option indicates that the given username should not be split at the first `@` or `\\` character to separate the username from the domain during the binding-procedure. This allows the user to use usernames that contain an `@` or `\\` character that do not inherit some domain-information, e.g. using email-addresses for binding. The default value is `true`.
 networkTimeout         | Number of seconds to wait for LDAP connection before fail. If not set, the default value is the system value.
+reconnectAttempts      | Number of times the client tries to reconnect to the server after the connection was lost before finally giving up. This might be especially helpfull in long running applications. The defalt value is `0` (Connect once and do not try to reconnect - behaviour up to version 2.9.0)
 
 ## API Reference
 
