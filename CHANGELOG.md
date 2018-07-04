@@ -19,7 +19,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#51](https://github.com/zendframework/zend-ldap/issues/51) Use ldap_escape to escape values instead of own function - Thanks to @KaelBaldwin
 
 ## 2.9.1 - TBD
 
