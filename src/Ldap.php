@@ -828,7 +828,8 @@ class Ldap
 
         $this->disconnect();
 
-        // We supporting here only OpenLDAP 2.2 + which uses URLs for conections (drop support of old-style host/port connections).
+        // We supporting here only OpenLDAP 2.2 + which uses URLs for connections
+        // (drop support of old-style host/port connections).
         ErrorHandler::start();
         $resource = ldap_connect($this->connectString);
         ErrorHandler::stop();
