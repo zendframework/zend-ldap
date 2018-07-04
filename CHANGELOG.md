@@ -15,7 +15,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Removed
 
-- Nothing.
+- [#69](https://github.com/zendframework/zend-ldap/pull/69) Drop support for OpenLDAP < 2.2 due to using ldap-URI exclusively - Thanks to @fduch
 
 ### Fixed
 

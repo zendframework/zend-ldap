@@ -806,20 +806,18 @@ class Ldap
             throw new Exception\LdapException(null, 'A host parameter is required');
         }
 
-        $useUri = false;
         /* Because ldap_connect doesn't really try to connect, any connect error
          * will actually occur during the ldap_bind call. Therefore, we save the
          * connect string here for reporting it in error handling in bind().
          */
         $hosts = [];
-        if (preg_match_all('~ldap(?:i|s)?://~', $host, $hosts, PREG_SET_ORDER) > 0) {
+        if (preg_match_all('~ldap(i|s)?://~', $host, $hosts, PREG_SET_ORDER) > 0) {
             $this->connectString = $host;
-            $useUri              = true;
-            $useSsl              = false;
+            // assign $useSsl to true in case of ldaps schema
+            $useSsl = (isset($hosts[0][1]) && $hosts[0][1] === 's') ? true : false;
         } else {
             if ($useSsl) {
                 $this->connectString = 'ldaps://' . $host;
-                $useUri              = true;
             } else {
                 $this->connectString = 'ldap://' . $host;
             }
@@ -830,12 +828,10 @@ class Ldap
 
         $this->disconnect();
 
-
-        /* Only OpenLDAP 2.2 + supports URLs so if SSL is not requested, just
-         * use the old form.
-         */
+        // We supporting here only OpenLDAP 2.2 + which uses URLs for connections
+        // (drop support of old-style host/port connections).
         ErrorHandler::start();
-        $resource = ($useUri) ? ldap_connect($this->connectString) : ldap_connect($host, $port);
+        $resource = ldap_connect($this->connectString);
         ErrorHandler::stop();
 
         if (is_resource($resource) === true) {
