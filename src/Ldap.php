@@ -68,6 +68,25 @@ class Ldap
     protected $schema = null;
 
     /**
+     * Current connection retry attempt counter.
+     *
+     * @var int
+     */
+    protected $reconnectCount = 0;
+
+    /**
+     * Total number of times reconnections were attempted unsuccessfully.
+     *
+     * @var int
+     */
+    protected $reconnectsAttempted = 0;
+
+    /**
+     * @var array
+     */
+    protected $lastConnectBindParams = [];
+
+    /**
      * Constructor.
      *
      * @param  array|Traversable $options Options used in connecting, binding, etc.
@@ -212,6 +231,7 @@ class Ldap
      *  useStartTls
      *  optReferrals
      *  tryUsernameSplit
+     *  reconnectAttempts
      *  networkTimeout
      *  saslOpts
      *
@@ -241,6 +261,7 @@ class Ldap
             'useStartTls'            => false,
             'optReferrals'           => false,
             'tryUsernameSplit'       => true,
+            'reconnectAttempts'      => 0,
             'networkTimeout'         => null,
             'saslOpts'               => null,
         ];
@@ -255,6 +276,7 @@ class Ldap
                 switch ($key) {
                     case 'port':
                     case 'accountCanonicalForm':
+                    case 'reconnectAttempts':
                     case 'networkTimeout':
                         $permittedOptions[$key] = (int) $val;
                         break;
@@ -292,6 +314,16 @@ class Ldap
     public function getOptions()
     {
         return $this->options;
+    }
+
+    public function getReconnectsAttempted()
+    {
+        return $this->reconnectsAttempted;
+    }
+
+    public function resetReconnectsAttempted()
+    {
+        $this->reconnectsAttempted = 0;
     }
 
     /**
@@ -448,6 +480,14 @@ class Ldap
     protected function getTryUsernameSplit()
     {
         return $this->options['tryUsernameSplit'];
+    }
+
+    /**
+     * @return int The number of times reconnect to server should be attempted.
+     */
+    protected function getReconnectsToAttempt()
+    {
+        return $this->options['reconnectAttempts'];
     }
 
     /**
@@ -649,9 +689,50 @@ class Ldap
     }
 
     /**
+     * Selects current parameters on new connections, last when reconnecting.
+     *
+     * @param string $method
+     *   Whether the connect or bind method is the caller.
+     * @param string $parameter
+     *   The parameter name.
+     * @param mixed $property
+     *   The value of the parameter as set in an instance property.
+     * @return mixed
+     *   If a reconnect attempt is being made, the value used for the parameter
+     *   last time it was supplied by an external invocation. Otherwise, the
+     *   value.
+     */
+    protected function selectParam($method, $parameter, $property)
+    {
+        if ($this->reconnectCount > 0) {
+            return self::coalesce(
+                isset($this->lastConnectBindParams[$method]) ? $this->lastConnectBindParams[$method][$parameter] : null,
+                $property
+            );
+        } else {
+            return $property;
+        }
+    }
+
+    protected static function coalesce($a, $b)
+    {
+        if ($a !== null) {
+            return $a;
+        }
+        return $b;
+    }
+
+    /**
      * @return Ldap Provides a fluent interface
      */
     public function disconnect()
+    {
+        $this->unbind();
+        $this->resetReconnectsAttempted();
+        return $this;
+    }
+
+    protected function unbind()
     {
         if (is_resource($this->resource)) {
             ErrorHandler::start(E_WARNING);
@@ -681,17 +762,27 @@ class Ldap
      */
     public function connect($host = null, $port = null, $useSsl = null, $useStartTls = null, $networkTimeout = null)
     {
+        if ($this->reconnectCount === 0) {
+            $this->lastConnectBindParams[__METHOD__] = [
+                'host' => $host,
+                'port' => $port,
+                'useSsl' => $useSsl,
+                'useStartTls' => $useStartTls,
+                'networkTimeout' => $networkTimeout
+            ];
+        }
+
         if ($host === null) {
-            $host = $this->getHost();
+            $host = $this->selectParam(__METHOD__, 'host', $this->getHost());
         }
         if ($port === null) {
-            $port = $this->getPort();
+            $port = $this->selectParam(__METHOD__, 'port', $this->getPort());
         } else {
             $port = (int) $port;
         }
 
         if ($useSsl === null) {
-            $useSsl = $this->getUseSsl();
+            $useSsl = $this->selectParam(__METHOD__, 'useSsl', $this->getUseSsl());
         } else {
             $useSsl = (bool) $useSsl;
         }
@@ -701,12 +792,12 @@ class Ldap
         }
 
         if ($useStartTls === null) {
-            $useStartTls = $this->getUseStartTls();
+            $useStartTls = $this->selectParam(__METHOD__, 'useStartTls', $this->getUseStartTls());
         } else {
             $useStartTls = (bool) $useStartTls;
         }
         if ($networkTimeout === null) {
-            $networkTimeout = $this->getNetworkTimeout();
+            $networkTimeout = $this->selectParam(__METHOD__, 'networkTimeout', $this->getNetworkTimeout());
         } else {
             $networkTimeout = (int) $networkTimeout;
         }
@@ -771,7 +862,7 @@ class Ldap
             throw $zle;
         }
 
-        throw new Exception\LdapException(null, "Failed to connect to LDAP server: $host:$port");
+        throw new Exception\LdapException(null, "Failed to connect to LDAP server: $host:$port", -1);
     }
 
     /**
@@ -785,13 +876,22 @@ class Ldap
     {
         $moreCreds = true;
 
-        // Security check: remove null bytes in password
-        // @see https://net.educause.edu/ir/library/pdf/csd4875.pdf
-        $password = str_replace("\0", '', $password);
+        if (is_string($password)) {
+            // Security check: remove null bytes in password
+            // @see https://net.educause.edu/ir/library/pdf/csd4875.pdf
+            $password = str_replace("\0", '', $password);
+        }
+
+        if ($this->reconnectCount === 0) {
+            $this->lastConnectBindParams[__METHOD__] = [
+                'username' => $username,
+                'password' => $password
+            ];
+        }
 
         if ($username === null) {
-            $username  = $this->getUsername();
-            $password  = $this->getPassword();
+            $username  = $this->selectParam(__METHOD__, 'username', $this->getUsername());
+            $password  = $this->selectParam(__METHOD__, 'password', $this->getPassword());
             $moreCreds = false;
         }
 
@@ -873,8 +973,13 @@ class Ldap
                 $bind = ldap_bind($this->resource, $username, $password);
             }
             ErrorHandler::stop();
-            if ($bind) {
+
+            if ($bind !== false) {
                 $this->boundUser = $username;
+                return $this;
+            }
+
+            if ($this->shouldReconnect($this->resource)) {
                 return $this;
             }
 
@@ -889,9 +994,42 @@ class Ldap
 
             $zle = new Exception\LdapException($this, $message);
         }
-        $this->disconnect();
+        $this->unbind();
 
         throw $zle;
+    }
+
+    protected function shouldReconnect($resource)
+    {
+        if ($this->reconnectCount >= $this->getReconnectsToAttempt()
+            || ldap_errno($resource) !== -1
+        ) {
+            $this->reconnectsAttempted = $this->reconnectCount;
+            $this->reconnectCount = 0;
+            return false;
+        }
+
+        $this->reconnectCount++;
+        $this->reconnectSleep();
+
+        try {
+            $this->connect();
+            $this->bind();
+            $this->reconnectsAttempted = $this->reconnectCount;
+            $this->reconnectCount = 0;
+            return true;
+        } catch (LdapException $e) {
+            if ($e->getCode() !== -1) {
+                return false;
+            }
+        }
+        return $this->shouldReconnect($this->getResource());
+    }
+
+    protected function reconnectSleep()
+    {
+        $duration = min((pow(2, min($this->reconnectCount - 1, 0)) - 1) / 4, 10);
+        usleep($duration * 1000000);
     }
 
     /**
@@ -965,21 +1103,24 @@ class Ldap
             $filter = $filter->toString();
         }
 
-        $resource = $this->getResource();
-        ErrorHandler::start(E_WARNING);
-        switch ($scope) {
-            case self::SEARCH_SCOPE_ONE:
-                $search = ldap_list($resource, $basedn, $filter, $attributes, 0, $sizelimit, $timelimit);
-                break;
-            case self::SEARCH_SCOPE_BASE:
-                $search = ldap_read($resource, $basedn, $filter, $attributes, 0, $sizelimit, $timelimit);
-                break;
-            case self::SEARCH_SCOPE_SUB:
-            default:
-                $search = ldap_search($resource, $basedn, $filter, $attributes, 0, $sizelimit, $timelimit);
-                break;
-        }
-        ErrorHandler::stop();
+        do {
+            $resource = $this->getResource();
+            ErrorHandler::start(E_WARNING);
+
+            switch ($scope) {
+                case self::SEARCH_SCOPE_ONE:
+                    $search = ldap_list($resource, $basedn, $filter, $attributes, 0, $sizelimit, $timelimit);
+                    break;
+                case self::SEARCH_SCOPE_BASE:
+                    $search = ldap_read($resource, $basedn, $filter, $attributes, 0, $sizelimit, $timelimit);
+                    break;
+                case self::SEARCH_SCOPE_SUB:
+                default:
+                    $search = ldap_search($resource, $basedn, $filter, $attributes, 0, $sizelimit, $timelimit);
+                    break;
+            }
+            ErrorHandler::stop();
+        } while ($search === false && $this->shouldReconnect($resource));
 
         if ($search === false) {
             throw new Exception\LdapException($this, 'searching: ' . $filter);
@@ -1241,10 +1382,13 @@ class Ldap
             }
         }
 
-        $resource = $this->getResource();
-        ErrorHandler::start(E_WARNING);
-        $isAdded = ldap_add($resource, $dn->toString(), $entry);
-        ErrorHandler::stop();
+        do {
+            $resource = $this->getResource();
+            ErrorHandler::start(E_WARNING);
+            $isAdded = ldap_add($resource, $dn->toString(), $entry);
+            ErrorHandler::stop();
+        } while ($isAdded === false && $this->shouldReconnect($resource));
+
         if ($isAdded === false) {
             throw new Exception\LdapException($this, 'adding: ' . $dn->toString());
         }
@@ -1283,10 +1427,13 @@ class Ldap
         }
 
         if (count($entry) > 0) {
-            $resource = $this->getResource();
-            ErrorHandler::start(E_WARNING);
-            $isModified = ldap_modify($resource, $dn->toString(), $entry);
-            ErrorHandler::stop();
+            do {
+                $resource = $this->getResource();
+                ErrorHandler::start(E_WARNING);
+                $isModified = ldap_modify($resource, $dn->toString(), $entry);
+                ErrorHandler::stop();
+            } while ($isModified === false && $this->shouldReconnect($resource));
+
             if ($isModified === false) {
                 throw new Exception\LdapException($this, 'updating: ' . $dn->toString());
             }
@@ -1342,10 +1489,13 @@ class Ldap
             }
         }
 
-        $resource = $this->getResource();
-        ErrorHandler::start(E_WARNING);
-        $isDeleted = ldap_delete($resource, $dn);
-        ErrorHandler::stop();
+        do {
+            $resource = $this->getResource();
+            ErrorHandler::start(E_WARNING);
+            $isDeleted = ldap_delete($resource, $dn);
+            ErrorHandler::stop();
+        } while ($isDeleted === false && $this->shouldReconnect($resource));
+
         if ($isDeleted === false) {
             throw new Exception\LdapException($this, 'deleting: ' . $dn);
         }
@@ -1378,9 +1528,12 @@ class Ldap
             $dn = $dn->toString();
         }
 
-        ErrorHandler::start(E_WARNING);
-        $entryAdded = ldap_mod_add($this->resource, $dn, $attributes);
-        ErrorHandler::stop();
+        do {
+            ErrorHandler::start(E_WARNING);
+            $entryAdded = ldap_mod_add($this->resource, $dn, $attributes);
+            ErrorHandler::stop();
+        } while ($entryAdded === false && $this->shouldReconnect($this->resource));
+
 
         if ($entryAdded === false) {
             throw new Exception\LdapException($this, 'adding attribute: ' . $dn);
@@ -1432,9 +1585,11 @@ class Ldap
             $dn = $dn->toString();
         }
 
-        ErrorHandler::start(E_WARNING);
-        $isDeleted = ldap_mod_del($this->resource, $dn, $attributes);
-        ErrorHandler::stop();
+        do {
+            ErrorHandler::start(E_WARNING);
+            $isDeleted = ldap_mod_del($this->resource, $dn, $attributes);
+            ErrorHandler::stop();
+        } while ($isDeleted === false && $this->shouldReconnect($this->resource));
 
         if ($isDeleted === false) {
             throw new Exception\LdapException($this, 'deleting: ' . $dn);
@@ -1460,9 +1615,18 @@ class Ldap
         }
         $children = [];
 
-        $resource = $this->getResource();
+        do {
+            $resource = $this->getResource();
+            ErrorHandler::start(E_WARNING);
+            $search = ldap_list($resource, $parentDn, '(objectClass=*)', ['dn']);
+            ErrorHandler::stop();
+        } while ($search === false && $this->shouldReconnect($resource));
+
+        if ($search === false) {
+            throw new Exception\LdapException($this, 'listing: ' . $parentDn);
+        }
+
         ErrorHandler::start(E_WARNING);
-        $search = ldap_list($resource, $parentDn, '(objectClass=*)', ['dn']);
         for ($entry = ldap_first_entry($resource, $search);
             $entry !== false;
             $entry = ldap_next_entry($resource, $entry)) {
@@ -1561,10 +1725,13 @@ class Ldap
             $newRdn    = Dn::implodeRdn(array_shift($newDnParts));
             $newParent = Dn::implodeDn($newDnParts);
 
-            $resource = $this->getResource();
-            ErrorHandler::start(E_WARNING);
-            $isOK = ldap_rename($resource, $from, $newRdn, $newParent, true);
-            ErrorHandler::stop();
+            do {
+                $resource = $this->getResource();
+                ErrorHandler::start(E_WARNING);
+                $isOK = ldap_rename($resource, $from, $newRdn, $newParent, true);
+                ErrorHandler::stop();
+            } while ($isOK === false && $this->shouldReconnect($resource));
+
             if ($isOK === false) {
                 throw new Exception\LdapException($this, 'renaming ' . $from . ' to ' . $to);
             } elseif (! $this->exists($to)) {

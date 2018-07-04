@@ -11,6 +11,7 @@ namespace ZendTest\Ldap;
 
 use phpmock\phpunit\PHPMock;
 use PHPUnit\Framework\TestCase;
+use phpmock\Mock;
 use Zend\Config;
 use Zend\Ldap;
 use Zend\Ldap\Exception;
@@ -81,6 +82,7 @@ class OfflineTest extends TestCase
                                  'useStartTls'            => false,
                                  'optReferrals'           => false,
                                  'tryUsernameSplit'       => true,
+                                 'reconnectAttempts'      => 0,
                                  'networkTimeout'         => null,
                                  'saslOpts'               => null,
                             ], $ldap->getOptions());
@@ -111,6 +113,7 @@ class OfflineTest extends TestCase
                                  'useStartTls'            => false,
                                  'optReferrals'           => false,
                                  'tryUsernameSplit'       => true,
+                                 'reconnectAttempts'      => 0,
                                  'networkTimeout'         => null,
                                  'saslOpts'               => null,
                             ], $ldap->getOptions());

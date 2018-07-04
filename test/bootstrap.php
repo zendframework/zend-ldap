@@ -34,3 +34,15 @@ if (defined('TESTS_ZEND_OB_ENABLED') && constant('TESTS_ZEND_OB_ENABLED')) {
  */
 putenv(sprintf("LDAPTLS_CERT=%s", getenv('TESTS_ZEND_LDAP_SASL_CERTIFICATE')));
 putenv(sprintf("LDAPTLS_KEY=%s", getenv('TESTS_ZEND_LDAP_SASL_KEY')));
+
+/**
+ * Work around https://bugs.php.net/bug.php?id=68541 by defining function
+ * mocks early.
+ *
+ * The Mock instances need to be defined now, but accessible for enabling/
+ * inspection by OfflineTest.
+ * They are wrapped in a class because if they were simply declared globally,
+ * phpunit would find them and error while attempting to serialize global
+ * variables.
+ */
+\ZendTest\Ldap\TestAsset\BuiltinFunctionMocks::createMocks();
