@@ -15,7 +15,6 @@ use phpmock\Mock;
 use Zend\Config;
 use Zend\Ldap;
 use Zend\Ldap\Exception;
-use phpmock\phpunit\PHPMock;
 
 /**
  * @group      Zend_Ldap
