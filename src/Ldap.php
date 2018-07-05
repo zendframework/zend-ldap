@@ -1563,9 +1563,12 @@ class Ldap
             $dn = $dn->toString();
         }
 
-        ErrorHandler::start(E_WARNING);
-        $entryUpdated = ldap_mod_replace($this->resource, $dn, $attributes);
-        ErrorHandler::stop();
+        do {
+            ErrorHandler::start(E_WARNING);
+            $entryUpdated = ldap_mod_replace($this->resource, $dn, $attributes);
+            ErrorHandler::stop();
+        } while ($entryUpdated === false && $this->shouldReconnect($this->resource));
+
 
         if ($entryUpdated === false) {
             throw new Exception\LdapException($this, 'updating attribute: ' . $dn);
