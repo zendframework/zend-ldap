@@ -225,4 +225,40 @@ class OfflineTest extends TestCase
         $ldap = new \Zend\Ldap\Ldap();
         $ldap->addAttributes('foo', ['bar']);
     }
+
+    /**
+     * @dataProvider removingAttributesProvider
+     */
+    public function testUpdatingAttributes(
+        $dn,
+        $attributes,
+        $allowEmptyAttributes,
+        $expectedDn,
+        $expectedAttributesToRemove
+    ) {
+        $ldap_mod_upd = $this->getFunctionMock('Zend\\Ldap', "ldap_mod_replace");
+        $ldap_mod_upd->expects($this->once())
+                     ->with(
+                         $this->isNull(),
+                         $this->equalTo($expectedDn),
+                         $this->equalTo($expectedAttributesToRemove)
+                     )
+                     ->willReturn(true);
+
+        $ldap = new \Zend\Ldap\Ldap();
+        $this->assertSame($ldap, $ldap->updateAttributes($dn, $attributes, $allowEmptyAttributes));
+    }
+
+    /**
+     * @expectedException \Zend\Ldap\Exception\LdapException
+     */
+    public function testUpdatingAttributesFails()
+    {
+        $ldap_mod_upd = $this->getFunctionMock('Zend\\Ldap', 'ldap_mod_replace');
+        $ldap_mod_upd->expects($this->once())
+                     ->willReturn(false);
+
+        $ldap = new \Zend\Ldap\Ldap();
+        $ldap->updateAttributes('foo', ['bar']);
+    }
 }
