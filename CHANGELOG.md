@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 2.10.0 - TBD
+
+### Added
+
+- [#64](https://github.com/zendframework/zend-ldap/pull/64) Adds support for SASL-Bind - Thanks to @mbaynton
+- [#66](https://github.com/zendframework/zend-ldap/pull/66) Adds support for automatic reconnection - Thanks to @mbaynton
+- [#73](https://github.com/zendframework/zend-ldap/pull/73) Adds support for modifying attributes - Thanks to @glimac and @mbaynton
+
+### Deprecated
+
+- Nothing.
+
+### Removed
+
+- [#69](https://github.com/zendframework/zend-ldap/pull/69) Drop support for OpenLDAP < 2.2 due to using ldap-URI exclusively - Thanks to @fduch
+
+### Fixed
+
+- [#51](https://github.com/zendframework/zend-ldap/issues/51) Use ldap_escape to escape values instead of own function - Thanks to @KaelBaldwin
+
 ## 2.9.1 - TBD
 
 ### Added
