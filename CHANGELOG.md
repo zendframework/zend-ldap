@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 - [#64](https://github.com/zendframework/zend-ldap/pull/64) Adds support for SASL-Bind - Thanks to @mbaynton
 - [#66](https://github.com/zendframework/zend-ldap/pull/66) Adds support for automatic reconnection - Thanks to @mbaynton
+- [#73](https://github.com/zendframework/zend-ldap/pull/73) Adds support for modifying attributes - Thanks to @glimac and @mbaynton
 
 ### Deprecated
 
