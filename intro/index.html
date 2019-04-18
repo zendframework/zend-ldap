@@ -12,6 +12,7 @@
     <title>Intro - zend-ldap</title>
 
     <link rel="stylesheet" href="../css/styles-18b942728f.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js"></script>
 </head>
 <body id="page-top">
 
@@ -66,7 +67,7 @@
                     
     <div class="subnavigation hidden-print">
         <h4 class="subnavigation__title">
-            <a href="..">zend-ldap</a>
+            <a href="">zend-ldap</a>
         </h4>
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
@@ -75,7 +76,7 @@
             
                 
                     <li class="subnavigation__list-item subnavigation__list-item--active">
-                        <a href="./" class="subnavigation__link">Intro</a>
+                        <a href="intro/" class="subnavigation__link">Intro</a>
                     </li>
                 
             
@@ -86,37 +87,37 @@
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../api/" class="subnavigation__link">API overview</a>
+        <a href="api/" class="subnavigation__link">API overview</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../usage/" class="subnavigation__link">Usage Scenarios</a>
+        <a href="usage/" class="subnavigation__link">Usage Scenarios</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../tools/" class="subnavigation__link">Tools</a>
+        <a href="tools/" class="subnavigation__link">Tools</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../node/" class="subnavigation__link">Object-oriented access to the LDAP tree</a>
+        <a href="node/" class="subnavigation__link">Object-oriented access to the LDAP tree</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../server/" class="subnavigation__link">Getting information from the LDAP server</a>
+        <a href="server/" class="subnavigation__link">Getting information from the LDAP server</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../ldif/" class="subnavigation__link">Serializing LDAP data to and from LDIF</a>
+        <a href="ldif/" class="subnavigation__link">Serializing LDAP data to and from LDIF</a>
     </li>
 
                             
@@ -200,7 +201,7 @@
         <li><a href="https://docs.zendframework.com/">Documentation</a></li>
 
         
-            <li><a href="..">zend-ldap</a></li>
+            <li><a href="">zend-ldap</a></li>
 
             
 
@@ -265,7 +266,7 @@ $options = [
 
 $ldap = new Ldap($options);
 $acctname = $ldap-&gt;getCanonicalAccountName('abaker', Ldap::ACCTNAME_FORM_DN);
-echo &quot;$acctname\n&quot;;</code></pre>
+echo "$acctname\n";</code></pre>
 
 <p>If you are using Microsoft AD:</p>
 <pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
@@ -282,7 +283,7 @@ $options = [
 
 $ldap = new Ldap($options);
 $acctname = $ldap-&gt;getCanonicalAccountName('bcarter', Ldap::ACCTNAME_FORM_DN);
-echo &quot;$acctname\n&quot;;</code></pre>
+echo "$acctname\n";</code></pre>
 
 <p>Note that we use the <code>getCanonicalAccountName()</code> method to retrieve the account
 DN here only because that is what exercises the most of what little code is
@@ -311,7 +312,7 @@ $options = [
 $ldap = new Ldap($options);
 $ldap-&gt;bind('abaker', 'moonbike55');
 $acctname = $ldap-&gt;getCanonicalAccountName('abaker', Ldap::ACCTNAME_FORM_DN);
-echo &quot;$acctname\n&quot;;</code></pre>
+echo "$acctname\n";</code></pre>
 
 <p>The <code>bind()</code> call in this example sees that the username 'abaker' is not in DN
 form, finds <code>bindRequiresDn</code> is <code>TRUE</code>, uses <code>CN=user1,DC=foo,DC=net</code> and
@@ -375,16 +376,16 @@ $multiOptions = [
 $ldap = new Ldap();
 
 foreach ($multiOptions as $name =&gt; $options) {
-    echo &quot;Trying to bind using server options for '$name'\n&quot;;
+    echo "Trying to bind using server options for '$name'\n";
 
     $ldap-&gt;setOptions($options);
     try {
         $ldap-&gt;bind($acctname, $password);
         $acctname = $ldap-&gt;getCanonicalAccountName($acctname);
-        echo &quot;SUCCESS: authenticated $acctname\n&quot;;
+        echo "SUCCESS: authenticated $acctname\n";
         return;
     } catch (LdapException $zle) {
-        echo '  ' . $zle-&gt;getMessage() . &quot;\n&quot;;
+        echo '  ' . $zle-&gt;getMessage() . "\n";
         if ($zle-&gt;getCode() === LdapException::LDAP_X_DOMAIN_MISMATCH) {
             continue;
         }
@@ -419,7 +420,7 @@ failover LDAP based authentication (or copy the code).</p>
         
         <li class="page-nav__item">
             
-                <a rel="prev" class="page-nav__link page-nav__link--prev" href="..">
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="">
                     <i class="fa fa-chevron-left"></i> Previous
                 </a>
             
@@ -428,7 +429,7 @@ failover LDAP based authentication (or copy the code).</p>
         
         <li class="page-nav__item">
             
-                <a rel="next" class="page-nav__link page-nav__link--next" href="../api/">
+                <a rel="next" class="page-nav__link page-nav__link--next" href="api/">
                     Next <i class="fa fa-chevron-right"></i>
                 </a>
             
@@ -463,7 +464,7 @@ failover LDAP based authentication (or copy the code).</p>
                     
     <div class="subnavigation hidden-print">
         <h4 class="subnavigation__title">
-            <a href="..">zend-ldap</a>
+            <a href="">zend-ldap</a>
         </h4>
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
@@ -472,7 +473,7 @@ failover LDAP based authentication (or copy the code).</p>
             
                 
                     <li class="subnavigation__list-item subnavigation__list-item--active">
-                        <a href="./" class="subnavigation__link">Intro</a>
+                        <a href="intro/" class="subnavigation__link">Intro</a>
                     </li>
                 
             
@@ -483,37 +484,37 @@ failover LDAP based authentication (or copy the code).</p>
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../api/" class="subnavigation__link">API overview</a>
+        <a href="api/" class="subnavigation__link">API overview</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../usage/" class="subnavigation__link">Usage Scenarios</a>
+        <a href="usage/" class="subnavigation__link">Usage Scenarios</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../tools/" class="subnavigation__link">Tools</a>
+        <a href="tools/" class="subnavigation__link">Tools</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../node/" class="subnavigation__link">Object-oriented access to the LDAP tree</a>
+        <a href="node/" class="subnavigation__link">Object-oriented access to the LDAP tree</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../server/" class="subnavigation__link">Getting information from the LDAP server</a>
+        <a href="server/" class="subnavigation__link">Getting information from the LDAP server</a>
     </li>
 
                             
                                 
     <li class="subnavigation__list-item ">
-        <a href="../ldif/" class="subnavigation__link">Serializing LDAP data to and from LDIF</a>
+        <a href="ldif/" class="subnavigation__link">Serializing LDAP data to and from LDIF</a>
     </li>
 
                             
@@ -595,9 +596,8 @@ failover LDAP based authentication (or copy the code).</p>
         var base_url = '..',
             siteName = 'zend-ldap';
     </script>
-    <script src="../js/scripts-0bcb0a3bb3.js"></script>
-        <script src="../search/require.js"></script>
-        <script src="../search/search.js"></script>
+    <script src="../js/scripts-edc4cfa790.js"></script>
+        <script src="../search/main.js"></script>
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
@@ -626,6 +626,14 @@ failover LDAP based authentication (or copy the code).</p>
             </div>
         </div>
     </div>
+
+<script>
+// Anchors
+anchors.options.placement = 'left';
+anchors.add(
+    '.content h1:not(.content__title), .content h2, .content > h3, .content h4, .content h5'
+);
+</script>
 
 
 
