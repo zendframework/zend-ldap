@@ -276,8 +276,8 @@
     <h1 id="tools">Tools</h1>
 <h2 id="creation-and-modification-of-dn-strings">Creation and modification of DN strings</h2>
 <h2 id="using-the-filter-api-to-create-search-filters">Using the filter API to create search filters</h2>
-<h3 id="create-simple-ldap-filters">Create simple LDAP filters</h3>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Filter;
+<h3>Create simple LDAP filters</h3>
+<p> <pre class=codehilite><code class=language-php>use Zend\Ldap\Filter;
 
 $f1  = Filter::equals('name', 'value');         // (name=value)
 $f2  = Filter::begins('name', 'value');         // (name=value*)
@@ -288,10 +288,9 @@ $f6  = Filter::greaterOrEqual('name', 'value'); // (name&gt;=value)
 $f7  = Filter::less('name', 'value');           // (name&lt;value)
 $f8  = Filter::lessOrEqual('name', 'value');    // (name&lt;=value)
 $f9  = Filter::approx('name', 'value');         // (name~=value)
-$f10 = Filter::any('name');                     // (name=*)</code></pre>
-
-<h3 id="create-more-complex-ldap-filters">Create more complex LDAP filters</h3>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Filter;
+$f10 = Filter::any('name');                     // (name=*)</code></pre></p>
+<h3>Create more complex LDAP filters</h3>
+<p> <pre class=codehilite><code class=language-php>use Zend\Ldap\Filter;
 
 $f1 = Filter::ends('name', 'value')-&gt;negate(); // (!(name=*value))
 
@@ -303,8 +302,7 @@ $f4 = Filter::ends('name', 'value');
 $f5 = Filter::andFilter($f2, $f3, $f4);
 
 // (|(name=value)(name=value*)(name=*value))
-$f6 = Filter::orFilter($f2, $f3, $f4);</code></pre>
-
+$f6 = Filter::orFilter($f2, $f3, $f4);</code></pre></p>
 <h2 id="modify-ldap-entries-using-the-attribute-api">Modify LDAP entries using the Attribute API</h2>
 <ul>
 <li>TODO</li>
@@ -342,7 +340,7 @@ $f6 = Filter::orFilter($f2, $f3, $f4);</code></pre>
     <div class="help-wanted">
         <p>
             Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/zendframework/zend-ldap/edit/master/docs/tools.md" target="_blank" class="help-wanted__link">
+            <a href="https://github.com/zendframework/zend-ldap/edit/master/docs/book/tools.md" target="_blank" class="help-wanted__link">
                 Edit this page on GitHub!
             </a>
         </p>

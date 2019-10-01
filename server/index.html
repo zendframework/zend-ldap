@@ -278,28 +278,26 @@ within the RootDSE for a given LDAP server.</p>
 <li><a href="http://msdn.microsoft.com/en-us/library/ms684291(VS.85).aspx">Microsoft ActiveDirectory</a></li>
 <li><a href="http://www.novell.com/documentation/edir88/edir88/index.html?page=/documentation/edir88/edir88/data/ah59jqq.html">Novell eDirectory</a></li>
 </ul>
-<h3 id="getting-hands-on-the-rootdse">Getting hands on the RootDSE</h3>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
+<h3>Getting hands on the RootDSE</h3>
+<p> <pre class=codehilite><code class=language-php>use Zend\Ldap\Ldap;
 
 $options = [/* ... */];
 $ldap = new Ldap($options);
 $rootdse = $ldap-&gt;getRootDse();
-$serverType = $rootdse-&gt;getServerType();</code></pre>
-
+$serverType = $rootdse-&gt;getServerType();</code></pre></p>
 <h2 id="schema-browsing">Schema Browsing</h2>
-<h3 id="getting-hands-on-the-server-schema">Getting hands on the server schema</h3>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
+<h3>Getting hands on the server schema</h3>
+<p> <pre class=codehilite><code class=language-php>use Zend\Ldap\Ldap;
 
 $options = [/* ... */];
 $ldap = new Ldap($options);
 $schema = $ldap-&gt;getSchema();
-$classes = $schema-&gt;getObjectClasses();</code></pre>
-
-<h4 id="openldap">OpenLDAP</h4>
+$classes = $schema-&gt;getObjectClasses();</code></pre></p>
+<h4>OpenLDAP</h4>
 <ul>
 <li>TODO</li>
 </ul>
-<h4 id="activedirectory">ActiveDirectory</h4>
+<h4>ActiveDirectory</h4>
 <p>Due to restrictions on Microsoft ActiveDirectory servers regarding the number of
 entries returned by generic search routines and due to the structure of the
 ActiveDirectory schema repository, schema browsing is currently <strong>not</strong>
@@ -337,7 +335,7 @@ available for Microsoft ActiveDirectory servers.</p>
     <div class="help-wanted">
         <p>
             Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/zendframework/zend-ldap/edit/master/docs/server.md" target="_blank" class="help-wanted__link">
+            <a href="https://github.com/zendframework/zend-ldap/edit/master/docs/book/server.md" target="_blank" class="help-wanted__link">
                 Edit this page on GitHub!
             </a>
         </p>

@@ -353,7 +353,7 @@ or through the <code>setOptions()</code> method. The permitted options are as fo
 </table></div>
 <h2 id="api-reference">API Reference</h2>
 <p>Class names are relative to the <code>Zend\Ldap</code> namespace, unless otherwise noted.</p>
-<h3 id="zend92ldap92ldap">Zend\Ldap\Ldap</h3>
+<h3>Zend\Ldap\Ldap</h3>
 <p><code>Zend\Ldap\Ldap</code> is the base interface into a LDAP server. It provides connection and binding
 methods as well as methods to operate on the LDAP tree.</p>
 <div class="table-responsive"><table>
@@ -490,9 +490,9 @@ methods as well as methods to operate on the LDAP tree.</p>
 </tr>
 </tbody>
 </table></div>
-<h4 id="search">search()</h4>
+<h4>search()</h4>
 <p>The <code>search()</code> signature is as follows:</p>
-<pre class="codehilite"><code class="language-php">search(
+<p> <pre class=codehilite><code class=language-php>search(
     string|Filter\AbstractFilter $filter,
     string|Dn $basedn,
     int $scope,
@@ -501,8 +501,7 @@ methods as well as methods to operate on the LDAP tree.</p>
     string $collectionClass,
     int $sizelimit,
     int $timelimit
-) : Collection</code></pre>
-
+) : Collection</code></pre></p>
 <p>where:</p>
 <ul>
 <li><code>$filter</code>: The filter string to be used in the search, e.g. <code>(objectClass=posixAccount)</code>.</li>
@@ -534,8 +533,8 @@ methods as well as methods to operate on the LDAP tree.</p>
 <li><code>$timelimit</code>: Sets the maximum number of seconds to spend on the search.
   Setting this to <code>0</code> means no limit.</li>
 </ul>
-<h4 id="searchentries">searchEntries()</h4>
-<pre class="codehilite"><code class="language-php">searchEntries(
+<h4>searchEntries()</h4>
+<p> <pre class=codehilite><code class=language-php>searchEntries(
     string|Dn $basedn,
     int $scope,
     array $attributes,
@@ -543,8 +542,7 @@ methods as well as methods to operate on the LDAP tree.</p>
     bool $reverseSort,
     int $sizelimit,
     int $timelimit
-) : array</code></pre>
-
+) : array</code></pre></p>
 <p>Arguments are essentially the same as for <a href="#search">search()</a>, with two
 differences:</p>
 <ul>
@@ -553,7 +551,7 @@ differences:</p>
 <li><code>$collectionClass</code> is not present in this signature.</li>
 </ul>
 <p>Unlike <code>search()</code>, this method always returns an array of results.</p>
-<h3 id="zend92ldap92collection">Zend\Ldap\Collection</h3>
+<h3>Zend\Ldap\Collection</h3>
 <p><code>Zend\Ldap\Collection</code> implements <code>Iterator</code> to allow for item traversal using
 <code>foreach()</code> and <code>Countable</code> to be able to respond to <code>count()</code>. With its
 protected <code>createEntry()</code> method, it provides an extension point for developers
@@ -584,7 +582,7 @@ needing custom result objects.</p>
 </tr>
 </tbody>
 </table></div>
-<h3 id="zend92ldap92attribute">Zend\Ldap\Attribute</h3>
+<h3>Zend\Ldap\Attribute</h3>
 <p><code>Zend\Ldap\Attribute</code> is a helper class providing only static methods to
 manipulate arrays suitable to the structure used in <code>Zend\Ldap\Ldap</code> data
 modification methods, and to the data format required by the LDAP server. PHP
@@ -635,43 +633,40 @@ data types are converted using <code>Zend\Ldap\Converter\Converter</code> method
 </tr>
 </tbody>
 </table></div>
-<h4 id="setpassword">setPassword()</h4>
+<h4>setPassword()</h4>
 <p>The full signature of <code>setPassword()</code> is as follows:</p>
-<pre class="codehilite"><code class="language-php">static setPassword(
+<p> <pre class=codehilite><code class=language-php>static setPassword(
     array &amp;$data,
     string $password,
     string $hashType,
     string $attribName
-) : void</code></pre>
-
+) : void</code></pre></p>
 <p>Sets an LDAP password for the attribute <code>$attribName</code> in <code>$data</code>. <code>$attribName</code>
 defaults to <code>userPassword</code> which is the standard password attribute. The
 password hash can be specified with <code>$hashType</code>. The default value here is
 <code>Attribute::PASSWORD_HASH_MD5</code> with <code>Attribute::PASSWORD_HASH_SHA</code> as the other
 possibility.</p>
-<h4 id="setdatetimeattribute">setDateTimeAttribute()</h4>
+<h4>setDateTimeAttribute()</h4>
 <p>The full signature of <code>setDateTimeAttribute()</code> is as follows:</p>
-<pre class="codehilite"><code class="language-php">static setDateTimeAttribute(
+<p> <pre class=codehilite><code class=language-php>static setDateTimeAttribute(
     array &amp;$data,
     string $attribName,
     int|array $value,
     boolean $utc,
     boolean $append
-) : void</code></pre>
-
+) : void</code></pre></p>
 <p>Sets the attribute <code>$attribName</code> in <code>$data</code> to the date/time value <code>$value</code>. if
 <code>$append</code> is <code>true</code> (<code>false</code> by default) <code>$value</code> will be appended to the
 attribute. <code>$value</code> can be an integer value or an array of integers.
 Date-time-conversion according to <code>Converter\Converter::toLdapDateTime()</code> will
 take place.</p>
-<h4 id="getdatetimeattribute">getDateTimeAttribute()</h4>
+<h4>getDateTimeAttribute()</h4>
 <p>The full signature of <code>getDateTimeAttribute()</code> is as follows:</p>
-<pre class="codehilite"><code class="language-php">static getDateTimeAttribute(
+<p> <pre class=codehilite><code class=language-php>static getDateTimeAttribute(
     array $data,
     string $attribName,
     int|null $index
-) : array|int</code></pre>
-
+) : array|int</code></pre></p>
 <p>Returns the date/time attribute <code>$attribName</code> from <code>$data</code>. If <code>$index</code> is
 <code>null</code> (default), an array will be returned containing all the date/time values
 for the given attribute. An empty array will be returned if the attribute does
@@ -679,7 +674,7 @@ not exist in the given array. If an integer index is specified the corresponding
 date/time value at the given index will be returned. If the index is out of
 bounds, <code>null</code> will be returned. Date-time-conversion according to
 <code>Converter\Converter::fromLdapDateTime()</code> will take place.</p>
-<h3 id="zend92ldap92converter92converter">Zend\Ldap\Converter\Converter</h3>
+<h3>Zend\Ldap\Converter\Converter</h3>
 <p><code>Zend\Ldap\Converter\Converter</code> is a helper class providing only static methods
 to manipulate arrays suitable to the data format required by the LDAP server.
 PHP data types are converted the following way:</p>
@@ -751,7 +746,7 @@ PHP data types are converted the following way:</p>
 </tr>
 </tbody>
 </table></div>
-<h3 id="zend92ldap92dn">Zend\Ldap\Dn</h3>
+<h3>Zend\Ldap\Dn</h3>
 <p><code>Zend\Ldap\Dn</code> provides an object-oriented interface to manipulating LDAP
 distinguished names (DN). The parameter <code>$caseFold</code> that is used in several
 methods determines the way DN attributes are handled regarding their case.
@@ -876,8 +871,8 @@ checks if the index is within the bounds.</p>
 </tr>
 </tbody>
 </table></div>
-<h3 id="zend92ldap92filter">Zend\Ldap\Filter</h3>
-<h3 id="zend92ldap92node">Zend\Ldap\Node</h3>
+<h3>Zend\Ldap\Filter</h3>
+<h3>Zend\Ldap\Node</h3>
 <p><code>Zend\Ldap\Node</code> includes the magic property accessors <code>__set()</code>, <code>__get()</code>,
 <code>__unset()</code>, and <code>__isset()</code> for accessing the attributes by name. They proxy to
 <code>Node::setAttribute()</code>, <code>Node::getAttribute()</code>, <code>Node::deleteAttribute()</code>, and
@@ -983,20 +978,19 @@ tree-traversal.</p>
 </tr>
 </tbody>
 </table></div>
-<h4 id="node-constructor">Node constructor</h4>
+<h4>Node constructor</h4>
 <p>The full signature of the <code>Zend\Ldap\Node</code> constructor is:</p>
-<pre class="codehilite"><code class="language-php">__construct(
+<p> <pre class=codehilite><code class=language-php>__construct(
     string $attr,
     string $value,
     string $filtertype,
     string|null $prepend,
     string|null $append
-) : void</code></pre>
-
+) : void</code></pre></p>
 <p>The resulting filter will be a concatenation of <code>$attr</code>, <code>$filtertype</code>,
 <code>$prepend</code>, <code>$value</code>, and <code>$append</code>. Normally this constructor is not needed, as
 all filters can be created by using the appropriate factory methods.</p>
-<h3 id="zend92ldap92node92rootdse">Zend\Ldap\Node\RootDse</h3>
+<h3>Zend\Ldap\Node\RootDse</h3>
 <p>The following methods are available on all vendor-specific subclasses.</p>
 <p><code>Zend\Ldap\Node\RootDse</code> includes the magic property accessors <code>__get()</code> and
 <code>__isset()</code> to access the attributes by their name. They proxy to
@@ -1116,7 +1110,7 @@ attributes.  <code>offsetSet()</code> and <code>offsetUnset()</code> also throw 
 </tr>
 </tbody>
 </table></div>
-<h4 id="openldap">OpenLDAP</h4>
+<h4>OpenLDAP</h4>
 <p>Additionally the common methods above apply to instances of <code>Zend\Ldap\Node\RootDse\OpenLdap</code>.</p>
 <p>Refer to <a href="http://www.zytrax.com/books/ldap/ch3/#operational">LDAP Operational Attributes and Objects</a>
 specification for information on the attributes of OpenLDAP RootDSE.</p>
@@ -1154,7 +1148,7 @@ specification for information on the attributes of OpenLDAP RootDSE.</p>
 </tr>
 </tbody>
 </table></div>
-<h4 id="activedirectory">ActiveDirectory</h4>
+<h4>ActiveDirectory</h4>
 <p>Additionally the common methods above apply to instances of
 <code>Zend\Ldap\Node\RootDse\ActiveDirectory</code>.</p>
 <p>Refer to the <a href="http://msdn.microsoft.com/en-us/library/ms684291(VS.85).aspx">RootDSE</a>
@@ -1246,7 +1240,7 @@ RootDSE.</p>
 </tr>
 </tbody>
 </table></div>
-<h4 id="edirectory">eDirectory</h4>
+<h4>eDirectory</h4>
 <p>Additionally the common methods above apply to instances of
 <code>Zend\Ldap\Node\RootDse\eDirectory</code>.</p>
 <p>Refer to <a href="http://www.novell.com/documentation/edir88/edir88/index.html?page=/documentation/edir88/edir88/data/ah59jqq.html">Getting Information about the LDAP Server</a>
@@ -1309,7 +1303,7 @@ for information on the attributes of Novell eDirectory RootDSE.</p>
 </tr>
 </tbody>
 </table></div>
-<h3 id="zend92ldap92node92schema">Zend\Ldap\Node\Schema</h3>
+<h3>Zend\Ldap\Node\Schema</h3>
 <p>The following methods are available on all vendor-specific subclasses.</p>
 <p><code>Zend\Ldap\Node\Schema</code> includes the magic property accessors <code>__get()</code> and <code>__isset()</code> to access
 the attributes by their name. They proxy to <code>Schema::getAttribute()</code> and
@@ -1411,7 +1405,7 @@ nodes. Furthermore the class implements <code>ArrayAccess</code> for array-style
 </tr>
 </tbody>
 </table></div>
-<h4 id="attributetypeinterface">AttributeTypeInterface</h4>
+<h4>AttributeTypeInterface</h4>
 <div class="table-responsive"><table>
 <thead>
 <tr>
@@ -1446,7 +1440,7 @@ nodes. Furthermore the class implements <code>ArrayAccess</code> for array-style
 </tr>
 </tbody>
 </table></div>
-<h4 id="objectclassinterface">ObjectClassInterface</h4>
+<h4>ObjectClassInterface</h4>
 <div class="table-responsive"><table>
 <thead>
 <tr>
@@ -1485,7 +1479,7 @@ nodes. Furthermore the class implements <code>ArrayAccess</code> for array-style
 </tr>
 </tbody>
 </table></div>
-<h4 id="abstractitem">AbstractItem</h4>
+<h4>AbstractItem</h4>
 <p>Classes representing attribute types and object classes extend
 <code>Zend\Ldap\Node\Schema\AbstractItem</code>, which provides some core methods to access
 arbitrary attributes on the underlying LDAP node.  <code>AbstractItem</code> includes the
@@ -1512,7 +1506,7 @@ nodes.</p>
 </tr>
 </tbody>
 </table></div>
-<h4 id="openldap_1">OpenLDAP</h4>
+<h4>OpenLDAP</h4>
 <p>Additionally the common methods above apply to instances of
 <code>Zend\Ldap\Node\Schema\OpenLDAP</code>.</p>
 <div class="table-responsive"><table>
@@ -1567,9 +1561,9 @@ nodes.</p>
 </tr>
 </tbody>
 </table></div>
-<h4 id="activedirectory_1">ActiveDirectory</h4>
+<h4>ActiveDirectory</h4>
 <blockquote>
-<h4 id="schema-browsing-on-activedirectory-servers">Schema browsing on ActiveDirectory servers</h4>
+<h4>Schema browsing on ActiveDirectory servers</h4>
 <p>Due to restrictions on Microsoft ActiveDirectory servers regarding the number
 of entries returned by generic search routines, and due to the structure of
 the ActiveDirectory schema repository, schema browsing is currently <strong>not</strong>
@@ -1579,7 +1573,7 @@ available for Microsoft ActiveDirectory servers.</p>
 <code>Zend\Ldap\Node\Schema\AttributeType\ActiveDirectory</code>, or
 <code>Zend\Ldap\Node\Schema\\ObjectClass\ActiveDirectory</code> provide additional
 methods.</p>
-<h3 id="zend92ldap92ldif92encoder">Zend\Ldap\Ldif\Encoder</h3>
+<h3>Zend\Ldap\Ldif\Encoder</h3>
 <div class="table-responsive"><table>
 <thead>
 <tr>
@@ -1638,7 +1632,7 @@ methods.</p>
     <div class="help-wanted">
         <p>
             Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/zendframework/zend-ldap/edit/master/docs/api.md" target="_blank" class="help-wanted__link">
+            <a href="https://github.com/zendframework/zend-ldap/edit/master/docs/book/api.md" target="_blank" class="help-wanted__link">
                 Edit this page on GitHub!
             </a>
         </p>

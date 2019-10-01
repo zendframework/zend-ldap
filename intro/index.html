@@ -280,7 +280,7 @@ for OpenLDAP-, ActiveDirectory- and Novell eDirectory servers
 some examples.</p>
 <p>If you are using OpenLDAP, consider the following example (note that the
 <code>bindRequiresDn</code> option is important if you are <strong>not</strong> using AD):</p>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
+<p> <pre class=codehilite><code class=language-php>use Zend\Ldap\Ldap;
 
 $options = [
     'host'              =&gt; 's0.foo.net',
@@ -293,10 +293,9 @@ $options = [
 
 $ldap = new Ldap($options);
 $acctname = $ldap-&gt;getCanonicalAccountName('abaker', Ldap::ACCTNAME_FORM_DN);
-echo "$acctname\n";</code></pre>
-
+echo &quot;$acctname\n&quot;;</code></pre></p>
 <p>If you are using Microsoft AD:</p>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
+<p> <pre class=codehilite><code class=language-php>use Zend\Ldap\Ldap;
 
 $options = [
     'host'                   =&gt; 'dc1.w.net',
@@ -310,12 +309,11 @@ $options = [
 
 $ldap = new Ldap($options);
 $acctname = $ldap-&gt;getCanonicalAccountName('bcarter', Ldap::ACCTNAME_FORM_DN);
-echo "$acctname\n";</code></pre>
-
+echo &quot;$acctname\n&quot;;</code></pre></p>
 <p>Note that we use the <code>getCanonicalAccountName()</code> method to retrieve the account
 DN here only because that is what exercises the most of what little code is
 currently present in this class.</p>
-<h3 id="automatic-username-canonicalization-when-binding">Automatic Username Canonicalization When Binding</h3>
+<h3>Automatic Username Canonicalization When Binding</h3>
 <p>If <code>bind()</code> is called with a non-DN username but <code>bindRequiresDN</code> is <code>true</code>
 and no username in DN form was supplied as an option, the bind will fail.
 However, if a username in DN form is supplied in the options array,
@@ -325,7 +323,7 @@ the username supplied to <code>bind()</code> and then re-bind with that DN.</p>
 which passes the username supplied by the user directly to <code>bind()</code>.</p>
 <p>The following example illustrates how the non-DN username 'abaker' can be used
 with <code>bind()</code>:</p>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
+<p> <pre class=codehilite><code class=language-php>use Zend\Ldap\Ldap;
 
 $options = [
     'host'              =&gt; 's0.foo.net',
@@ -339,13 +337,12 @@ $options = [
 $ldap = new Ldap($options);
 $ldap-&gt;bind('abaker', 'moonbike55');
 $acctname = $ldap-&gt;getCanonicalAccountName('abaker', Ldap::ACCTNAME_FORM_DN);
-echo "$acctname\n";</code></pre>
-
+echo &quot;$acctname\n&quot;;</code></pre></p>
 <p>The <code>bind()</code> call in this example sees that the username 'abaker' is not in DN
 form, finds <code>bindRequiresDn</code> is <code>TRUE</code>, uses <code>CN=user1,DC=foo,DC=net</code> and
 <code>pass1</code> to bind, retrieves the DN for 'abaker', unbinds and then rebinds with
 the newly discovered <code>CN=Alice Baker,OU=Sales,DC=foo,DC=net</code>.</p>
-<h3 id="account-name-canonicalization">Account Name Canonicalization</h3>
+<h3>Account Name Canonicalization</h3>
 <p>The <code>accountDomainName</code> and <code>accountDomainNameShort</code> options are used for two
 purposes: (1) they facilitate multi-domain authentication and failover
 capability, and (2) they are also used to canonicalize usernames. Specifically,
@@ -360,7 +357,7 @@ account is consistent regardless of what was supplied to <code>bind()</code>. Fo
 if the user supplies an account name of <code>abaker@example.com</code> or just <code>abaker</code>
 and the <code>accountCanonicalForm</code> is set to 3, the resulting canonicalized name
 would be <code>EXAMPLE\\abaker</code>.</p>
-<h3 id="multi-domain-authentication-and-failover">Multi-domain Authentication and Failover</h3>
+<h3>Multi-domain Authentication and Failover</h3>
 <p>The <code>Zend\Ldap\Ldap</code> component by itself makes no attempt to authenticate with
 multiple servers.  However, <code>Zend\Ldap\Ldap</code> is specifically designed to handle
 this scenario gracefully. The required technique is to simply iterate over an
@@ -371,7 +368,7 @@ not matter if the user passes <code>abaker@foo.net</code> or <code>Wbcarter</cod
 the bind.</p>
 <p>Consider the following example that illustrates the technique required to
 implement multi-domain authentication and failover:</p>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Exception\LdapException;
+<p> <pre class=codehilite><code class=language-php>use Zend\Ldap\Exception\LdapException;
 use Zend\Ldap\Ldap;
 
 $acctname = 'W\\user2';
@@ -403,22 +400,21 @@ $multiOptions = [
 $ldap = new Ldap();
 
 foreach ($multiOptions as $name =&gt; $options) {
-    echo "Trying to bind using server options for '$name'\n";
+    echo &quot;Trying to bind using server options for '$name'\n&quot;;
 
     $ldap-&gt;setOptions($options);
     try {
         $ldap-&gt;bind($acctname, $password);
         $acctname = $ldap-&gt;getCanonicalAccountName($acctname);
-        echo "SUCCESS: authenticated $acctname\n";
+        echo &quot;SUCCESS: authenticated $acctname\n&quot;;
         return;
     } catch (LdapException $zle) {
-        echo '  ' . $zle-&gt;getMessage() . "\n";
+        echo '  ' . $zle-&gt;getMessage() . &quot;\n&quot;;
         if ($zle-&gt;getCode() === LdapException::LDAP_X_DOMAIN_MISMATCH) {
             continue;
         }
     }
-}</code></pre>
-
+}</code></pre></p>
 <p>If the bind fails for any reason, the next set of server options is tried.</p>
 <p>The <code>getCanonicalAccountName()</code> call gets the canonical account name that the
 application would presumably use to associate data with such as preferences. The
@@ -471,7 +467,7 @@ failover LDAP based authentication (or copy the code).</p>
     <div class="help-wanted">
         <p>
             Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/zendframework/zend-ldap/edit/master/docs/intro.md" target="_blank" class="help-wanted__link">
+            <a href="https://github.com/zendframework/zend-ldap/edit/master/docs/book/intro.md" target="_blank" class="help-wanted__link">
                 Edit this page on GitHub!
             </a>
         </p>

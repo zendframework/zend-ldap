@@ -275,18 +275,18 @@
 
     <h1 id="usage-scenarios">Usage Scenarios</h1>
 <h2 id="authentication-scenarios">Authentication scenarios</h2>
-<h3 id="openldap">OpenLDAP</h3>
+<h3>OpenLDAP</h3>
 <ul>
 <li>TODO</li>
 </ul>
-<h3 id="activedirectory">ActiveDirectory</h3>
+<h3>ActiveDirectory</h3>
 <ul>
 <li>TODO</li>
 </ul>
 <h2 id="basic-crud-operations">Basic CRUD operations</h2>
-<h3 id="retrieving-data-from-the-ldap">Retrieving data from the LDAP</h3>
-<h4 id="getting-an-entry-by-its-dn">Getting an entry by its DN</h4>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
+<h3>Retrieving data from the LDAP</h3>
+<h4>Getting an entry by its DN</h4>
+<p> <pre class=codehilite><code class=language-php>use Zend\Ldap\Ldap;
 
 $options = [/* ... */];
 $ldap = new Ldap($options);
@@ -302,26 +302,23 @@ $hm is an array of the following structure:
     'objectclass' =&gt; ['inetOrgPerson', 'top'],
     ...
 ]
-*/</code></pre>
-
-<h4 id="check-for-the-existence-of-a-given-dn">Check for the existence of a given DN</h4>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
-
-$options = [/* ... */];
-$ldap = new Ldap($options);
-$ldap-&gt;bind();
-$isThere = $ldap-&gt;exists('cn=Hugo Müller,ou=People,dc=my,dc=local');</code></pre>
-
-<h4 id="count-children-of-a-given-dn">Count children of a given DN</h4>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
+*/</code></pre></p>
+<h4>Check for the existence of a given DN</h4>
+<p> <pre class=codehilite><code class=language-php>use Zend\Ldap\Ldap;
 
 $options = [/* ... */];
 $ldap = new Ldap($options);
 $ldap-&gt;bind();
-$childrenCount = $ldap-&gt;countChildren('cn=Hugo Müller,ou=People,dc=my,dc=local');</code></pre>
+$isThere = $ldap-&gt;exists('cn=Hugo Müller,ou=People,dc=my,dc=local');</code></pre></p>
+<h4>Count children of a given DN</h4>
+<p> <pre class=codehilite><code class=language-php>use Zend\Ldap\Ldap;
 
-<h4 id="searching-the-ldap-tree">Searching the LDAP tree</h4>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
+$options = [/* ... */];
+$ldap = new Ldap($options);
+$ldap-&gt;bind();
+$childrenCount = $ldap-&gt;countChildren('cn=Hugo Müller,ou=People,dc=my,dc=local');</code></pre></p>
+<h4>Searching the LDAP tree</h4>
+<p> <pre class=codehilite><code class=language-php>use Zend\Ldap\Ldap;
 
 $options = [/* ... */];
 $ldap = new Ldap($options);
@@ -333,12 +330,11 @@ $result = $ldap-&gt;search(
 );
 
 foreach ($result as $item) {
-    echo $item["dn"] . ': ' . $item['cn'][0] . PHP_EOL;
-}</code></pre>
-
-<h3 id="adding-data-to-the-ldap">Adding data to the LDAP</h3>
-<h4 id="add-a-new-entry-to-the-ldap">Add a new entry to the LDAP</h4>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Attribute;
+    echo $item[&quot;dn&quot;] . ': ' . $item['cn'][0] . PHP_EOL;
+}</code></pre></p>
+<h3>Adding data to the LDAP</h3>
+<h4>Add a new entry to the LDAP</h4>
+<p> <pre class=codehilite><code class=language-php>use Zend\Ldap\Attribute;
 use Zend\Ldap\Ldap;
 
 $options = [/* ... */];
@@ -350,20 +346,18 @@ Attribute::setAttribute($entry, 'cn', 'Hans Meier');
 Attribute::setAttribute($entry, 'sn', 'Meier');
 Attribute::setAttribute($entry, 'objectClass', 'inetOrgPerson');
 
-$ldap-&gt;add('cn=Hans Meier,ou=People,dc=my,dc=local', $entry);</code></pre>
-
-<h3 id="deleting-from-the-ldap">Deleting from the LDAP</h3>
-<h4 id="delete-an-existing-entry-from-the-ldap">Delete an existing entry from the LDAP</h4>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
+$ldap-&gt;add('cn=Hans Meier,ou=People,dc=my,dc=local', $entry);</code></pre></p>
+<h3>Deleting from the LDAP</h3>
+<h4>Delete an existing entry from the LDAP</h4>
+<p> <pre class=codehilite><code class=language-php>use Zend\Ldap\Ldap;
 
 $options = [/* ... */];
 $ldap = new Ldap($options);
 $ldap-&gt;bind();
-$ldap-&gt;delete('cn=Hans Meier,ou=People,dc=my,dc=local');</code></pre>
-
-<h3 id="updating-the-ldap">Updating the LDAP</h3>
-<h4 id="update-an-existing-entry-on-the-ldap">Update an existing entry on the LDAP</h4>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Attribute;
+$ldap-&gt;delete('cn=Hans Meier,ou=People,dc=my,dc=local');</code></pre></p>
+<h3>Updating the LDAP</h3>
+<h4>Update an existing entry on the LDAP</h4>
+<p> <pre class=codehilite><code class=language-php>use Zend\Ldap\Attribute;
 use Zend\Ldap\Ldap;
 
 $options = [/* ... */];
@@ -374,12 +368,11 @@ $hm = $ldap-&gt;getEntry('cn=Hugo Müller,ou=People,dc=my,dc=local');
 Attribute::setAttribute($hm, 'mail', 'mueller@my.local');
 Attribute::setPassword($hm, 'newPa$$w0rd', Attribute::PASSWORD_HASH_SHA1);
 
-$ldap-&gt;update('cn=Hugo Müller,ou=People,dc=my,dc=local', $hm);</code></pre>
-
+$ldap-&gt;update('cn=Hugo Müller,ou=People,dc=my,dc=local', $hm);</code></pre></p>
 <h2 id="extended-operations">Extended operations</h2>
-<h3 id="copy-and-move-entries-in-the-ldap">Copy and move entries in the LDAP</h3>
-<h4 id="copy-a-ldap-entry-recursively-with-all-its-descendants">Copy a LDAP entry recursively with all its descendants</h4>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
+<h3>Copy and move entries in the LDAP</h3>
+<h4>Copy a LDAP entry recursively with all its descendants</h4>
+<p> <pre class=codehilite><code class=language-php>use Zend\Ldap\Ldap;
 
 $options = [/* ... */];
 $ldap = new Ldap($options);
@@ -388,10 +381,9 @@ $ldap-&gt;copy(
     'cn=Hugo Müller,ou=People,dc=my,dc=local',
     'cn=Hans Meier,ou=People,dc=my,dc=local',
     true
-);</code></pre>
-
-<h4 id="move-a-ldap-entry-recursively-with-all-its-descendants-to-a-different-subtree">Move a LDAP entry recursively with all its descendants to a different subtree</h4>
-<pre class="codehilite"><code class="language-php">use Zend\Ldap\Ldap;
+);</code></pre></p>
+<h4>Move a LDAP entry recursively with all its descendants to a different subtree</h4>
+<p> <pre class=codehilite><code class=language-php>use Zend\Ldap\Ldap;
 
 $options = [/* ... */];
 $ldap = new Ldap($options);
@@ -400,7 +392,7 @@ $ldap-&gt;moveToSubtree(
     'cn=Hugo Müller,ou=People,dc=my,dc=local',
     'ou=Dismissed,dc=my,dc=local',
     true
-);</code></pre>
+);</code></pre></p>
 
 
 
@@ -434,7 +426,7 @@ $ldap-&gt;moveToSubtree(
     <div class="help-wanted">
         <p>
             Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/zendframework/zend-ldap/edit/master/docs/usage.md" target="_blank" class="help-wanted__link">
+            <a href="https://github.com/zendframework/zend-ldap/edit/master/docs/book/usage.md" target="_blank" class="help-wanted__link">
                 Edit this page on GitHub!
             </a>
         </p>

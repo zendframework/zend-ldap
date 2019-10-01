@@ -275,38 +275,38 @@
 
     <h1 id="object-oriented-access-to-the-ldap-tree-using-zend92ldap92node">Object-oriented access to the LDAP tree using Zend\Ldap\Node</h1>
 <h2 id="basic-crud-operations">Basic CRUD operations</h2>
-<h3 id="retrieving-data-from-the-ldap">Retrieving data from the LDAP</h3>
+<h3>Retrieving data from the LDAP</h3>
 <ul>
 <li>TODO</li>
 </ul>
-<h3 id="getting-a-node-by-its-dn">Getting a node by its DN</h3>
+<h3>Getting a node by its DN</h3>
 <ul>
 <li>TODO</li>
 </ul>
-<h3 id="searching-a-nodes-subtree">Searching a node's subtree</h3>
+<h3>Searching a node's subtree</h3>
 <ul>
 <li>TODO</li>
 </ul>
-<h3 id="adding-a-new-node-to-the-ldap">Adding a new node to the LDAP</h3>
+<h3>Adding a new node to the LDAP</h3>
 <ul>
 <li>TODO</li>
 </ul>
-<h3 id="deleting-a-node-from-the-ldap">Deleting a node from the LDAP</h3>
+<h3>Deleting a node from the LDAP</h3>
 <ul>
 <li>TODO</li>
 </ul>
-<h3 id="updating-a-node-on-the-ldap">Updating a node on the LDAP</h3>
+<h3>Updating a node on the LDAP</h3>
 <ul>
 <li>TODO</li>
 </ul>
 <h2 id="extended-operations">Extended operations</h2>
-<h3 id="copy-and-move-nodes-in-the-ldap">Copy and move nodes in the LDAP</h3>
+<h3>Copy and move nodes in the LDAP</h3>
 <ul>
 <li>TODO</li>
 </ul>
 <h2 id="tree-traversal">Tree traversal</h2>
-<h3 id="traverse-ldap-tree-recursively">Traverse LDAP tree recursively</h3>
-<pre class="codehilite"><code class="language-php">use RecursiveIteratorIterator;
+<h3>Traverse LDAP tree recursively</h3>
+<p> <pre class=codehilite><code class=language-php>use RecursiveIteratorIterator;
 use Zend\Ldap\Ldap;
 
 $options = [/* ... */];
@@ -319,7 +319,7 @@ $ri = new RecursiveIteratorIterator(
 
 foreach ($ri as $rdn =&gt; $n) {
     var_dump($n);
-}</code></pre>
+}</code></pre></p>
 
 
 
@@ -353,7 +353,7 @@ foreach ($ri as $rdn =&gt; $n) {
     <div class="help-wanted">
         <p>
             Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/zendframework/zend-ldap/edit/master/docs/node.md" target="_blank" class="help-wanted__link">
+            <a href="https://github.com/zendframework/zend-ldap/edit/master/docs/book/node.md" target="_blank" class="help-wanted__link">
                 Edit this page on GitHub!
             </a>
         </p>
