@@ -1,8 +1,8 @@
 docs_dir: docs/book
 site_dir: docs/html
-pages:
-    - index.md
-    - Intro: intro.md
+nav:
+    - Home: index.md
+    - Introduction: intro.md
     - Reference:
         - "API overview": api.md
         - "Usage Scenarios": usage.md
@@ -11,6 +11,5 @@ pages:
         - "Getting information from the LDAP server": server.md
         - "Serializing LDAP data to and from LDIF": ldif.md
 site_name: zend-ldap
-site_description: zend-ldap
+site_description: "Provides support for LDAP operations including but not limited to binding, searching and modifying entries in an LDAP directory"
 repo_url: 'https://github.com/zendframework/zend-ldap'
-copyright: 'Copyright (c) 2005-2018 <a href="https://www.zend.com/">Zend Technologies USA Inc.</a>'
