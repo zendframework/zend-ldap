@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-     <loc>https://docs.zendframework.com/zend-ldap/</loc>
-     <lastmod>2019-11-04</lastmod>
+     <loc>https://docs.zendframework.com/</loc>
+     <lastmod>2020-01-30</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://docs.zendframework.com/zend-ldap/intro/</loc>
-     <lastmod>2019-11-04</lastmod>
+     <loc>https://docs.zendframework.com/intro/</loc>
+     <lastmod>2020-01-30</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://docs.zendframework.com/zend-ldap/api/</loc>
-     <lastmod>2019-11-04</lastmod>
+     <loc>https://docs.zendframework.com/api/</loc>
+     <lastmod>2020-01-30</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://docs.zendframework.com/zend-ldap/usage/</loc>
-     <lastmod>2019-11-04</lastmod>
+     <loc>https://docs.zendframework.com/usage/</loc>
+     <lastmod>2020-01-30</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://docs.zendframework.com/zend-ldap/tools/</loc>
-     <lastmod>2019-11-04</lastmod>
+     <loc>https://docs.zendframework.com/tools/</loc>
+     <lastmod>2020-01-30</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://docs.zendframework.com/zend-ldap/node/</loc>
-     <lastmod>2019-11-04</lastmod>
+     <loc>https://docs.zendframework.com/node/</loc>
+     <lastmod>2020-01-30</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://docs.zendframework.com/zend-ldap/server/</loc>
-     <lastmod>2019-11-04</lastmod>
+     <loc>https://docs.zendframework.com/server/</loc>
+     <lastmod>2020-01-30</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
-     <loc>https://docs.zendframework.com/zend-ldap/ldif/</loc>
-     <lastmod>2019-11-04</lastmod>
+     <loc>https://docs.zendframework.com/ldif/</loc>
+     <lastmod>2020-01-30</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
